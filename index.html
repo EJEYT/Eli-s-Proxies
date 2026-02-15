@@ -191,7 +191,7 @@ const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "L
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
 let isAdmin = false;
 let editingPostId = null; 
-let currentPostData = []; // Store raw data for editing
+let currentPostData = [];
 
 function showNotice(msg, type = 'success') {
   const t = document.getElementById('toast');
@@ -204,7 +204,6 @@ function linkify(text) {
   return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
 }
 
-// Build Blocker Grid
 const grid = document.getElementById('gridContainer');
 blockers.forEach(b => {
   const card = document.createElement('div');
@@ -233,27 +232,30 @@ async function fetchPosts() {
   const { data } = await query.order('created_at', { ascending: false });
   if (!data) return;
 
-  currentPostData = data; // Keep raw data in memory
+  currentPostData = data;
   renderPosts(data);
 }
 
 function renderPosts(data) {
   const postsDiv = document.getElementById('posts');
   postsDiv.innerHTML = data.map(p => {
+    // ONLY SHOW BLOCKER LABEL IF WE ARE IN "ALL" VIEW
+    const blockerLabel = (selectedBlocker === "All") ? `<div class="post-unblocked-list">Blocker: ${p.blocker.replace(/_/g, ' ')}</div>` : '';
+    
     const adminControls = isAdmin ? `<div style="display:flex; gap:8px; margin-top:10px; border-top:1px solid #45475a; padding-top:10px; justify-content:flex-end;">
       <button class="small-action" onclick="startEdit('${p.id}')">✎ Edit</button>
       <button class="small-action" style="color:var(--red);" onclick="deletePost('${p.id}')">🗑 Delete</button>
     </div>` : '';
+
     return `<div class="post-card">
       <div class="post-meta"><div class="meta-top"><div class="post-author">By: ${p.author}</div><div>${new Date(p.created_at).toLocaleDateString()}</div></div>
-      <div class="post-unblocked-list">Blocker: ${p.blocker.replace(/_/g, ' ')}</div></div>
+      ${blockerLabel}</div>
       <div class="post-content">${linkify(p.content)}</div>
       ${adminControls}
     </div>`;
   }).join('');
 }
 
-// Fixed Edit Trigger
 window.startEdit = (id) => {
   const post = currentPostData.find(x => x.id == id);
   if(!post) return;
@@ -276,25 +278,23 @@ document.getElementById('cancelEditBtn').onclick = () => {
   document.getElementById('adminPanelTitle').textContent = "Admin Panel";
 };
 
-// Unified Enter Key Logic
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     if (document.getElementById('adminPanel').style.display === 'block') {
       if (!isAdmin) {
         document.getElementById('loginBtn').click();
       } else {
-        // If in Update Log tab, hit the Log button, otherwise hit the Post button
         if (document.getElementById('adminTabLogs').style.display === 'block') {
           document.getElementById('publishLogBtn').click();
         } else {
           document.getElementById('publishBtn').click();
+          document.getElementById('postText').value = ''; // CLEAR AFTER ENTER
         }
       }
     }
   }
 });
 
-// Post / Update Logic
 document.getElementById('publishBtn').onclick = async () => {
   const author = document.getElementById('postAuthor').value || 'Admin';
   const content = document.getElementById('postText').value;
@@ -312,12 +312,11 @@ document.getElementById('publishBtn').onclick = async () => {
       await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
     }
     showNotice("Broadcasted Successfully");
-    document.getElementById('postText').value = '';
+    document.getElementById('postText').value = ''; 
   }
   fetchPosts();
 };
 
-// Rest of your functions (Login, Logs, etc.)
 document.getElementById('togglePwBtn').onclick = () => {
   const pwInput = document.getElementById('adminPassword');
   pwInput.type = pwInput.type === 'password' ? 'text' : 'password';
