@@ -14,272 +14,146 @@
     --accent: #89b4fa;
     --accent-hover: #b4befe;
     --red: #f38ba8;
-    --green: #a6e3a1;
+    --red-hover: #e06c75;
   }
 
   * { box-sizing: border-box; }
 
   body { 
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-    margin: 0; 
-    background-color: var(--bg-dark); 
-    color: var(--text-main);
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
+    margin: 0; background-color: var(--bg-dark); color: var(--text-main);
+    display: flex; height: 100vh; overflow: hidden;
   }
 
   .app-container { display: flex; width: 100%; height: 100%; }
 
-  /* Sidebar */
+  /* Sidebar Styling */
   aside {
-    width: 260px;
-    background-color: var(--bg-sidebar);
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid #313244;
-    padding: 20px;
-    overflow-y: auto;
-  }
-
-  aside h2 {
-    font-size: 1.1rem;
-    color: var(--accent);
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: center;
+    width: 260px; background-color: var(--bg-sidebar); border-right: 1px solid #313244;
+    padding: 20px; display: flex; flex-direction: column; overflow-y: auto;
   }
 
   #blockerSelection { display: flex; flex-direction: column; gap: 8px; }
 
   #blockerSelection button {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    text-align: left;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.95rem;
+    background: transparent; border: none; color: var(--text-muted);
+    text-align: left; padding: 10px 15px; border-radius: 8px; cursor: pointer;
+    transition: 0.2s;
   }
 
   #blockerSelection button:hover { background-color: var(--bg-card); color: var(--text-main); }
   #blockerSelection button:focus { background-color: var(--accent); color: var(--bg-dark); font-weight: bold; }
 
-  /* Main Area */
+  /* Main Feed Area */
   main { flex: 1; display: flex; flex-direction: column; position: relative; }
 
   .header {
-    padding: 15px 30px;
-    border-bottom: 1px solid #313244;
-    background-color: var(--bg-dark);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 15px 30px; border-bottom: 1px solid #313244;
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg-dark); z-index: 10;
   }
 
-  #posts {
-    flex: 1;
-    padding: 30px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
+  #posts { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
 
+  /* Post Card with Trash Icon */
   .post-card {
-    background-color: var(--bg-card);
-    padding: 15px 20px;
-    border-radius: 12px;
-    border-left: 4px solid var(--accent);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background-color: var(--bg-card); padding: 15px 20px; border-radius: 12px;
+    border-left: 4px solid var(--accent); position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
   }
 
-  .post-author {
-    font-size: 0.75rem;
-    color: var(--accent);
-    font-weight: bold;
-    margin-bottom: 5px;
-    text-transform: uppercase;
+  .post-author { font-size: 0.75rem; color: var(--accent); font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
+
+  .delete-btn {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(243, 139, 168, 0.1); color: var(--red); border: 1px solid var(--red);
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: 0.2s; font-size: 1.1rem;
   }
 
-  .post-content a { color: var(--accent-hover); text-decoration: underline; }
+  .delete-btn:hover { background: var(--red); color: var(--bg-dark); }
 
-  #showAdmin {
-    background-color: transparent;
-    border: 1px solid var(--text-muted);
-    color: var(--text-muted);
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.8rem;
-  }
-
-  /* Admin Panel Popup */
+  /* Admin Modal */
   #adminPanel {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 380px;
-    background-color: var(--bg-card);
-    border: 1px solid #45475a;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-    padding: 25px;
-    border-radius: 16px;
-    z-index: 100;
+    display: none; position: fixed; bottom: 20px; right: 20px;
+    width: 380px; background-color: var(--bg-card); border: 1px solid #45475a;
+    padding: 25px; border-radius: 16px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
   }
-
-  .admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .admin-header h3 { margin: 0; font-size: 1.2rem; color: var(--accent); }
-
-  .close-btn {
-    background: #45475a;
-    border: none;
-    color: white;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-  }
-
-  .close-btn:hover { background: var(--red); }
 
   #adminPanel input, #adminPanel textarea {
-    width: 100%;
-    background-color: var(--bg-dark);
-    border: 1px solid #45475a;
-    color: white;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    font-family: inherit;
-  }
-
-  /* Clean Checkbox Grid */
-  .checkbox-label {
-    display: block;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    font-weight: bold;
+    width: 100%; background-color: var(--bg-dark); border: 1px solid #45475a;
+    color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; font-family: inherit;
   }
 
   #blockerCheckboxes {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    margin-bottom: 20px;
-    background: var(--bg-dark);
-    padding: 10px;
-    border-radius: 8px;
-    max-height: 140px;
-    overflow-y: auto;
-    border: 1px solid #45475a;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    background: var(--bg-dark); padding: 10px; border-radius: 8px;
+    max-height: 120px; overflow-y: auto; margin-bottom: 15px; border: 1px solid #45475a;
   }
 
-  #blockerCheckboxes label {
-    display: flex;
-    align-items: center;
-    font-size: 0.8rem;
-    padding: 6px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s;
+  #blockerCheckboxes label { font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; }
+  #blockerCheckboxes input { width: auto !important; margin-right: 8px !important; margin-bottom: 0 !important; }
+
+  .btn-primary {
+    width: 100%; padding: 12px; background: var(--accent); border: none; 
+    border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;
   }
-
-  #blockerCheckboxes label:hover { background: #313244; color: white; }
-  #blockerCheckboxes input { width: auto !important; margin: 0 10px 0 0 !important; cursor: pointer; }
-
-  #loginBtn, #publishBtn {
-    background-color: var(--accent);
-    color: var(--bg-dark);
-    border: none;
-    padding: 12px;
-    width: 100%;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: transform 0.1s;
-  }
-
-  #publishBtn:active { transform: scale(0.98); }
+  .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
 </style>
 </head>
 <body>
 
 <div class="app-container">
   <aside>
-    <h2>Blocker List</h2>
+    <h2 style="color: var(--accent); font-size: 1rem; letter-spacing: 2px; text-align: center;">BLOCKERS</h2>
     <div id="blockerSelection">
-      <button>Linewize</button>
-      <button>Securly</button>
-      <button>Palo_alto</button>
-      <button>Blocksi</button>
-      <button>Aristotle</button>
-      <button>Lightspeed</button>
-      <button>Contentkeeper</button>
-      <button>Lanschool</button>
-      <button>Goguardian</button>
-      <button>Fortiguard</button>
-      <button>Cisco_talos</button>
-      <button>Deledao</button>
+      <button>Linewize</button><button>Securly</button><button>Palo_alto</button>
+      <button>Blocksi</button><button>Aristotle</button><button>Lightspeed</button>
+      <button>Contentkeeper</button><button>Lanschool</button><button>Goguardian</button>
+      <button>Fortiguard</button><button>Cisco_talos</button><button>Deledao</button>
     </div>
   </aside>
 
   <main>
     <div class="header">
-      <h2 id="currentBlocker">Select a Category</h2>
-      <button id="showAdmin">Admin Access</button>
+      <h2 id="currentBlocker" style="margin:0;">Select a Feed</h2>
+      <button id="showAdmin" style="background:none; border:1px solid var(--text-muted); color:var(--text-muted); border-radius:20px; padding:6px 18px; cursor:pointer; font-size: 0.8rem;">Admin Panel</button>
     </div>
     <div id="posts"></div>
   </main>
 </div>
 
 <div id="adminPanel">
-  <div class="admin-header">
-    <h3>Admin Tools</h3>
-    <button class="close-btn" id="closeAdmin">&times;</button>
+  <div style="display:flex; justify-content:space-between; align-items: center; margin-bottom:20px;">
+    <h3 style="margin:0; color:var(--accent);">Admin Tools</h3>
+    <button id="closeAdmin" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.5rem;">&times;</button>
   </div>
   
   <div id="loginSection">
-    <input type="password" id="adminPassword" placeholder="Admin Password"/>
-    <button id="loginBtn">Unlock Panel</button>
+    <input type="password" id="adminPassword" placeholder="Enter Password..."/>
+    <button id="loginBtn" class="btn-primary">Unlock</button>
   </div>
 
   <div id="adminContent" style="display:none;">
-    <input type="text" id="postAuthor" placeholder="By: (e.g. John Doe)">
-    <textarea id="postText" rows="3" placeholder="Write your message..."></textarea>
-    
-    <span class="checkbox-label">Post to:</span>
+    <input type="text" id="postAuthor" placeholder="By: (Name)">
+    <textarea id="postText" rows="3" placeholder="Write message..."></textarea>
     <div id="blockerCheckboxes">
       <label><input type="checkbox" value="Linewize"> Linewize</label>
       <label><input type="checkbox" value="Securly"> Securly</label>
-      <label><input type="checkbox" value="Palo_alto"> Palo Alto</label>
+      <label><input type="checkbox" value="Palo_alto"> Palo_alto</label>
       <label><input type="checkbox" value="Blocksi"> Blocksi</label>
       <label><input type="checkbox" value="Aristotle"> Aristotle</label>
       <label><input type="checkbox" value="Lightspeed"> Lightspeed</label>
-      <label><input type="checkbox" value="Contentkeeper"> Content Keeper</label>
-      <label><input type="checkbox" value="Lanschool"> LanSchool</label>
-      <label><input type="checkbox" value="Goguardian"> GoGuardian</label>
-      <label><input type="checkbox" value="Fortiguard"> FortiGuard</label>
-      <label><input type="checkbox" value="Cisco_talos"> Cisco Talos</label>
+      <label><input type="checkbox" value="Contentkeeper"> Contentkeeper</label>
+      <label><input type="checkbox" value="Lanschool"> Lanschool</label>
+      <label><input type="checkbox" value="Goguardian"> Goguardian</label>
+      <label><input type="checkbox" value="Fortiguard"> Fortiguard</label>
+      <label><input type="checkbox" value="Cisco_talos"> Cisco_talos</label>
       <label><input type="checkbox" value="Deledao"> Deledao</label>
     </div>
-    <button id="publishBtn">Broadcast Post</button>
+    <button id="publishBtn" class="btn-primary">Broadcast Post</button>
   </div>
 </div>
 
@@ -290,79 +164,83 @@ const supabaseUrl = 'https://saauhuiruadqjogzughm.supabase.co'
 const supabaseKey = 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F'
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-let selectedBlocker = null
+let selectedBlocker = null;
+let isAdmin = false;
 
 function linkify(text) {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlRegex, function(url) {
-    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>';
-  });
+  return text.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
 }
+
+// Enter Key Login Support
+document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') document.getElementById('loginBtn').click();
+});
 
 document.querySelectorAll('#blockerSelection button').forEach(btn => {
   btn.addEventListener('click', () => {
-    selectedBlocker = btn.textContent
-    document.getElementById('currentBlocker').textContent = selectedBlocker
-    fetchPosts()
-  })
-})
+    selectedBlocker = btn.textContent;
+    document.getElementById('currentBlocker').textContent = selectedBlocker + " Feed";
+    fetchPosts();
+  });
+});
 
 async function fetchPosts() {
-  if (!selectedBlocker) return
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('blocker', selectedBlocker)
-    .order('created_at', { ascending: true })
+  if (!selectedBlocker) return;
+  const { data, error } = await supabase.from('posts').select('*').eq('blocker', selectedBlocker).order('created_at', { ascending: true });
+  if (error) console.error(error);
   
-  if (error) console.error(error)
-  const postsDiv = document.getElementById('posts')
-  
+  const postsDiv = document.getElementById('posts');
   postsDiv.innerHTML = data.map(p => `
     <div class="post-card">
       <div class="post-author">By: ${p.author || 'Anonymous'}</div>
       <div class="post-content">${linkify(p.content)}</div>
+      ${isAdmin ? `<button class="delete-btn" title="Delete Post" onclick="deletePost(${p.id})">🗑</button>` : ''}
     </div>
-  `).join('')
+  `).join('');
 }
 
-document.getElementById('showAdmin').addEventListener('click', () => {
-  document.getElementById('adminPanel').style.display = 'block'
-})
+// Global function for the onclick attribute
+window.deletePost = async (id) => {
+  if (!confirm('Permanently delete this post?')) return;
+  const { error } = await supabase.from('posts').delete().eq('id', id);
+  if (error) {
+    alert('Delete failed. Check your Supabase RLS policies.');
+  } else {
+    fetchPosts();
+  }
+};
 
-document.getElementById('closeAdmin').addEventListener('click', () => {
-  document.getElementById('adminPanel').style.display = 'none'
-})
+document.getElementById('showAdmin').addEventListener('click', () => document.getElementById('adminPanel').style.display = 'block');
+document.getElementById('closeAdmin').addEventListener('click', () => document.getElementById('adminPanel').style.display = 'none');
 
 document.getElementById('loginBtn').addEventListener('click', () => {
-  const pw = document.getElementById('adminPassword').value
-  if (pw === 'EISisBetterForever') {
-    document.getElementById('loginSection').style.display = 'none'
-    document.getElementById('adminContent').style.display = 'block'
+  if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
+    isAdmin = true;
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    fetchPosts(); 
   } else {
-    alert('Wrong password')
+    alert('Invalid Credentials');
   }
-})
+});
 
 document.getElementById('publishBtn').addEventListener('click', async () => {
-  const text = document.getElementById('postText').value.trim()
-  const author = document.getElementById('postAuthor').value.trim() || 'Anonymous'
+  const text = document.getElementById('postText').value.trim();
+  const author = document.getElementById('postAuthor').value.trim() || 'Anonymous';
+  const checkboxes = document.querySelectorAll('#blockerCheckboxes input:checked');
   
-  if (!text) return alert('Post cannot be empty')
-  const checkboxes = document.querySelectorAll('#blockerCheckboxes input[type="checkbox"]:checked')
-  if (checkboxes.length === 0) return alert('Select at least one blocker')
+  if (!text || checkboxes.length === 0) return alert('Please enter a message and select at least one blocker.');
 
   for (const cb of checkboxes) {
-    const { error } = await supabase.from('posts').insert([{ blocker: cb.value, content: text, author: author }])
-    if (error) console.error(error)
+    await supabase.from('posts').insert([{ blocker: cb.value, content: text, author: author }]);
   }
-  
-  document.getElementById('postText').value = ''
-  fetchPosts()
-  alert('Post published')
-})
+  document.getElementById('postText').value = '';
+  fetchPosts();
+});
 
-setInterval(fetchPosts, 5000)
+// Auto-refresh feed
+setInterval(fetchPosts, 5000);
 </script>
 
 </body>
