@@ -27,7 +27,6 @@
     height: 100vh; overflow: hidden;
   }
 
-  /* NEW: Selection Screen Styles */
   #selectionScreen {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     height: 100vh; width: 100%; padding: 20px; text-align: center;
@@ -50,7 +49,6 @@
     box-shadow: 0 10px 20px rgba(137, 180, 250, 0.2);
   }
 
-  /* Main App Layout */
   .app-container { display: none; width: 100%; height: 100%; flex-direction: column; }
 
   main { flex: 1; display: flex; flex-direction: column; position: relative; background: var(--bg-dark); }
@@ -131,8 +129,7 @@
 <div id="selectionScreen">
   <h1 style="color: white; font-size: 2.5rem; margin-bottom: 10px;">Eli's Proxies</h1>
   <p style="color: var(--text-muted); font-size: 1.2rem;">Select your school's blocker to view the feed.</p>
-  <div class="blocker-grid" id="gridContainer">
-    </div>
+  <div class="blocker-grid" id="gridContainer"></div>
 </div>
 
 <div class="app-container" id="appContainer">
@@ -174,8 +171,7 @@
   <div id="adminContent" style="display:none;">
     <input type="text" id="postAuthor" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Author Name">
     <textarea id="postText" rows="6" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Message..."></textarea>
-    <div id="blockerCheckboxes" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--bg-dark); padding: 15px; border-radius: 10px; max-height: 150px; overflow-y: auto; margin-bottom: 20px;">
-      </div>
+    <div id="blockerCheckboxes" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--bg-dark); padding: 15px; border-radius: 10px; max-height: 150px; overflow-y: auto; margin-bottom: 20px;"></div>
     <button id="publishBtn" style="width:100%; padding:15px; background:var(--accent); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Broadcast Message</button>
   </div>
 </div>
@@ -190,22 +186,19 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
-let isAdmin = false;
+let isAdmin = false; 
 let pendingDeleteId = null;
 
-// Initialize the grid and admin checkboxes
 const grid = document.getElementById('gridContainer');
 const adminCheckboxes = document.getElementById('blockerCheckboxes');
 
 blockers.forEach(b => {
-  // Main Grid
   const card = document.createElement('div');
   card.className = 'blocker-card';
   card.textContent = b;
   card.onclick = () => selectBlocker(b);
   grid.appendChild(card);
 
-  // Admin Checkboxes
   const label = document.createElement('label');
   label.innerHTML = `<input type="checkbox" value="${b}"> ${b}`;
   adminCheckboxes.appendChild(label);
@@ -221,20 +214,24 @@ function showApp() {
   document.getElementById('selectionScreen').style.display = 'none';
   document.getElementById('appContainer').style.display = 'flex';
   document.getElementById('currentBlocker').textContent = selectedBlocker;
+  
+  // Persistent Admin Check: If already logged in, keep UI updated
+  if (isAdmin) {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+  }
+  
   fetchPosts();
 }
 
+// Swaps screens without a page refresh to keep Admin Session alive
 document.getElementById('changeBlockerBtn').onclick = () => {
   localStorage.removeItem('eli_selected_blocker');
-  location.reload();
+  selectedBlocker = null;
+  document.getElementById('appContainer').style.display = 'none';
+  document.getElementById('selectionScreen').style.display = 'flex';
 };
 
-// Auto-load if already chosen
-if (selectedBlocker) {
-  showApp();
-}
-
-// Logic functions (Same as yours, just updated for new layout)
 async function fetchPosts() {
   if (!selectedBlocker) return;
   const { data, error } = await supabase.from('posts').select('*').eq('blocker', selectedBlocker).order('created_at', { ascending: false });
@@ -278,7 +275,7 @@ document.getElementById('loginBtn').onclick = () => {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
     showToast('Admin Access Granted');
-    fetchPosts();
+    fetchPosts(); // Reload current feed to show delete buttons
   } else { showToast('Invalid Password', 'error'); }
 };
 
@@ -303,11 +300,16 @@ window.openDelModal = (id) => {
 
 document.getElementById('cancelDel').onclick = () => document.getElementById('confirmModal').style.display = 'none';
 document.getElementById('confirmDel').onclick = async () => {
+  // Global Delete: Targets ID specifically so it disappears from all blockers
   const { error } = await supabase.from('posts').delete().eq('id', pendingDeleteId);
   document.getElementById('confirmModal').style.display = 'none';
   if (error) showToast('Delete failed', 'error');
-  else { showToast('Post deleted'); fetchPosts(); }
+  else { showToast('Post deleted globally'); fetchPosts(); }
 };
+
+if (selectedBlocker) {
+  showApp();
+}
 </script>
 </body>
 </html>
