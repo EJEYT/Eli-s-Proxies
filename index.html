@@ -95,7 +95,8 @@
   .meta-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
   .post-author { font-size: 0.9rem; color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
   .post-date { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
-  .post-unblocked-list { font-size: 0.75rem; color: var(--green); margin-top: 6px; font-weight: 600; font-family: monospace; border-top: 1px solid #45475a; padding-top: 4px; }
+  /* Removed border and padding-top here */
+  .post-unblocked-list { font-size: 0.75rem; color: var(--green); margin-top: 6px; font-weight: 600; font-family: monospace; }
 
   .post-content { white-space: pre-wrap; word-wrap: break-word; line-height: 1.6; font-size: 1.15rem; }
   .post-content a { color: var(--accent) !important; text-decoration: underline; }
@@ -332,7 +333,6 @@ async function fetchPosts() {
     return;
   }
 
-  // Grouping logic for "All" mode
   const groupedPosts = [];
   data.forEach(item => {
       const existing = groupedPosts.find(g => g.content === item.content && g.author === item.author);
@@ -347,9 +347,11 @@ async function fetchPosts() {
     const d = new Date(p.created_at);
     const dateStr = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
     
-    // Only show unblocked list if we are in "All" mode
+    // Capitalize blocker names for the "All" view
+    const formattedBlockers = p.blockers.map(b => b.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())).join(', ');
+
     const unblockedHtml = (selectedBlocker === "All") 
-        ? `<div class="post-unblocked-list">Unblocked for: ${p.blockers.join(', ').toLowerCase()}</div>`
+        ? `<div class="post-unblocked-list">Unblocked for: ${formattedBlockers}</div>`
         : '';
 
     return `
