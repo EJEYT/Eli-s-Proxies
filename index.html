@@ -22,7 +22,6 @@
   * { box-sizing: border-box; }
   body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; }
 
-  /* Toast Notification */
   #toast {
     position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
     padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold;
@@ -31,7 +30,6 @@
   }
   #toast.show { top: 30px; }
 
-  /* Selection Screen */
   #selectionScreen {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     height: 100vh; background: radial-gradient(circle at center, #24273a 0%, #1e1e2e 100%);
@@ -49,11 +47,9 @@
   .all-card-wrapper { width: 100%; display: flex; justify-content: center; margin-top: 25px; }
   .all-card { min-width: 280px; font-size: 1.3rem; border: 1px solid #45475a; padding: 30px; }
 
-  /* App Container */
   .app-container { display: none; width: 100%; height: 100%; flex-direction: column; }
   main { flex: 1; display: flex; flex-direction: column; background: var(--bg-dark); position: relative; overflow: hidden; }
 
-  /* Header */
   .header { padding: 15px 40px; border-bottom: 1px solid #313244; display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar); gap: 20px; z-index: 10; }
   .branding-area { min-width: 150px; }
   .branding-area h1 { margin: 0; font-size: 0.75rem; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
@@ -72,7 +68,6 @@
   .btn-outline { background:none; border:2px solid var(--text-muted); color:var(--text-muted); border-radius:25px; padding:8px 18px; cursor:pointer; font-weight:bold; transition: 0.2s; white-space: nowrap; }
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* Posts View - SCROLL FIXED HERE */
   #posts { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; height: 100%; }
   .post-card { background: var(--bg-card); padding: 25px; border-radius: 16px; border-left: 6px solid var(--accent); width: 100%; max-width: 800px; position: relative; flex-shrink: 0; }
   .post-meta { margin-bottom: 12px; }
@@ -82,7 +77,6 @@
   .post-content { white-space: pre-wrap; line-height: 1.5; font-size: 1.1rem; margin-bottom: 10px; overflow-wrap: break-word; }
   .post-content a { color: var(--accent); text-decoration: underline; font-weight: 600; }
 
-  /* Admin Panel */
   #adminPanel { display: none; position: fixed; bottom: 30px; right: 30px; width: 450px; background: var(--bg-card); border: 1px solid #45475a; padding: 25px; border-radius: 20px; z-index: 5000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
   .admin-input { width: 100%; padding: 14px; background: var(--bg-dark); border: 1px solid #45475a; color: white; border-radius: 10px; margin-bottom: 12px; font-family: inherit; font-size: 0.95rem; outline: none; }
   .admin-primary-btn { width: 100%; padding: 14px; background: var(--accent); color: var(--bg-dark); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 1rem; margin-top: 5px; }
@@ -156,7 +150,7 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
 let isAdmin = false;
-let editingPostIds = []; // Now stores array of IDs to update all instances
+let editingContentOriginal = ""; // Track original content to update all matches
 
 function showNotice(msg, type = 'success') {
   const t = document.getElementById('toast');
@@ -171,42 +165,30 @@ function linkify(text) {
 
 const grid = document.getElementById('gridContainer');
 blockers.forEach(b => {
-  const card = document.createElement('div');
-  card.className = 'blocker-card';
-  card.textContent = b.replace(/_/g, ' ');
-  card.onclick = () => selectBlocker(b);
-  grid.appendChild(card);
-  
-  const pill = document.createElement('div');
-  pill.className = 'admin-pill'; pill.textContent = b.replace(/_/g, ' '); pill.onclick = () => pill.classList.toggle('selected');
+  const card = document.createElement('div'); card.className = 'blocker-card'; card.textContent = b.replace(/_/g, ' '); card.onclick = () => selectBlocker(b); grid.appendChild(card);
+  const pill = document.createElement('div'); pill.className = 'admin-pill'; pill.textContent = b.replace(/_/g, ' '); pill.onclick = () => pill.classList.toggle('selected');
   pill.dataset.value = b; document.getElementById('adminBlockerButtons').appendChild(pill);
 });
 
 window.selectBlocker = (name) => {
-  selectedBlocker = name;
-  localStorage.setItem('eli_selected_blocker', name);
-  document.getElementById('selectionScreen').style.display = 'none';
-  document.getElementById('appContainer').style.display = 'flex';
+  selectedBlocker = name; localStorage.setItem('eli_selected_blocker', name);
+  document.getElementById('selectionScreen').style.display = 'none'; document.getElementById('appContainer').style.display = 'flex';
   document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
   fetchPosts();
 };
 
 async function fetchPosts() {
-  let query = supabase.from('posts').select('*');
-  if (selectedBlocker && selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
-  const { data } = await query.order('created_at', { ascending: false });
+  const { data } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
   if (!data) return;
 
-  const grouped = [];
-  data.forEach(item => {
-    const ex = grouped.find(g => g.content === item.content && g.author === item.author);
-    if (ex) { 
-        if (!ex.blockers.includes(item.blocker)) ex.blockers.push(item.blocker);
-        ex.ids.push(item.id);
-    }
-    else { grouped.push({ ...item, blockers: [item.blocker], ids: [item.id] }); }
-  });
+  const filtered = (selectedBlocker && selectedBlocker !== "All") ? data.filter(i => i.blocker === selectedBlocker) : data;
 
+  const grouped = [];
+  filtered.forEach(item => {
+    const ex = grouped.find(g => g.content === item.content && g.author === item.author);
+    if (ex) { if (!ex.blockers.includes(item.blocker)) ex.blockers.push(item.blocker); }
+    else { grouped.push({ ...item, blockers: [item.blocker] }); }
+  });
   renderPosts(grouped);
 }
 
@@ -216,8 +198,8 @@ function renderPosts(posts) {
     const list = p.blockers.map(b => b.replace(/_/g, ' ')).join(', ');
     const label = (selectedBlocker === "All") ? `<div class="post-unblocked-list">Unblocked for: ${list}</div>` : '';
     const adminControls = isAdmin ? `<div style="display:flex; gap:8px; margin-top:10px; border-top:1px solid #45475a; padding-top:10px; justify-content:flex-end;">
-      <button class="small-action" onclick="startEdit('${p.ids.join(',')}', '${p.author.replace(/'/g, "\\'")}', '${p.content.replace(/'/g, "\\'")}')">✎ Edit</button>
-      <button class="small-action" style="color:var(--red);" onclick="deleteGroup('${p.ids.join(',')}')">🗑 Delete</button>
+      <button class="small-action" onclick="startEdit('${p.author.replace(/'/g, "\\'")}', '${p.content.replace(/'/g, "\\'")}')">✎ Edit Everywhere</button>
+      <button class="small-action" style="color:var(--red);" onclick="deleteGlobal('${p.content.replace(/'/g, "\\'")}')">🗑 Delete Global</button>
     </div>` : '';
 
     return `<div class="post-card">
@@ -228,20 +210,19 @@ function renderPosts(posts) {
   }).join('');
 }
 
-window.startEdit = (ids, author, content) => {
-  editingPostIds = ids.split(',');
+window.startEdit = (author, content) => {
+  editingContentOriginal = content;
   document.getElementById('adminPanel').style.display = 'block';
   document.getElementById('postAuthor').value = author;
   document.getElementById('postText').value = content;
-  document.getElementById('publishBtn').textContent = "Update All Instances";
+  document.getElementById('publishBtn').textContent = "Update Global Proxy";
   document.getElementById('cancelEditBtn').style.display = "block";
-  document.getElementById('adminPanelTitle').textContent = "Editing Post...";
+  document.getElementById('adminPanelTitle').textContent = "Global Edit Mode";
 };
 
 document.getElementById('cancelEditBtn').onclick = () => {
-  editingPostIds = [];
-  document.getElementById('postAuthor').value = '';
-  document.getElementById('postText').value = '';
+  editingContentOriginal = "";
+  document.getElementById('postAuthor').value = ''; document.getElementById('postText').value = '';
   document.getElementById('publishBtn').textContent = "Post Everywhere";
   document.getElementById('cancelEditBtn').style.display = "none";
   document.getElementById('adminPanelTitle').textContent = "Admin Panel";
@@ -250,31 +231,28 @@ document.getElementById('cancelEditBtn').onclick = () => {
 document.getElementById('publishBtn').onclick = async () => {
   const author = document.getElementById('postAuthor').value || 'Admin';
   const content = document.getElementById('postText').value;
-  const pills = document.querySelectorAll('.admin-pill.selected');
+  if (!content) return showNotice("Content empty", "error");
 
-  if (!content) return showNotice("Post cannot be empty", "error");
-
-  if (editingPostIds.length > 0) {
-    for (let id of editingPostIds) {
-      await supabase.from('posts').update({ author, content }).eq('id', id);
-    }
-    showNotice("All instances updated");
+  if (editingContentOriginal) {
+    // UPDATE EVERY ENTRY WITH MATCHING ORIGINAL CONTENT
+    const { error } = await supabase.from('posts').update({ author, content }).eq('content', editingContentOriginal);
+    if (!error) showNotice("Updated across all blockers");
     document.getElementById('cancelEditBtn').click();
   } else {
-    if (pills.length === 0) return showNotice("Select at least one blocker", "error");
-    for (const p of pills) {
-      await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
-    }
-    showNotice("Broadcasted Successfully");
+    const pills = document.querySelectorAll('.admin-pill.selected');
+    if (pills.length === 0) return showNotice("Select a blocker", "error");
+    for (const p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
+    showNotice("Posted");
     document.getElementById('postText').value = '';
   }
   fetchPosts();
 };
 
-window.deleteGroup = async (ids) => {
-  const idArray = ids.split(',');
-  for (let id of idArray) await supabase.from('posts').delete().eq('id', id);
-  showNotice("Post Removed Everywhere"); fetchPosts();
+window.deleteGlobal = async (content) => {
+  if(confirm("Delete this proxy from ALL blockers?")) {
+    await supabase.from('posts').delete().eq('content', content);
+    showNotice("Deleted Global Instance"); fetchPosts();
+  }
 };
 
 document.addEventListener('keydown', (e) => {
