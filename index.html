@@ -81,7 +81,7 @@
   .post-unblocked-list { font-size: 0.75rem; color: var(--green); margin-top: 5px; font-weight: 600; font-family: monospace; }
   .post-content { white-space: pre-wrap; line-height: 1.5; font-size: 1.1rem; margin-bottom: 10px; }
 
-  /* Admin Buttons on Posts/Logs */
+  /* Admin Buttons */
   .admin-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; border-top: 1px solid #45475a; padding-top: 10px; }
   .small-action { background: #1e1e2e; border: 1px solid #45475a; color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
   .small-action:hover { border-color: var(--accent); }
@@ -187,7 +187,6 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
-
 let isAdmin = false;
 
 function updateAdminUI() {
@@ -250,7 +249,7 @@ function renderPosts(posts) {
     const label = (selectedBlocker === "All") ? `<div class="post-unblocked-list">Unblocked for: ${list}</div>` : '';
     const adminControls = isAdmin ? `<div class="admin-btns">
       <button class="small-action" onclick="editPost('${p.content.replace(/'/g, "\\'")}')">✎ Edit</button>
-      <button class="small-action" style="color:var(--red);" onclick="deletePost('${p.content.replace(/'/g, "\\'")}')">🗑 Delete</button>
+      <button class="small-action" style="color:var(--red); border-color:var(--red);" onclick="deletePost('${p.content.replace(/'/g, "\\'")}')">🗑 Delete</button>
     </div>` : '';
     return `<div class="post-card">
       <div class="post-meta"><div class="meta-top"><div class="post-author">By: ${p.author}</div><div>${new Date(p.created_at).toLocaleDateString()}</div></div>${label}</div>
@@ -271,9 +270,10 @@ const attemptLogin = () => {
 document.getElementById('loginBtn').onclick = attemptLogin;
 document.getElementById('adminPassword').onkeypress = (e) => { if(e.key==='Enter') attemptLogin(); };
 
+// Immediate Delete - No Confirm
 window.deletePost = async (content) => {
   const { error } = await supabase.from('posts').delete().eq('content', content);
-  if (!error) { showNotice("Post Wiped Everywhere"); fetchPosts(); }
+  if (!error) { showNotice("Post Wiped"); fetchPosts(); }
 };
 
 window.editPost = (content) => {
@@ -287,24 +287,23 @@ document.getElementById('publishBtn').onclick = async () => {
   const pills = document.querySelectorAll('.admin-pill.selected');
   if(!text || pills.length === 0) return showNotice("Select blockers & write message", "error");
   for (const p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, content: text, author: document.getElementById('postAuthor').value || 'Admin' }]);
-  document.getElementById('postText').value = ''; showNotice("Broadcasting Success"); fetchPosts();
+  document.getElementById('postText').value = ''; showNotice("Success"); fetchPosts();
 };
 
 document.getElementById('publishLogBtn').onclick = async () => {
   const heading = document.getElementById('logHeading').value;
   const body = document.getElementById('logBody').value;
-  if(!heading || !body) return showNotice("Fill all log fields", "error");
+  if(!heading || !body) return showNotice("Fill all fields", "error");
   await supabase.from('logs').insert([{ heading, body }]);
   document.getElementById('logHeading').value = ''; document.getElementById('logBody').value = '';
   showNotice("Log Published");
 };
 
-// Admin Log Delete Logic
+// Immediate Log Delete - No Confirm
 window.deleteLog = async (id) => {
-    if(!confirm("Wipe this system log?")) return;
     const { error } = await supabase.from('logs').delete().eq('id', id);
     if(!error) { 
-        showNotice("Log Deleted"); 
+        showNotice("Log Removed"); 
         document.getElementById('viewLogs').click(); 
     }
 };
