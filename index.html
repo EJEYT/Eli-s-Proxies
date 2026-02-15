@@ -27,7 +27,6 @@
 
   .app-container { display: flex; width: 100%; height: 100%; }
 
-  /* Sidebar Styling */
   aside {
     width: 260px; background-color: var(--bg-sidebar); border-right: 1px solid #313244;
     padding: 20px; display: flex; flex-direction: column; overflow-y: auto;
@@ -44,7 +43,6 @@
   #blockerSelection button:hover { background-color: var(--bg-card); color: var(--text-main); }
   #blockerSelection button:focus { background-color: var(--accent); color: var(--bg-dark); font-weight: bold; }
 
-  /* Main Feed Area */
   main { flex: 1; display: flex; flex-direction: column; position: relative; }
 
   .header {
@@ -55,15 +53,20 @@
 
   #posts { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
 
-  /* Post Card with Trash Icon */
   .post-card {
     background-color: var(--bg-card); padding: 15px 20px; border-radius: 12px;
     border-left: 4px solid var(--accent); position: relative;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: transform 0.2s;
   }
 
   .post-author { font-size: 0.75rem; color: var(--accent); font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
+
+  /* CRITICAL: This allows multi-line text to display correctly */
+  .post-content { 
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+    line-height: 1.5;
+  }
 
   .delete-btn {
     position: absolute; top: 12px; right: 12px;
@@ -75,7 +78,6 @@
 
   .delete-btn:hover { background: var(--red); color: var(--bg-dark); }
 
-  /* Admin Modal */
   #adminPanel {
     display: none; position: fixed; bottom: 20px; right: 20px;
     width: 380px; background-color: var(--bg-card); border: 1px solid #45475a;
@@ -138,7 +140,7 @@
 
   <div id="adminContent" style="display:none;">
     <input type="text" id="postAuthor" placeholder="By: (Name)">
-    <textarea id="postText" rows="3" placeholder="Write message..."></textarea>
+    <textarea id="postText" rows="5" placeholder="Write message... (Enter works for new lines)"></textarea>
     <div id="blockerCheckboxes">
       <label><input type="checkbox" value="Linewize"> Linewize</label>
       <label><input type="checkbox" value="Securly"> Securly</label>
@@ -172,7 +174,6 @@ function linkify(text) {
   return text.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
 }
 
-// Enter Key Login Support
 document.getElementById('adminPassword').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') document.getElementById('loginBtn').click();
 });
@@ -200,15 +201,11 @@ async function fetchPosts() {
   `).join('');
 }
 
-// Global function for the onclick attribute
 window.deletePost = async (id) => {
   if (!confirm('Permanently delete this post?')) return;
   const { error } = await supabase.from('posts').delete().eq('id', id);
-  if (error) {
-    alert('Delete failed. Check your Supabase RLS policies.');
-  } else {
-    fetchPosts();
-  }
+  if (error) alert('Delete failed.');
+  else fetchPosts();
 };
 
 document.getElementById('showAdmin').addEventListener('click', () => document.getElementById('adminPanel').style.display = 'block');
@@ -226,11 +223,11 @@ document.getElementById('loginBtn').addEventListener('click', () => {
 });
 
 document.getElementById('publishBtn').addEventListener('click', async () => {
-  const text = document.getElementById('postText').value.trim();
+  const text = document.getElementById('postText').value; // Keep original formatting
   const author = document.getElementById('postAuthor').value.trim() || 'Anonymous';
   const checkboxes = document.querySelectorAll('#blockerCheckboxes input:checked');
   
-  if (!text || checkboxes.length === 0) return alert('Please enter a message and select at least one blocker.');
+  if (!text.trim() || checkboxes.length === 0) return alert('Fill fields first.');
 
   for (const cb of checkboxes) {
     await supabase.from('posts').insert([{ blocker: cb.value, content: text, author: author }]);
@@ -239,7 +236,6 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
   fetchPosts();
 });
 
-// Auto-refresh feed
 setInterval(fetchPosts, 5000);
 </script>
 
