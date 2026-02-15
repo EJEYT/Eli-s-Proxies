@@ -93,10 +93,9 @@
   .post-content { white-space: pre-wrap; word-wrap: break-word; line-height: 1.6; font-size: 1.15rem; }
   .post-content a { color: var(--accent) !important; text-decoration: underline; }
 
-  /* Adjusted Admin Actions position to avoid date overlap */
   .admin-actions { 
     position: absolute; 
-    top: 50px; /* Moved down from 20px */
+    top: 50px; 
     right: 20px; 
     display: flex; 
     gap: 10px; 
@@ -114,7 +113,7 @@
 
   #adminPanel {
     display: none; position: fixed; bottom: 30px; right: 30px;
-    width: 440px; background-color: var(--bg-card); border: 1px solid #45475a;
+    width: 480px; background-color: var(--bg-card); border: 1px solid #45475a;
     padding: 30px; border-radius: 20px; z-index: 100; box-shadow: 0 10px 50px rgba(0,0,0,0.6);
   }
 
@@ -138,15 +137,22 @@
     border-radius: 10px; padding: 15px; margin: 20px 0; font-family: inherit; font-size: 1rem; resize: vertical;
   }
 
+  /* Admin Blocker Grid (4x3) */
   #adminBlockerButtons {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
-    background: var(--bg-dark); padding: 15px; border-radius: 12px;
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); /* Exactly 4 columns */
+    gap: 8px; 
+    margin-bottom: 20px;
+    background: var(--bg-dark); 
+    padding: 15px; 
+    border-radius: 12px;
   }
 
   .admin-pill {
-    padding: 8px 12px; border-radius: 8px; background: #45475a; color: var(--text-muted);
-    font-size: 0.85rem; font-weight: bold; cursor: pointer; border: 1px solid transparent;
-    transition: 0.2s; user-select: none; flex: 1 1 calc(33.33% - 8px); text-align: center;
+    padding: 10px 5px; border-radius: 8px; background: #45475a; color: var(--text-muted);
+    font-size: 0.75rem; font-weight: bold; cursor: pointer; border: 1px solid transparent;
+    transition: 0.2s; user-select: none; text-align: center;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
   .admin-pill.selected {
@@ -224,7 +230,7 @@
     <textarea id="postText" rows="4" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Message..."></textarea>
     
     <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;">Broadcast to:</label>
-    <button class="select-all-btn" id="selectAllAdmin">Select All Blockers</button>
+    <button class="select-all-btn" id="selectAllAdmin">Toggle All Blockers</button>
     <div id="adminBlockerButtons"></div>
 
     <button id="publishBtn" style="width:100%; padding:15px; background:var(--accent); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Broadcast Message</button>
@@ -248,6 +254,7 @@ let originalContentToMatch = "";
 const grid = document.getElementById('gridContainer');
 const adminPillsContainer = document.getElementById('adminBlockerButtons');
 
+// Setup UI
 blockers.forEach(b => {
   const card = document.createElement('div');
   card.className = 'blocker-card';
@@ -341,10 +348,14 @@ function linkify(text) {
 }
 
 document.getElementById('refreshBtn').onclick = () => { fetchPosts(); showToast('Feed updated'); };
-document.getElementById('showAdmin').onclick = () => document.getElementById('adminPanel').style.display = 'block';
+document.getElementById('showAdmin').onclick = () => {
+    document.getElementById('adminPanel').style.display = 'block';
+    document.getElementById('adminPassword').focus();
+};
 document.getElementById('closeAdmin').onclick = () => document.getElementById('adminPanel').style.display = 'none';
 
-document.getElementById('loginBtn').onclick = () => {
+// Admin Login Logic
+const handleLogin = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
     isAdmin = true;
     document.getElementById('loginSection').style.display = 'none';
@@ -354,11 +365,16 @@ document.getElementById('loginBtn').onclick = () => {
   } else { showToast('Invalid Password', 'error'); }
 };
 
+document.getElementById('loginBtn').onclick = handleLogin;
+document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleLogin();
+});
+
 document.getElementById('publishBtn').onclick = async () => {
   const text = document.getElementById('postText').value;
   const author = document.getElementById('postAuthor').value.trim() || 'Anonymous';
   const selectedPills = document.querySelectorAll('.admin-pill.selected');
-  if (!text.trim() || selectedPills.length === 0) return showToast('Add text and select at least one blocker!', 'error');
+  if (!text.trim() || selectedPills.length === 0) return showToast('Check inputs!', 'error');
   for (const pill of selectedPills) {
     await supabase.from('posts').insert([{ blocker: pill.dataset.value, content: text, author: author }]);
   }
@@ -368,6 +384,7 @@ document.getElementById('publishBtn').onclick = async () => {
   fetchPosts();
 };
 
+// Global Modals
 window.openDelModal = (id) => {
   pendingActionId = id;
   document.getElementById('confirmModal').style.display = 'flex';
