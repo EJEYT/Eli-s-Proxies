@@ -34,14 +34,27 @@
   }
 
   .blocker-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 15px; width: 100%; max-width: 900px; margin-top: 30px;
+    display: flex; /* Changed from grid to flex for easier centering */
+    flex-wrap: wrap; 
+    justify-content: center; /* This centers the buttons */
+    gap: 15px; 
+    width: 100%; 
+    max-width: 1000px; 
+    margin-top: 30px;
   }
 
   .blocker-card {
-    background: var(--bg-card); border: 1px solid #45475a; padding: 25px;
-    border-radius: 15px; cursor: pointer; transition: 0.3s; font-weight: bold;
-    color: var(--text-main); font-size: 1.1rem;
+    background: var(--bg-card); 
+    border: 1px solid #45475a; 
+    padding: 25px;
+    border-radius: 15px; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    font-weight: bold;
+    color: var(--text-main); 
+    font-size: 1.1rem;
+    min-width: 160px; /* Keeps buttons a consistent size */
+    flex: 0 1 auto; /* Allows them to sit side-by-side centered */
   }
 
   .blocker-card:hover {
