@@ -86,7 +86,10 @@
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-  .post-author { font-size: 0.9rem; color: var(--accent); font-weight: 800; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .post-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .post-author { font-size: 0.9rem; color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+  .post-date { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+
   .post-content { white-space: pre-wrap; word-wrap: break-word; line-height: 1.6; font-size: 1.15rem; }
   .post-content a { color: var(--accent) !important; text-decoration: underline; }
 
@@ -256,14 +259,22 @@ async function fetchPosts() {
   }
 
   const { data, error } = await supabase.from('posts').select('*').eq('blocker', selectedBlocker).order('created_at', { ascending: false });
-  if (error || data.length === 0) {
+  if (error || !data || data.length === 0) {
     postsDiv.innerHTML = data?.length === 0 ? `<h3 style="color:var(--text-muted); margin-top: 50px;">No posts found for ${selectedBlocker}.</h3>` : `<h3 style="color:var(--red); margin-top: 50px;">Failed to load.</h3>`;
     return;
   }
   
-  postsDiv.innerHTML = data.map(p => `
+  postsDiv.innerHTML = data.map(p => {
+    // Format Date: M/DD/YYYY
+    const d = new Date(p.created_at);
+    const dateStr = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+
+    return `
     <div class="post-card">
-      <div class="post-author">By: ${p.author || 'Anonymous'}</div>
+      <div class="post-meta">
+        <div class="post-author">By: ${p.author || 'Anonymous'}</div>
+        <div class="post-date">Posted on ${dateStr}</div>
+      </div>
       <div class="post-content">${linkify(p.content)}</div>
       ${isAdmin ? `
         <div class="admin-actions">
@@ -272,7 +283,7 @@ async function fetchPosts() {
         </div>
       ` : ''}
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function showToast(msg, type = 'success') {
@@ -316,7 +327,6 @@ document.getElementById('publishBtn').onclick = async () => {
   fetchPosts();
 };
 
-// Global Delete Logic
 window.openDelModal = (id) => {
   pendingActionId = id;
   document.getElementById('confirmModal').style.display = 'flex';
@@ -333,7 +343,6 @@ document.getElementById('confirmDel').onclick = async () => {
   }
 };
 
-// Global Edit Logic
 window.openEditModal = (id, content) => {
   pendingActionId = id;
   originalContentToMatch = content;
@@ -342,25 +351,14 @@ window.openEditModal = (id, content) => {
 };
 
 document.getElementById('cancelEdit').onclick = () => document.getElementById('editModal').style.display = 'none';
-
 document.getElementById('confirmEdit').onclick = async () => {
   const newContent = document.getElementById('editPostText').value;
   if (!newContent.trim()) return showToast('Post cannot be empty', 'error');
 
-  // Update EVERY post that matches the old content
-  const { error } = await supabase
-    .from('posts')
-    .update({ content: newContent })
-    .eq('content', originalContentToMatch);
-
+  const { error } = await supabase.from('posts').update({ content: newContent }).eq('content', originalContentToMatch);
   document.getElementById('editModal').style.display = 'none';
-  
-  if (error) {
-    showToast('Update failed', 'error');
-  } else {
-    showToast('Updated across all blockers');
-    fetchPosts();
-  }
+  if (error) showToast('Update failed', 'error');
+  else { showToast('Updated across all blockers'); fetchPosts(); }
 };
 
 if (selectedBlocker) showApp();
