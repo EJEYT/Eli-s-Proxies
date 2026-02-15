@@ -14,7 +14,6 @@
     --accent: #89b4fa;
     --accent-hover: #b4befe;
     --red: #f38ba8;
-    --red-hover: #e06c75;
     --green: #a6e3a1;
   }
 
@@ -26,96 +25,106 @@
     display: flex; height: 100vh; overflow: hidden;
   }
 
+  .app-container { display: flex; width: 100%; height: 100%; }
+
   /* Sidebar */
   aside {
-    width: 260px; background-color: var(--bg-sidebar); border-right: 1px solid #313244;
-    padding: 20px; display: flex; flex-direction: column; overflow-y: auto;
+    width: 280px; background-color: var(--bg-sidebar); border-right: 1px solid #313244;
+    padding: 25px; display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0;
   }
 
   #blockerSelection button {
     background: transparent; border: none; color: var(--text-muted);
-    text-align: left; padding: 10px 15px; border-radius: 8px; cursor: pointer;
-    transition: 0.2s; width: 100%;
+    text-align: left; padding: 12px 18px; border-radius: 10px; cursor: pointer;
+    transition: 0.2s; width: 100%; font-size: 1rem; margin-bottom: 5px;
   }
 
   #blockerSelection button:hover { background-color: var(--bg-card); color: var(--text-main); }
   #blockerSelection button:focus { background-color: var(--accent); color: var(--bg-dark); font-weight: bold; }
 
-  /* Main Feed */
-  main { flex: 1; display: flex; flex-direction: column; position: relative; }
+  /* Main Feed - Centered and Large */
+  main { flex: 1; display: flex; flex-direction: column; position: relative; background: var(--bg-dark); }
 
   .header {
-    padding: 15px 30px; border-bottom: 1px solid #313244;
+    padding: 20px 40px; border-bottom: 1px solid #313244;
     display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg-dark);
   }
 
-  #posts { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+  .header h2 { font-size: 1.8rem; margin: 0; }
 
+  #posts { 
+    flex: 1; padding: 40px; overflow-y: auto; 
+    display: flex; flex-direction: column; align-items: center; /* Centers the cards horizontally */
+    gap: 25px; 
+  }
+
+  /* Post Card - Wide and Large */
   .post-card {
-    background-color: var(--bg-card); padding: 15px 20px; border-radius: 12px;
-    border-left: 4px solid var(--accent); position: relative;
+    background-color: var(--bg-card); 
+    padding: 30px; 
+    border-radius: 16px;
+    border-left: 6px solid var(--accent); 
+    position: relative;
+    width: 100%;
+    max-width: 900px; /* Limits width so it's not too wide on ultra-wide monitors */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   }
 
-  .post-author { font-size: 0.75rem; color: var(--accent); font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
+  .post-author { 
+    font-size: 0.9rem; 
+    color: var(--accent); 
+    font-weight: 800; 
+    margin-bottom: 12px; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+  }
 
-  .post-content { white-space: pre-wrap; word-wrap: break-word; line-height: 1.5; }
+  .post-content { 
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+    line-height: 1.6; 
+    font-size: 1.15rem; /* Larger text for the actual post */
+  }
   
-  /* FIXED LINK COLORS: Stops them from turning purple */
   .post-content a, .post-content a:visited {
     color: var(--accent) !important;
     text-decoration: underline;
-    font-weight: 500;
   }
-  .post-content a:hover { color: var(--accent-hover) !important; }
 
   .delete-btn {
-    position: absolute; top: 12px; right: 12px;
+    position: absolute; top: 20px; right: 20px;
     background: rgba(243, 139, 168, 0.1); color: var(--red); border: 1px solid var(--red);
-    width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+    width: 40px; height: 40px; border-radius: 10px; cursor: pointer;
     display: flex; align-items: center; justify-content: center; transition: 0.2s;
+    font-size: 1.3rem;
   }
   .delete-btn:hover { background: var(--red); color: var(--bg-dark); }
 
-  /* Admin Panel */
+  /* Admin & Modals */
   #adminPanel {
-    display: none; position: fixed; bottom: 20px; right: 20px;
-    width: 380px; background-color: var(--bg-card); border: 1px solid #45475a;
-    padding: 25px; border-radius: 16px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    display: none; position: fixed; bottom: 30px; right: 30px;
+    width: 400px; background-color: var(--bg-card); border: 1px solid #45475a;
+    padding: 30px; border-radius: 20px; z-index: 100; box-shadow: 0 10px 50px rgba(0,0,0,0.6);
   }
 
-  #adminPanel input, #adminPanel textarea {
-    width: 100%; background-color: var(--bg-dark); border: 1px solid #45475a;
-    color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px;
-  }
+  #adminPanel textarea { font-size: 1rem; }
 
-  #blockerCheckboxes {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-    background: var(--bg-dark); padding: 10px; border-radius: 8px;
-    max-height: 120px; overflow-y: auto; margin-bottom: 15px;
-  }
-
-  .btn-primary {
-    width: 100%; padding: 12px; background: var(--accent); border: none; 
-    border-radius: 8px; font-weight: bold; cursor: pointer;
-  }
-
-  /* CUSTOM TOAST NOTIFICATIONS */
+  /* Custom Elements */
   #toast {
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-    padding: 12px 24px; border-radius: 8px; color: var(--bg-dark);
+    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+    padding: 15px 30px; border-radius: 10px; color: var(--bg-dark);
     font-weight: bold; z-index: 1000; display: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   }
 
-  /* CUSTOM CONFIRM MODAL */
   #confirmModal {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7); display: none; align-items: center;
+    background: rgba(0,0,0,0.8); display: none; align-items: center;
     justify-content: center; z-index: 2000;
   }
   .modal-box {
-    background: var(--bg-card); padding: 25px; border-radius: 16px;
-    width: 300px; text-align: center; border: 1px solid #45475a;
+    background: var(--bg-card); padding: 30px; border-radius: 20px;
+    width: 350px; text-align: center; border: 1px solid #45475a;
   }
 </style>
 </head>
@@ -125,18 +134,18 @@
 
 <div id="confirmModal">
   <div class="modal-box">
-    <h3 style="margin-top:0">Delete Post?</h3>
-    <p style="color:var(--text-muted)">This cannot be undone.</p>
-    <div style="display:flex; gap:10px; margin-top:20px;">
-      <button id="cancelDel" class="btn-primary" style="background:#45475a; color:white">Cancel</button>
-      <button id="confirmDel" class="btn-primary" style="background:var(--red); color:var(--bg-dark)">Delete</button>
+    <h2 style="margin-top:0">Delete Post?</h2>
+    <p style="color:var(--text-muted)">This action is permanent.</p>
+    <div style="display:flex; gap:15px; margin-top:30px;">
+      <button id="cancelDel" style="flex:1; padding:12px; border-radius:10px; border:none; background:#45475a; color:white; cursor:pointer;">Cancel</button>
+      <button id="confirmDel" style="flex:1; padding:12px; border-radius:10px; border:none; background:var(--red); color:var(--bg-dark); font-weight:bold; cursor:pointer;">Delete</button>
     </div>
   </div>
 </div>
 
 <div class="app-container">
   <aside>
-    <h2 style="color: var(--accent); font-size: 1rem; text-align: center; letter-spacing: 2px;">BLOCKERS</h2>
+    <h2 style="color: var(--accent); font-size: 1.2rem; text-align: center; letter-spacing: 3px; margin-bottom: 30px;">BLOCKERS</h2>
     <div id="blockerSelection">
       <button>Linewize</button><button>Securly</button><button>Palo_alto</button>
       <button>Blocksi</button><button>Aristotle</button><button>Lightspeed</button>
@@ -147,28 +156,31 @@
 
   <main>
     <div class="header">
-      <h2 id="currentBlocker" style="margin:0;">Select a Feed</h2>
-      <button id="showAdmin" style="background:none; border:1px solid var(--text-muted); color:var(--text-muted); border-radius:20px; padding:6px 18px; cursor:pointer;">Admin Panel</button>
+      <h2 id="currentBlocker">Welcome</h2>
+      <button id="showAdmin" style="background:none; border:2px solid var(--text-muted); color:var(--text-muted); border-radius:25px; padding:8px 20px; cursor:pointer; font-weight:bold;">Admin Access</button>
     </div>
-    <div id="posts"></div>
+    <div id="posts">
+        <h3 style="color:var(--text-muted); margin-top: 50px;">Please select a blocker to view the feed.</h3>
+    </div>
   </main>
 </div>
 
 <div id="adminPanel">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
     <h3 style="margin:0; color:var(--accent);">Admin Tools</h3>
-    <button id="closeAdmin" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.5rem;">&times;</button>
+    <button id="closeAdmin" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:2rem;">&times;</button>
   </div>
   
   <div id="loginSection">
-    <input type="password" id="adminPassword" placeholder="Enter Password..."/>
-    <button id="loginBtn" class="btn-primary">Unlock</button>
+    <input type="password" id="adminPassword" style="width:100%; padding:15px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:15px;" placeholder="Password..."/>
+    <button id="loginBtn" style="width:100%; padding:15px; background:var(--accent); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Login</button>
   </div>
 
   <div id="adminContent" style="display:none;">
-    <input type="text" id="postAuthor" placeholder="By: (Name)">
-    <textarea id="postText" rows="5" placeholder="Write message..."></textarea>
-    <div id="blockerCheckboxes">
+    <input type="text" id="postAuthor" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Author Name">
+    <textarea id="postText" rows="6" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Message..."></textarea>
+    
+    <div id="blockerCheckboxes" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--bg-dark); padding: 15px; border-radius: 10px; max-height: 150px; overflow-y: auto; margin-bottom: 20px;">
       <label><input type="checkbox" value="Linewize"> Linewize</label>
       <label><input type="checkbox" value="Securly"> Securly</label>
       <label><input type="checkbox" value="Palo_alto"> Palo_alto</label>
@@ -182,7 +194,7 @@
       <label><input type="checkbox" value="Cisco_talos"> Cisco_talos</label>
       <label><input type="checkbox" value="Deledao"> Deledao</label>
     </div>
-    <button id="publishBtn" class="btn-primary">Broadcast Post</button>
+    <button id="publishBtn" style="width:100%; padding:15px; background:var(--accent); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Broadcast Message</button>
   </div>
 </div>
 
@@ -197,7 +209,6 @@ let selectedBlocker = null;
 let isAdmin = false;
 let pendingDeleteId = null;
 
-// CLEANER NOTIFICATIONS
 function showToast(msg, type = 'success') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -218,7 +229,7 @@ document.getElementById('adminPassword').addEventListener('keypress', (e) => {
 document.querySelectorAll('#blockerSelection button').forEach(btn => {
   btn.addEventListener('click', () => {
     selectedBlocker = btn.textContent;
-    document.getElementById('currentBlocker').textContent = selectedBlocker + " Feed";
+    document.getElementById('currentBlocker').textContent = selectedBlocker;
     fetchPosts();
   });
 });
@@ -229,6 +240,11 @@ async function fetchPosts() {
   if (error) console.error(error);
   
   const postsDiv = document.getElementById('posts');
+  if (data.length === 0) {
+      postsDiv.innerHTML = `<h3 style="color:var(--text-muted); margin-top: 50px;">No posts found for ${selectedBlocker}.</h3>`;
+      return;
+  }
+  
   postsDiv.innerHTML = data.map(p => `
     <div class="post-card">
       <div class="post-author">By: ${p.author || 'Anonymous'}</div>
@@ -238,7 +254,6 @@ async function fetchPosts() {
   `).join('');
 }
 
-// DELETE MODAL LOGIC
 window.openDelModal = (id) => {
   pendingDeleteId = id;
   document.getElementById('confirmModal').style.display = 'flex';
@@ -278,7 +293,7 @@ document.getElementById('publishBtn').onclick = async () => {
   const author = document.getElementById('postAuthor').value.trim() || 'Anonymous';
   const checkboxes = document.querySelectorAll('#blockerCheckboxes input:checked');
   
-  if (!text.trim() || checkboxes.length === 0) return showToast('Missing information', 'error');
+  if (!text.trim() || checkboxes.length === 0) return showToast('Check your inputs!', 'error');
 
   for (const cb of checkboxes) {
     await supabase.from('posts').insert([{ blocker: cb.value, content: text, author: author }]);
