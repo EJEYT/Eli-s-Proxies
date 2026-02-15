@@ -105,7 +105,7 @@
 
   #adminPanel {
     display: none; position: fixed; bottom: 30px; right: 30px;
-    width: 400px; background-color: var(--bg-card); border: 1px solid #45475a;
+    width: 440px; background-color: var(--bg-card); border: 1px solid #45475a;
     padding: 30px; border-radius: 20px; z-index: 100; box-shadow: 0 10px 50px rgba(0,0,0,0.6);
   }
 
@@ -127,6 +127,28 @@
   textarea.modal-input {
     width: 100%; background: var(--bg-dark); border: 1px solid #45475a; color: white;
     border-radius: 10px; padding: 15px; margin: 20px 0; font-family: inherit; font-size: 1rem; resize: vertical;
+  }
+
+  /* Admin Blocker Pill Buttons */
+  #adminBlockerButtons {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
+    background: var(--bg-dark); padding: 15px; border-radius: 12px;
+  }
+
+  .admin-pill {
+    padding: 8px 12px; border-radius: 8px; background: #45475a; color: var(--text-muted);
+    font-size: 0.85rem; font-weight: bold; cursor: pointer; border: 1px solid transparent;
+    transition: 0.2s; user-select: none; flex: 1 1 calc(33.33% - 8px); text-align: center;
+  }
+
+  .admin-pill.selected {
+    background: var(--accent); color: var(--bg-dark); border-color: white;
+  }
+
+  .select-all-btn {
+    width: 100%; margin-bottom: 10px; padding: 6px; background: transparent;
+    border: 1px dashed var(--text-muted); color: var(--text-muted); border-radius: 8px;
+    cursor: pointer; font-size: 0.8rem;
   }
 </style>
 </head>
@@ -182,7 +204,7 @@
 
 <div id="adminPanel">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <h3 style="margin:0; color:var(--accent);">Admin Tools</h3>
+    <h3 style="margin:0; color:var(--accent);">Admin Panel</h3>
     <button id="closeAdmin" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:2rem;">&times;</button>
   </div>
   <div id="loginSection">
@@ -191,8 +213,12 @@
   </div>
   <div id="adminContent" style="display:none;">
     <input type="text" id="postAuthor" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Author Name">
-    <textarea id="postText" rows="6" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Message..."></textarea>
-    <div id="blockerCheckboxes" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--bg-dark); padding: 15px; border-radius: 10px; max-height: 150px; overflow-y: auto; margin-bottom: 20px;"></div>
+    <textarea id="postText" rows="4" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Message..."></textarea>
+    
+    <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;">Broadcast to:</label>
+    <button class="select-all-btn" id="selectAllAdmin">Select All Blockers</button>
+    <div id="adminBlockerButtons"></div>
+
     <button id="publishBtn" style="width:100%; padding:15px; background:var(--accent); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Broadcast Message</button>
   </div>
 </div>
@@ -212,8 +238,9 @@ let pendingActionId = null;
 let originalContentToMatch = "";
 
 const grid = document.getElementById('gridContainer');
-const adminCheckboxes = document.getElementById('blockerCheckboxes');
+const adminPillsContainer = document.getElementById('adminBlockerButtons');
 
+// Initialize Choice Grid
 blockers.forEach(b => {
   const card = document.createElement('div');
   card.className = 'blocker-card';
@@ -221,9 +248,13 @@ blockers.forEach(b => {
   card.onclick = () => selectBlocker(b);
   grid.appendChild(card);
 
-  const label = document.createElement('label');
-  label.innerHTML = `<input type="checkbox" value="${b}"> ${b}`;
-  adminCheckboxes.appendChild(label);
+  // Create Admin Pills
+  const pill = document.createElement('div');
+  pill.className = 'admin-pill';
+  pill.textContent = b;
+  pill.dataset.value = b;
+  pill.onclick = () => pill.classList.toggle('selected');
+  adminPillsContainer.appendChild(pill);
 });
 
 function selectBlocker(name) {
@@ -251,6 +282,13 @@ document.getElementById('changeBlockerBtn').onclick = () => {
   document.getElementById('selectionScreen').style.display = 'flex';
 };
 
+// Select All Logic
+document.getElementById('selectAllAdmin').onclick = () => {
+    const pills = document.querySelectorAll('.admin-pill');
+    const allSelected = Array.from(pills).every(p => p.classList.contains('selected'));
+    pills.forEach(p => allSelected ? p.classList.remove('selected') : p.classList.add('selected'));
+};
+
 async function fetchPosts() {
   if (!selectedBlocker) return;
   const postsDiv = document.getElementById('posts');
@@ -265,10 +303,8 @@ async function fetchPosts() {
   }
   
   postsDiv.innerHTML = data.map(p => {
-    // Format Date: M/DD/YYYY
     const d = new Date(p.created_at);
     const dateStr = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
-
     return `
     <div class="post-card">
       <div class="post-meta">
@@ -316,13 +352,16 @@ document.getElementById('loginBtn').onclick = () => {
 document.getElementById('publishBtn').onclick = async () => {
   const text = document.getElementById('postText').value;
   const author = document.getElementById('postAuthor').value.trim() || 'Anonymous';
-  const checkboxes = document.querySelectorAll('#blockerCheckboxes input:checked');
-  if (!text.trim() || checkboxes.length === 0) return showToast('Check your inputs!', 'error');
+  const selectedPills = document.querySelectorAll('.admin-pill.selected');
+  
+  if (!text.trim() || selectedPills.length === 0) return showToast('Add text and select at least one blocker!', 'error');
 
-  for (const cb of checkboxes) {
-    await supabase.from('posts').insert([{ blocker: cb.value, content: text, author: author }]);
+  for (const pill of selectedPills) {
+    await supabase.from('posts').insert([{ blocker: pill.dataset.value, content: text, author: author }]);
   }
   document.getElementById('postText').value = '';
+  // Reset pills
+  document.querySelectorAll('.admin-pill').forEach(p => p.classList.remove('selected'));
   showToast('Broadcast Sent');
   fetchPosts();
 };
@@ -354,7 +393,6 @@ document.getElementById('cancelEdit').onclick = () => document.getElementById('e
 document.getElementById('confirmEdit').onclick = async () => {
   const newContent = document.getElementById('editPostText').value;
   if (!newContent.trim()) return showToast('Post cannot be empty', 'error');
-
   const { error } = await supabase.from('posts').update({ content: newContent }).eq('content', originalContentToMatch);
   document.getElementById('editModal').style.display = 'none';
   if (error) showToast('Update failed', 'error');
