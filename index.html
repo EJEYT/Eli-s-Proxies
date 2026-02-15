@@ -17,13 +17,11 @@
     --accent-hover: #b4befe;
     --red: #f38ba8;
     --green: #a6e3a1;
-    --yellow: #f9e2af;
   }
 
   * { box-sizing: border-box; }
   body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; }
 
-  /* Toast Notification */
   #toast {
     position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
     padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold;
@@ -32,30 +30,40 @@
   }
   #toast.show { top: 30px; }
 
+  /* Selection Screen Adjustments */
   #selectionScreen {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     height: 100vh; background: radial-gradient(circle at center, #24273a 0%, #1e1e2e 100%);
+    overflow-y: auto; padding: 40px 20px;
   }
 
   .blocker-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; max-width: 1000px; margin-top: 30px; }
   .blocker-card {
     background: var(--bg-card); border: 1px solid #45475a; padding: 25px;
     border-radius: 15px; cursor: pointer; transition: 0.3s; font-weight: bold;
-    min-width: 160px; text-align: center;
+    min-width: 160px; text-align: center; color: var(--text-main);
   }
-  .blocker-card.all-card { border: 2px solid var(--accent); color: var(--accent); }
   .blocker-card:hover { transform: translateY(-5px); background: var(--accent); color: var(--bg-dark); }
+  
+  .all-card-wrapper { width: 100%; display: flex; justify-content: center; margin-top: 25px; }
+  .all-card { min-width: 250px; font-size: 1.2rem; border: 1px solid #45475a; }
 
   .app-container { display: none; width: 100%; height: 100%; flex-direction: column; }
   main { flex: 1; display: flex; flex-direction: column; background: var(--bg-dark); position: relative; }
 
-  .header { padding: 20px 40px; border-bottom: 1px solid #313244; display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar); }
-  .branding-area h1 { margin: 0; font-size: 0.8rem; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
-  .branding-area h2 { margin: 0; font-size: 1.6rem; color: white; }
-  .change-blocker-link { color: var(--text-muted); font-size: 0.75rem; text-decoration: underline; cursor: pointer; background: none; border: none; margin-top: 5px; }
+  /* Header with Search */
+  .header { padding: 15px 40px; border-bottom: 1px solid #313244; display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar); gap: 20px; }
+  .branding-area { min-width: 150px; }
+  .branding-area h1 { margin: 0; font-size: 0.75rem; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
+  .branding-area h2 { margin: 0; font-size: 1.4rem; color: white; white-space: nowrap; }
+  
+  .search-container { flex: 1; max-width: 500px; position: relative; }
+  .search-bar { width: 100%; padding: 10px 15px 10px 40px; background: var(--bg-dark); border: 1px solid #45475a; border-radius: 20px; color: white; outline: none; transition: 0.3s; }
+  .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(137, 180, 250, 0.2); }
+  .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
 
-  .header-actions { display: flex; gap: 10px; }
-  .btn-outline { background:none; border:2px solid var(--text-muted); color:var(--text-muted); border-radius:25px; padding:8px 18px; cursor:pointer; font-weight:bold; transition: 0.2s; }
+  .header-actions { display: flex; gap: 10px; align-items: center; }
+  .btn-outline { background:none; border:2px solid var(--text-muted); color:var(--text-muted); border-radius:25px; padding:8px 18px; cursor:pointer; font-weight:bold; transition: 0.2s; white-space: nowrap; }
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
   #posts { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
@@ -72,25 +80,22 @@
   .small-action:hover { border-color: var(--accent); background: #313244; }
   .del-action:hover { border-color: var(--red); color: var(--red); }
 
-  /* Admin Panel */
+  /* Admin Panel & Overlays */
   #adminPanel { display: none; position: fixed; bottom: 30px; right: 30px; width: 450px; background: var(--bg-card); border: 1px solid #45475a; padding: 25px; border-radius: 20px; z-index: 5000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
   .admin-tabs { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #45475a; }
   .tab-btn { background: none; border: none; color: var(--text-muted); padding: 10px; cursor: pointer; font-weight: bold; }
   .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
   input, textarea { width: 100%; padding: 12px; background: var(--bg-dark); border: 1px solid #45475a; color: white; border-radius: 8px; margin-bottom: 10px; font-family: inherit; }
-
   .admin-primary-btn { width: 100%; padding: 12px; background: var(--accent); color: var(--bg-dark); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-  .admin-primary-btn:hover { background: var(--accent-hover); transform: translateY(-2px); }
-
-  #adminBlockerButtons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
-  .admin-pill { padding: 8px 2px; border-radius: 6px; background: #45475a; color: var(--text-muted); font-size: 0.7rem; cursor: pointer; text-align: center; }
-  .admin-pill.selected { background: var(--accent); color: var(--bg-dark); }
-
-  /* Log Viewer */
+  
   .log-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; overflow-y: auto; padding: 60px 20px; }
   .log-container { max-width: 600px; margin: 0 auto; background: var(--bg-sidebar); border-radius: 20px; padding: 30px; border: 1px solid #45475a; position: relative; }
-  .log-entry { border-bottom: 1px solid #313244; padding: 20px 0; position: relative; }
-  .log-entry h4 { color: var(--accent); margin: 0 0 5px 0; }
+  
+  .admin-pill { padding: 8px 2px; border-radius: 6px; background: #45475a; color: var(--text-muted); font-size: 0.7rem; cursor: pointer; text-align: center; }
+  .admin-pill.selected { background: var(--accent); color: var(--bg-dark); }
+  #adminBlockerButtons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
+
+  .change-blocker-link { color: var(--text-muted); font-size: 0.75rem; text-decoration: underline; cursor: pointer; background: none; border: none; margin-top: 5px; }
 </style>
 </head>
 <body>
@@ -100,6 +105,9 @@
 <div id="selectionScreen">
   <h1 style="color: white; font-size: 2.2rem; margin-bottom: 10px;">Eli's Proxies</h1>
   <div class="blocker-grid" id="gridContainer"></div>
+  <div class="all-card-wrapper">
+    <div class="blocker-card all-card" onclick="selectBlocker('All')">All Proxies</div>
+  </div>
 </div>
 
 <div class="app-container" id="appContainer">
@@ -108,11 +116,17 @@
       <div class="branding-area">
         <h1>Eli's Proxies</h1>
         <h2 id="currentBlocker">Feed</h2>
-        <button class="change-blocker-link" id="changeBlockerBtn">← Change Blocker</button>
+        <button class="change-blocker-link" id="changeBlockerBtn">← Back</button>
       </div>
+
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search proxies or authors...">
+      </div>
+
       <div class="header-actions">
         <button id="viewLogs" class="btn-outline">Update Log</button>
-        <button id="refreshBtn" class="btn-outline">↻ Refresh</button>
+        <button id="refreshBtn" class="btn-outline">↻</button>
         <button id="showAdmin" class="btn-outline">Admin</button>
       </div>
     </div>
@@ -123,38 +137,34 @@
 <div id="logOverlay" class="log-overlay">
   <div class="log-container">
     <button onclick="document.getElementById('logOverlay').style.display='none'" style="float:right; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
-    <h2 style="margin-top:0">Updates</h2>
+    <h2 style="margin-top:0">System Logs</h2>
     <div id="logList"></div>
   </div>
 </div>
 
 <div id="adminPanel">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-    <h3 id="adminPanelTitle" style="margin:0; color:var(--accent);">Admin Panel</h3>
+    <h3 style="margin:0; color:var(--accent);">Admin Panel</h3>
     <button id="closeAdmin" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.5rem;">&times;</button>
   </div>
-
   <div id="loginSection">
-    <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+    <input type="password" id="adminPassword" placeholder="Password">
     <button id="loginBtn" class="admin-primary-btn">Unlock</button>
   </div>
-
   <div id="adminContent" style="display:none;">
     <div class="admin-tabs">
       <button class="tab-btn active" id="tabPostsBtn">New Post</button>
       <button class="tab-btn" id="tabLogsBtn">New Log</button>
     </div>
-
     <div id="adminTabPosts">
       <input type="text" id="postAuthor" placeholder="Author">
       <textarea id="postText" rows="3" placeholder="Message content..."></textarea>
       <div id="adminBlockerButtons"></div>
       <button id="publishBtn" class="admin-primary-btn">Post Everywhere</button>
     </div>
-
     <div id="adminTabLogs" style="display:none;">
-      <input type="text" id="logHeading" placeholder="Log Title">
-      <textarea id="logBody" rows="4" placeholder="Update description..."></textarea>
+      <input type="text" id="logHeading" placeholder="Title">
+      <textarea id="logBody" rows="4" placeholder="Description..."></textarea>
       <button id="publishLogBtn" class="admin-primary-btn">Add to Logs</button>
     </div>
   </div>
@@ -162,37 +172,31 @@
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-
 const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F');
 
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
 let isAdmin = false;
+let currentPostsData = [];
 
 function showNotice(msg, type = 'success') {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = type === 'success' ? 'var(--green)' : 'var(--red)';
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  t.textContent = msg; t.style.background = type === 'success' ? 'var(--green)' : 'var(--red)';
+  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// Build Blocker Grid
 const grid = document.getElementById('gridContainer');
-const adminPills = document.getElementById('adminBlockerButtons');
-
-const allBtn = document.createElement('div');
-allBtn.className = 'blocker-card all-card';
-allBtn.textContent = 'All Blockers';
-allBtn.onclick = () => selectBlocker('All');
-grid.appendChild(allBtn);
-
 blockers.forEach(b => {
   const card = document.createElement('div');
-  card.className = 'blocker-card'; card.textContent = b; card.onclick = () => selectBlocker(b);
+  card.className = 'blocker-card';
+  card.textContent = b.replace('_', ' ');
+  card.onclick = () => selectBlocker(b);
   grid.appendChild(card);
+  
   const pill = document.createElement('div');
   pill.className = 'admin-pill'; pill.textContent = b; pill.onclick = () => pill.classList.toggle('selected');
-  pill.dataset.value = b; adminPills.appendChild(pill);
+  pill.dataset.value = b; document.getElementById('adminBlockerButtons').appendChild(pill);
 });
 
 function selectBlocker(name) {
@@ -200,12 +204,11 @@ function selectBlocker(name) {
   localStorage.setItem('eli_selected_blocker', name);
   document.getElementById('selectionScreen').style.display = 'none';
   document.getElementById('appContainer').style.display = 'flex';
-  document.getElementById('currentBlocker').textContent = name;
+  document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace('_', ' ');
   fetchPosts();
 }
 
 async function fetchPosts() {
-  const postsDiv = document.getElementById('posts');
   let query = supabase.from('posts').select('*');
   if (selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
   const { data } = await query.order('created_at', { ascending: false });
@@ -217,8 +220,13 @@ async function fetchPosts() {
     if (ex) { if (!ex.blockers.includes(item.blocker)) ex.blockers.push(item.blocker); }
     else { grouped.push({ ...item, blockers: [item.blocker] }); }
   });
+  currentPostsData = grouped;
+  renderPosts(grouped);
+}
 
-  postsDiv.innerHTML = grouped.map(p => {
+function renderPosts(posts) {
+  const postsDiv = document.getElementById('posts');
+  postsDiv.innerHTML = posts.map(p => {
     const list = p.blockers.map(b => b.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())).join(', ');
     const label = (selectedBlocker === "All") ? `<div class="post-unblocked-list">Unblocked for: ${list}</div>` : '';
     const adminControls = isAdmin ? `<div class="admin-btns">
@@ -233,34 +241,17 @@ async function fetchPosts() {
   }).join('');
 }
 
-async function fetchLogs() {
-  const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
-  const list = document.getElementById('logList');
-  list.innerHTML = data.map(l => `
-    <div class="log-entry">
-      <h4>${l.heading}</h4><p>${l.body}</p>
-      ${isAdmin ? `<div class="admin-btns" style="border:none; padding:0; margin-top:5px;"><button class="small-action del-action" onclick="deleteLog(${l.id})">🗑 Delete Log</button></div>` : ''}
-    </div>
-  `).join('');
-}
-
-window.deletePost = async (content) => {
-  const { error } = await supabase.from('posts').delete().eq('content', content);
-  if (!error) { showNotice("Post Wiped Everywhere"); fetchPosts(); }
+// Search Logic
+document.getElementById('searchInput').oninput = (e) => {
+  const term = e.target.value.toLowerCase();
+  const filtered = currentPostsData.filter(p => 
+    p.content.toLowerCase().includes(term) || 
+    p.author.toLowerCase().includes(term)
+  );
+  renderPosts(filtered);
 };
 
-window.editPost = (content) => {
-  document.getElementById('adminPanel').style.display='block';
-  document.getElementById('postText').value = content;
-  document.getElementById('tabPostsBtn').click();
-  showNotice("Content loaded into editor");
-};
-
-window.deleteLog = async (id) => {
-  const { error } = await supabase.from('logs').delete().eq('id', id);
-  if (!error) { showNotice("Log Deleted"); fetchLogs(); }
-};
-
+// Admin & Overlay functions
 const attemptLogin = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
     isAdmin = true;
@@ -272,6 +263,17 @@ const attemptLogin = () => {
 
 document.getElementById('loginBtn').onclick = attemptLogin;
 document.getElementById('adminPassword').onkeypress = (e) => { if(e.key==='Enter') attemptLogin(); };
+
+window.deletePost = async (content) => {
+  const { error } = await supabase.from('posts').delete().eq('content', content);
+  if (!error) { showNotice("Deleted Everywhere"); fetchPosts(); }
+};
+
+window.editPost = (content) => {
+  document.getElementById('adminPanel').style.display='block';
+  document.getElementById('postText').value = content;
+  document.getElementById('tabPostsBtn').click();
+};
 
 document.getElementById('publishBtn').onclick = async () => {
   const text = document.getElementById('postText').value;
@@ -287,8 +289,19 @@ document.getElementById('publishLogBtn').onclick = async () => {
   if(!heading || !body) return showNotice("Fill logs", "error");
   await supabase.from('logs').insert([{ heading, body }]);
   document.getElementById('logHeading').value = ''; document.getElementById('logBody').value = '';
-  showNotice("Update Published"); fetchLogs();
+  showNotice("Log Added");
 };
+
+// UI Toggles
+document.getElementById('showAdmin').onclick = () => document.getElementById('adminPanel').style.display='block';
+document.getElementById('closeAdmin').onclick = () => document.getElementById('adminPanel').style.display='none';
+document.getElementById('viewLogs').onclick = async () => { 
+  document.getElementById('logOverlay').style.display='block';
+  const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
+  document.getElementById('logList').innerHTML = data.map(l => `<div class="log-entry"><h4>${l.heading}</h4><p>${l.body}</p></div>`).join('');
+};
+document.getElementById('changeBlockerBtn').onclick = () => { localStorage.removeItem('eli_selected_blocker'); location.reload(); };
+document.getElementById('refreshBtn').onclick = () => { fetchPosts(); showNotice("Refreshed"); };
 
 document.getElementById('tabPostsBtn').onclick = () => {
   document.getElementById('adminTabPosts').style.display='block'; document.getElementById('adminTabLogs').style.display='none';
@@ -298,12 +311,6 @@ document.getElementById('tabLogsBtn').onclick = () => {
   document.getElementById('adminTabPosts').style.display='none'; document.getElementById('adminTabLogs').style.display='block';
   document.getElementById('tabLogsBtn').classList.add('active'); document.getElementById('tabPostsBtn').classList.remove('active');
 };
-
-document.getElementById('showAdmin').onclick = () => document.getElementById('adminPanel').style.display='block';
-document.getElementById('closeAdmin').onclick = () => document.getElementById('adminPanel').style.display='none';
-document.getElementById('viewLogs').onclick = () => { document.getElementById('logOverlay').style.display='block'; fetchLogs(); };
-document.getElementById('changeBlockerBtn').onclick = () => { localStorage.removeItem('eli_selected_blocker'); location.reload(); };
-document.getElementById('refreshBtn').onclick = () => { fetchPosts(); showNotice("Refreshed"); };
 
 if (selectedBlocker) selectBlocker(selectedBlocker);
 </script>
