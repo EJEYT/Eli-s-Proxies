@@ -247,14 +247,40 @@ document.getElementById('changeBlockerBtn').onclick = () => {
 
 async function fetchPosts() {
   if (!selectedBlocker) return;
-  const { data, error } = await supabase.from('posts').select('*').eq('blocker', selectedBlocker).order('created_at', { ascending: false });
-  if (error) return;
   
   const postsDiv = document.getElementById('posts');
+  
+  // 1. Clear old posts and show a clean loading message immediately
+  postsDiv.innerHTML = `<h3 style="color:var(--text-muted); margin-top: 50px; opacity: 0.5;">Loading ${selectedBlocker} feed...</h3>`;
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('blocker', selectedBlocker)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    postsDiv.innerHTML = `<h3 style="color:var(--red); margin-top: 50px;">Error loading feed.</h3>`;
+    return;
+  }
+  
+  // 2. Only update the HTML once the data is fully ready
   if (data.length === 0) {
       postsDiv.innerHTML = `<h3 style="color:var(--text-muted); margin-top: 50px;">No posts found for ${selectedBlocker}.</h3>`;
       return;
   }
+  
+  // 3. Use a document fragment or a single string update to prevent the "stutter"
+  const postsHtml = data.map(p => `
+    <div class="post-card">
+      <div class="post-author">By: ${p.author || 'Anonymous'}</div>
+      <div class="post-content">${linkify(p.content)}</div>
+      ${isAdmin ? `<button class="delete-btn" onclick="openDelModal(${p.id})">🗑</button>` : ''}
+    </div>
+  `).join('');
+
+  postsDiv.innerHTML = postsHtml;
+}
   
   postsDiv.innerHTML = data.map(p => `
     <div class="post-card">
