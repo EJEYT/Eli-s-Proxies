@@ -34,9 +34,9 @@
   }
 
   .blocker-grid {
-    display: flex; /* Changed from grid to flex for easier centering */
+    display: flex; 
     flex-wrap: wrap; 
-    justify-content: center; /* This centers the buttons */
+    justify-content: center; 
     gap: 15px; 
     width: 100%; 
     max-width: 1000px; 
@@ -53,8 +53,8 @@
     font-weight: bold;
     color: var(--text-main); 
     font-size: 1.1rem;
-    min-width: 160px; /* Keeps buttons a consistent size */
-    flex: 0 1 auto; /* Allows them to sit side-by-side centered */
+    min-width: 160px; 
+    flex: 0 1 auto; 
   }
 
   .blocker-card:hover {
@@ -220,6 +220,8 @@ blockers.forEach(b => {
 function selectBlocker(name) {
   selectedBlocker = name;
   localStorage.setItem('eli_selected_blocker', name);
+  // Clear posts immediately to prevent old data flicker
+  document.getElementById('posts').innerHTML = '';
   showApp();
 }
 
@@ -228,7 +230,6 @@ function showApp() {
   document.getElementById('appContainer').style.display = 'flex';
   document.getElementById('currentBlocker').textContent = selectedBlocker;
   
-  // Persistent Admin Check: If already logged in, keep UI updated
   if (isAdmin) {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
@@ -237,7 +238,6 @@ function showApp() {
   fetchPosts();
 }
 
-// Swaps screens without a page refresh to keep Admin Session alive
 document.getElementById('changeBlockerBtn').onclick = () => {
   localStorage.removeItem('eli_selected_blocker');
   selectedBlocker = null;
@@ -249,28 +249,24 @@ async function fetchPosts() {
   if (!selectedBlocker) return;
   
   const postsDiv = document.getElementById('posts');
+  // Only show loading if the container is empty (first load/switch)
+  if (postsDiv.innerHTML === '') {
+      postsDiv.innerHTML = `<h3 style="color:var(--text-muted); margin-top: 50px; opacity:0.6;">Loading feed...</h3>`;
+  }
+
+  const { data, error } = await supabase.from('posts').select('*').eq('blocker', selectedBlocker).order('created_at', { ascending: false });
   
-  // 1. Clear old posts and show a clean loading message immediately
-  postsDiv.innerHTML = `<h3 style="color:var(--text-muted); margin-top: 50px; opacity: 0.5;">Loading ${selectedBlocker} feed...</h3>`;
-
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('blocker', selectedBlocker)
-    .order('created_at', { ascending: false });
-
   if (error) {
-    postsDiv.innerHTML = `<h3 style="color:var(--red); margin-top: 50px;">Error loading feed.</h3>`;
+    postsDiv.innerHTML = `<h3 style="color:var(--red); margin-top: 50px;">Failed to load.</h3>`;
     return;
   }
   
-  // 2. Only update the HTML once the data is fully ready
   if (data.length === 0) {
       postsDiv.innerHTML = `<h3 style="color:var(--text-muted); margin-top: 50px;">No posts found for ${selectedBlocker}.</h3>`;
       return;
   }
   
-  // 3. Use a document fragment or a single string update to prevent the "stutter"
+  // Single batch update to DOM prevents the double-jump stutter
   const postsHtml = data.map(p => `
     <div class="post-card">
       <div class="post-author">By: ${p.author || 'Anonymous'}</div>
@@ -280,15 +276,6 @@ async function fetchPosts() {
   `).join('');
 
   postsDiv.innerHTML = postsHtml;
-}
-  
-  postsDiv.innerHTML = data.map(p => `
-    <div class="post-card">
-      <div class="post-author">By: ${p.author || 'Anonymous'}</div>
-      <div class="post-content">${linkify(p.content)}</div>
-      ${isAdmin ? `<button class="delete-btn" onclick="openDelModal(${p.id})">🗑</button>` : ''}
-    </div>
-  `).join('');
 }
 
 function showToast(msg, type = 'success') {
@@ -314,7 +301,7 @@ document.getElementById('loginBtn').onclick = () => {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
     showToast('Admin Access Granted');
-    fetchPosts(); // Reload current feed to show delete buttons
+    fetchPosts(); 
   } else { showToast('Invalid Password', 'error'); }
 };
 
@@ -339,7 +326,6 @@ window.openDelModal = (id) => {
 
 document.getElementById('cancelDel').onclick = () => document.getElementById('confirmModal').style.display = 'none';
 document.getElementById('confirmDel').onclick = async () => {
-  // 1. First, find the content of the post we are about to delete
   const { data: postToMatch } = await supabase
     .from('posts')
     .select('content')
@@ -347,7 +333,6 @@ document.getElementById('confirmDel').onclick = async () => {
     .single();
 
   if (postToMatch) {
-    // 2. Delete EVERY post that has that exact same message content
     const { error } = await supabase
       .from('posts')
       .delete()
