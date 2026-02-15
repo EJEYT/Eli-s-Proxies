@@ -5,36 +5,256 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blocker Posts</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 20px; }
-  #blockerSelection button, #adminPanel button { margin: 5px; padding: 10px 15px; }
-  #posts { margin-top: 20px; }
-  #adminPanel { display: none; border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
-  #adminPanel input[type="text"], #adminPanel textarea { width: 100%; margin-bottom: 10px; }
+  :root {
+    --bg-dark: #1e1e2e;
+    --bg-sidebar: #181825;
+    --bg-card: #313244;
+    --text-main: #cdd6f4;
+    --text-muted: #a6adc8;
+    --accent: #89b4fa;
+    --accent-hover: #b4befe;
+    --red: #f38ba8;
+  }
+
+  * { box-sizing: border-box; }
+
+  body { 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    margin: 0; 
+    background-color: var(--bg-dark); 
+    color: var(--text-main);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Layout */
+  .app-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Sidebar */
+  aside {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #313244;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  aside h2 {
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  #blockerSelection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #blockerSelection button {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+
+  #blockerSelection button:hover {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+  }
+
+  #blockerSelection button:focus {
+    background-color: var(--bg-card);
+    color: var(--accent);
+    font-weight: bold;
+    outline: none;
+    border-left: 3px solid var(--accent);
+  }
+
+  /* Main Content */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: relative;
+  }
+
+  .header {
+    padding: 20px 30px;
+    border-bottom: 1px solid #313244;
+    background-color: var(--bg-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header h2 { margin: 0; font-size: 1.5rem; }
+
+  #posts {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  #posts p {
+    background-color: var(--bg-card);
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin: 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    line-height: 1.5;
+    animation: fadeIn 0.3s ease;
+    border-left: 4px solid var(--accent);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Admin Toggle */
+  #showAdmin {
+    background-color: transparent;
+    border: 1px solid var(--text-muted);
+    color: var(--text-muted);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.2s;
+  }
+  
+  #showAdmin:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Admin Panel Modal Styling */
+  #adminPanel {
+    display: none; /* Controlled by JS */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    background-color: var(--bg-card);
+    border: 1px solid #45475a;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 12px;
+    z-index: 100;
+  }
+
+  #adminPanel h3 { margin-top: 0; color: var(--accent); }
+
+  #adminPanel input[type="password"],
+  #adminPanel textarea {
+    width: 100%;
+    background-color: var(--bg-dark);
+    border: 1px solid #45475a;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-family: inherit;
+  }
+
+  #loginBtn, #publishBtn {
+    background-color: var(--accent);
+    color: var(--bg-dark);
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  #loginBtn:hover, #publishBtn:hover {
+    background-color: var(--accent-hover);
+  }
+
+  #blockerCheckboxes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  #blockerCheckboxes label {
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px;
+  }
+  
+  #blockerCheckboxes input { margin-right: 8px; }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-dark); }
+  ::-webkit-scrollbar-thumb { background: #45475a; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 </style>
 </head>
 <body>
 
-<h2>Select Your Blocker</h2>
-<div id="blockerSelection">
-  <button>Linewize</button>
-  <button>Securly</button>
-  <button>Palo_alto</button>
-  <button>Blocksi</button>
-  <button>Aristotle</button>
-  <button>Lightspeed</button>
-  <button>Contentkeeper</button>
-  <button>Lanschool</button>
-  <button>Goguardian</button>
-  <button>Fortiguard</button>
-  <button>Cisco_talos</button>
-  <button>Deledao</button>
+<div class="app-container">
+  
+  <aside>
+    <h2>Blockers</h2>
+    <div id="blockerSelection">
+      <button>Linewize</button>
+      <button>Securly</button>
+      <button>Palo_alto</button>
+      <button>Blocksi</button>
+      <button>Aristotle</button>
+      <button>Lightspeed</button>
+      <button>Contentkeeper</button>
+      <button>Lanschool</button>
+      <button>Goguardian</button>
+      <button>Fortiguard</button>
+      <button>Cisco_talos</button>
+      <button>Deledao</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="header">
+      <h2>Discussion Feed</h2>
+      <button id="showAdmin">Admin Access</button>
+    </div>
+    
+    <div id="posts">
+      <p style="color: var(--text-muted); text-align: center; background: none; box-shadow: none; border: none;">
+        Select a blocker from the sidebar to view posts.
+      </p>
+    </div>
+  </main>
+
 </div>
-
-<h2>Posts for your Blocker</h2>
-<div id="posts"></div>
-
-<hr>
-<button id="showAdmin">Admin Panel</button>
 
 <div id="adminPanel">
   <h3>Admin Login</h3>
@@ -42,12 +262,14 @@
   <button id="loginBtn">Login</button>
 
   <div id="adminContent" style="display:none;">
+    <hr style="border-color: #45475a; margin: 15px 0;">
     <h3>Create Post</h3>
-    <textarea id="postText" rows="4" placeholder="Your post"></textarea>
+    <textarea id="postText" rows="4" placeholder="Type your post here..."></textarea>
+    
     <div id="blockerCheckboxes">
       <label><input type="checkbox" value="Linewize"> Linewize</label>
       <label><input type="checkbox" value="Securly"> Securly</label>
-      <label><input type="checkbox" value="Palo_alto"> Palo_alto</label>
+      <label><input type="checkbox" value="Palo_alto"> Palo Alto</label>
       <label><input type="checkbox" value="Blocksi"> Blocksi</label>
       <label><input type="checkbox" value="Aristotle"> Aristotle</label>
       <label><input type="checkbox" value="Lightspeed"> Lightspeed</label>
@@ -55,7 +277,7 @@
       <label><input type="checkbox" value="Lanschool"> Lanschool</label>
       <label><input type="checkbox" value="Goguardian"> Goguardian</label>
       <label><input type="checkbox" value="Fortiguard"> Fortiguard</label>
-      <label><input type="checkbox" value="Cisco_talos"> Cisco_talos</label>
+      <label><input type="checkbox" value="Cisco_talos"> Cisco Talos</label>
       <label><input type="checkbox" value="Deledao"> Deledao</label>
     </div>
     <button id="publishBtn">Publish Post</button>
@@ -75,6 +297,9 @@ let selectedBlocker = null
 document.querySelectorAll('#blockerSelection button').forEach(btn => {
   btn.addEventListener('click', () => {
     selectedBlocker = btn.textContent
+    // Visual tweak: update header text (optional, remove if strict NO REWRITE applies to DOM manipulation too, but this is safe)
+    const headerTitle = document.querySelector('.header h2');
+    if(headerTitle) headerTitle.textContent = selectedBlocker + " Posts";
     fetchPosts()
   })
 })
@@ -95,7 +320,8 @@ async function fetchPosts() {
 // Admin panel toggle
 document.getElementById('showAdmin').addEventListener('click', () => {
   const panel = document.getElementById('adminPanel')
-  panel.style.display = panel.style.display === 'none' ? 'block' : 'none'
+  // Simple toggle logic kept same
+  panel.style.display = panel.style.display === 'none' || panel.style.display === '' ? 'block' : 'none'
 })
 
 // Admin login
