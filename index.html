@@ -81,7 +81,6 @@
   .post-unblocked-list { font-size: 0.75rem; color: var(--green); margin-top: 5px; font-weight: 600; font-family: monospace; }
   .post-content { white-space: pre-wrap; line-height: 1.5; font-size: 1.1rem; margin-bottom: 10px; }
   .post-content a { color: var(--accent); text-decoration: underline; font-weight: 600; }
-  .post-content a:hover { color: var(--accent-hover); }
 
   /* Admin Buttons */
   .admin-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; border-top: 1px solid #45475a; padding-top: 10px; }
@@ -106,10 +105,8 @@
   .admin-pill { padding: 10px 2px; border-radius: 8px; background: #1e1e2e; border: 1px solid #45475a; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; text-align: center; transition: 0.2s; }
   .admin-pill.selected { background: var(--accent); color: var(--bg-dark); border-color: var(--accent); }
 
-  /* Logs Overlay */
   .log-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; overflow-y: auto; padding: 60px 20px; }
   .log-container { max-width: 600px; margin: 0 auto; background: var(--bg-sidebar); border-radius: 20px; padding: 30px; border: 1px solid #45475a; position: relative; }
-  .log-entry { border-bottom: 1px solid #313244; padding: 15px 0; }
 </style>
 </head>
 <body>
@@ -156,7 +153,7 @@
 
 <div id="adminPanel">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-    <h3 style="margin:0; color:var(--accent);">Admin Panel</h3>
+    <h3 style="margin:0; color:var(--accent);" id="adminPanelTitle">Admin Panel</h3>
     <button id="closeAdmin" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.5rem;">&times;</button>
   </div>
   
@@ -179,6 +176,7 @@
       <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;">Target Blockers:</div>
       <div id="adminBlockerButtons"></div>
       <button id="publishBtn" class="admin-primary-btn">Post Everywhere</button>
+      <button id="cancelEditBtn" class="admin-primary-btn" style="display:none; background:#45475a; color:white; margin-top:10px;">Cancel Edit</button>
     </div>
     <div id="adminTabLogs" style="display:none;">
       <input type="text" id="logHeading" class="admin-input" placeholder="Update Title">
@@ -195,6 +193,7 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
 let isAdmin = false;
+let editingPostId = null; // Track if we are editing
 
 function showNotice(msg, type = 'success') {
   const t = document.getElementById('toast');
@@ -202,12 +201,12 @@ function showNotice(msg, type = 'success') {
   t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// URL Linkifier Helper
 function linkify(text) {
   const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
   return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
 }
 
+// Build UI
 const grid = document.getElementById('gridContainer');
 blockers.forEach(b => {
   const card = document.createElement('div');
@@ -248,11 +247,11 @@ async function fetchPosts() {
 function renderPosts(posts) {
   const postsDiv = document.getElementById('posts');
   postsDiv.innerHTML = posts.map(p => {
-    const list = p.blockers.map(b => b.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())).join(', ');
+    const list = p.blockers.map(b => b.replace(/_/g, ' ')).join(', ');
     const label = (selectedBlocker === "All") ? `<div class="post-unblocked-list">Unblocked for: ${list}</div>` : '';
     const adminControls = isAdmin ? `<div class="admin-btns">
-      <button class="small-action" onclick="editPost('${p.content.replace(/'/g, "\\'")}')">✎ Edit</button>
-      <button class="small-action" style="color:var(--red); border-color:var(--red);" onclick="deletePost('${p.content.replace(/'/g, "\\'")}')">🗑 Delete</button>
+      <button class="small-action" onclick="editPost('${p.id}', '${p.author.replace(/'/g, "\\'")}', '${p.content.replace(/'/g, "\\'")}')">✎ Edit</button>
+      <button class="small-action" style="color:var(--red); border-color:var(--red);" onclick="deletePost('${p.id}')">🗑 Delete</button>
     </div>` : '';
     return `<div class="post-card">
       <div class="post-meta"><div class="meta-top"><div class="post-author">By: ${p.author}</div><div>${new Date(p.created_at).toLocaleDateString()}</div></div>${label}</div>
@@ -262,14 +261,13 @@ function renderPosts(posts) {
   }).join('');
 }
 
+// ADMIN LOGIC
 document.getElementById('togglePwBtn').onclick = () => {
   const pwInput = document.getElementById('adminPassword');
-  const btn = document.getElementById('togglePwBtn');
-  if (pwInput.type === 'password') { pwInput.type = 'text'; btn.textContent = '🙈'; }
-  else { pwInput.type = 'password'; btn.textContent = '👁️'; }
+  pwInput.type = pwInput.type === 'password' ? 'text' : 'password';
 };
 
-const attemptLogin = () => {
+document.getElementById('loginBtn').onclick = () => {
   const pwInput = document.getElementById('adminPassword');
   if (pwInput.value === 'EISisBetterForever') {
     isAdmin = true;
@@ -279,26 +277,52 @@ const attemptLogin = () => {
   } else { showNotice("Invalid Password", "error"); pwInput.value = ''; }
 };
 
-document.getElementById('loginBtn').onclick = attemptLogin;
-document.getElementById('adminPassword').onkeypress = (e) => { if(e.key==='Enter') attemptLogin(); };
-
-window.deletePost = async (content) => {
-  const { error } = await supabase.from('posts').delete().eq('content', content);
-  if (!error) { showNotice("Post Wiped"); fetchPosts(); }
+window.deletePost = async (id) => {
+  await supabase.from('posts').delete().eq('id', id);
+  showNotice("Post Removed"); fetchPosts();
 };
 
-window.editPost = (content) => {
-  document.getElementById('adminPanel').style.display='block';
+window.editPost = (id, author, content) => {
+  editingPostId = id;
+  document.getElementById('adminPanel').style.display = 'block';
+  document.getElementById('postAuthor').value = author;
   document.getElementById('postText').value = content;
+  document.getElementById('publishBtn').textContent = "Update Post";
+  document.getElementById('cancelEditBtn').style.display = "block";
+  document.getElementById('adminPanelTitle').textContent = "Editing Post...";
   document.getElementById('tabPostsBtn').click();
 };
 
+document.getElementById('cancelEditBtn').onclick = () => {
+  editingPostId = null;
+  document.getElementById('postAuthor').value = '';
+  document.getElementById('postText').value = '';
+  document.getElementById('publishBtn').textContent = "Post Everywhere";
+  document.getElementById('cancelEditBtn').style.display = "none";
+  document.getElementById('adminPanelTitle').textContent = "Admin Panel";
+};
+
 document.getElementById('publishBtn').onclick = async () => {
-  const text = document.getElementById('postText').value;
+  const author = document.getElementById('postAuthor').value || 'Admin';
+  const content = document.getElementById('postText').value;
   const pills = document.querySelectorAll('.admin-pill.selected');
-  if(!text || pills.length === 0) return showNotice("Missing fields", "error");
-  for (const p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, content: text, author: document.getElementById('postAuthor').value || 'Admin' }]);
-  document.getElementById('postText').value = ''; showNotice("Success"); fetchPosts();
+
+  if (!content) return showNotice("Post cannot be empty", "error");
+
+  if (editingPostId) {
+    // Update existing
+    await supabase.from('posts').update({ author, content }).eq('id', editingPostId);
+    showNotice("Post Updated");
+    document.getElementById('cancelEditBtn').click();
+  } else {
+    // Create new (per selected blocker)
+    if (pills.length === 0) return showNotice("Select at least one blocker", "error");
+    for (const p of pills) {
+      await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
+    }
+    showNotice("Broadcasted Successfully");
+  }
+  fetchPosts();
 };
 
 document.getElementById('publishLogBtn').onclick = async () => {
@@ -311,20 +335,19 @@ document.getElementById('publishLogBtn').onclick = async () => {
 };
 
 window.deleteLog = async (id) => {
-    const { error } = await supabase.from('logs').delete().eq('id', id);
-    if(!error) { showNotice("Log Removed"); document.getElementById('viewLogs').click(); }
+    await supabase.from('logs').delete().eq('id', id);
+    showNotice("Log Removed"); document.getElementById('viewLogs').click();
 };
 
 document.getElementById('showAdmin').onclick = () => document.getElementById('adminPanel').style.display='block';
 document.getElementById('closeAdmin').onclick = () => document.getElementById('adminPanel').style.display='none';
-
 document.getElementById('viewLogs').onclick = async () => { 
   document.getElementById('logOverlay').style.display='block';
   const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
   document.getElementById('logList').innerHTML = data.map(l => `
-    <div class="log-entry">
+    <div style="border-bottom:1px solid #313244; padding:15px 0;">
       <h4>${l.heading}</h4><p>${linkify(l.body)}</p>
-      ${isAdmin ? `<button class="small-action" style="color:var(--red); border-color:var(--red);" onclick="deleteLog('${l.id}')">🗑 Wipe Log</button>` : ''}
+      ${isAdmin ? `<button class="small-action" style="color:var(--red);" onclick="deleteLog('${l.id}')">🗑 Wipe Log</button>` : ''}
     </div>`).join('');
 };
 
