@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blocker Posts</title>
+<title>Eli's Proxies</title>
+<link rel="icon" type="image/png" href="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
+
 <style>
   :root {
     --bg-dark: #1e1e2e;
@@ -27,6 +29,7 @@
 
   .app-container { display: flex; width: 100%; height: 100%; }
 
+  /* Sidebar */
   aside {
     width: 280px; background-color: var(--bg-sidebar); border-right: 1px solid #313244;
     padding: 25px; display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0;
@@ -41,6 +44,7 @@
   #blockerSelection button:hover { background-color: var(--bg-card); color: var(--text-main); }
   #blockerSelection button:focus { background-color: var(--accent); color: var(--bg-dark); font-weight: bold; }
 
+  /* Main Feed */
   main { flex: 1; display: flex; flex-direction: column; position: relative; background: var(--bg-dark); }
 
   .header {
@@ -49,7 +53,9 @@
     background: var(--bg-dark);
   }
 
-  .header h2 { font-size: 1.8rem; margin: 0; }
+  .branding-area { display: flex; flex-direction: column; }
+  .branding-area h1 { margin: 0; font-size: 1.2rem; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; }
+  .branding-area h2 { margin: 0; font-size: 2rem; color: white; }
 
   #posts { 
     flex: 1; padding: 40px; overflow-y: auto; 
@@ -143,7 +149,10 @@
 
   <main>
     <div class="header">
-      <h2 id="currentBlocker">Welcome</h2>
+      <div class="branding-area">
+        <h1>Eli's Proxies</h1>
+        <h2 id="currentBlocker">Feed</h2>
+      </div>
       <button id="showAdmin" style="background:none; border:2px solid var(--text-muted); color:var(--text-muted); border-radius:25px; padding:8px 20px; cursor:pointer; font-weight:bold;">Admin Access</button>
     </div>
     <div id="posts">
@@ -223,7 +232,6 @@ document.querySelectorAll('#blockerSelection button').forEach(btn => {
 
 async function fetchPosts() {
   if (!selectedBlocker) return;
-  // CHANGED: ascending is now false to put the newest at the top
   const { data, error } = await supabase.from('posts').select('*').eq('blocker', selectedBlocker).order('created_at', { ascending: false });
   if (error) console.error(error);
   
