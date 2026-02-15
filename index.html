@@ -95,14 +95,14 @@
   .meta-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
   .post-author { font-size: 0.9rem; color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
   .post-date { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
-  .post-unblocked-list { font-size: 0.75rem; color: var(--green); margin-top: 4px; font-weight: 600; font-family: monospace; }
+  .post-unblocked-list { font-size: 0.75rem; color: var(--green); margin-top: 6px; font-weight: 600; font-family: monospace; border-top: 1px solid #45475a; padding-top: 4px; }
 
   .post-content { white-space: pre-wrap; word-wrap: break-word; line-height: 1.6; font-size: 1.15rem; }
   .post-content a { color: var(--accent) !important; text-decoration: underline; }
 
   .admin-actions { 
     position: absolute; 
-    top: 60px; 
+    top: 55px; 
     right: 20px; 
     display: flex; 
     gap: 10px; 
@@ -260,14 +260,13 @@ let originalContentToMatch = "";
 const grid = document.getElementById('gridContainer');
 const adminPillsContainer = document.getElementById('adminBlockerButtons');
 
-// Add "All" option at the start
+// Setup UI
 const allCard = document.createElement('div');
 allCard.className = 'blocker-card all-card';
 allCard.textContent = "All Blockers";
 allCard.onclick = () => selectBlocker("All");
 grid.appendChild(allCard);
 
-// Setup UI
 blockers.forEach(b => {
   const card = document.createElement('div');
   card.className = 'blocker-card';
@@ -333,7 +332,7 @@ async function fetchPosts() {
     return;
   }
 
-  // Logic to group posts by content and author
+  // Grouping logic for "All" mode
   const groupedPosts = [];
   data.forEach(item => {
       const existing = groupedPosts.find(g => g.content === item.content && g.author === item.author);
@@ -347,7 +346,11 @@ async function fetchPosts() {
   postsDiv.innerHTML = groupedPosts.map(p => {
     const d = new Date(p.created_at);
     const dateStr = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
-    const unblockedText = p.blockers.join(', ').toLowerCase();
+    
+    // Only show unblocked list if we are in "All" mode
+    const unblockedHtml = (selectedBlocker === "All") 
+        ? `<div class="post-unblocked-list">Unblocked for: ${p.blockers.join(', ').toLowerCase()}</div>`
+        : '';
 
     return `
     <div class="post-card">
@@ -356,7 +359,7 @@ async function fetchPosts() {
           <div class="post-author">By: ${p.author || 'Anonymous'}</div>
           <div class="post-date">Posted on ${dateStr}</div>
         </div>
-        <div class="post-unblocked-list">Unblocked for: ${unblockedText}</div>
+        ${unblockedHtml}
       </div>
       <div class="post-content">${linkify(p.content)}</div>
       ${isAdmin ? `
