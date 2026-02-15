@@ -300,11 +300,29 @@ window.openDelModal = (id) => {
 
 document.getElementById('cancelDel').onclick = () => document.getElementById('confirmModal').style.display = 'none';
 document.getElementById('confirmDel').onclick = async () => {
-  // Global Delete: Targets ID specifically so it disappears from all blockers
-  const { error } = await supabase.from('posts').delete().eq('id', pendingDeleteId);
-  document.getElementById('confirmModal').style.display = 'none';
-  if (error) showToast('Delete failed', 'error');
-  else { showToast('Post deleted globally'); fetchPosts(); }
+  // 1. First, find the content of the post we are about to delete
+  const { data: postToMatch } = await supabase
+    .from('posts')
+    .select('content')
+    .eq('id', pendingDeleteId)
+    .single();
+
+  if (postToMatch) {
+    // 2. Delete EVERY post that has that exact same message content
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('content', postToMatch.content);
+
+    document.getElementById('confirmModal').style.display = 'none';
+    
+    if (error) {
+      showToast('Delete failed', 'error');
+    } else {
+      showToast('Message wiped from ALL blockers');
+      fetchPosts();
+    }
+  }
 };
 
 if (selectedBlocker) {
