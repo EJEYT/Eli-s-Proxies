@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blocker Posts</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  #blockerSelection button, #adminPanel button { margin: 5px; padding: 10px 15px; }
+  #posts { margin-top: 20px; }
+  #adminPanel { display: none; border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
+  #adminPanel input[type="text"], #adminPanel textarea { width: 100%; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<h2>Select Your Blocker</h2>
+<div id="blockerSelection">
+  <button>Linewize</button>
+  <button>Securly</button>
+  <button>Palo_alto</button>
+  <button>Blocksi</button>
+  <button>Aristotle</button>
+  <button>Lightspeed</button>
+  <button>Contentkeeper</button>
+  <button>Lanschool</button>
+  <button>Goguardian</button>
+  <button>Fortiguard</button>
+  <button>Cisco_talos</button>
+  <button>Deledao</button>
+</div>
+
+<h2>Posts for your Blocker</h2>
+<div id="posts"></div>
+
+<hr>
+<button id="showAdmin">Admin Panel</button>
+
+<div id="adminPanel">
+  <h3>Admin Login</h3>
+  <input type="password" id="adminPassword" placeholder="Enter password"/>
+  <button id="loginBtn">Login</button>
+
+  <div id="adminContent" style="display:none;">
+    <h3>Create Post</h3>
+    <textarea id="postText" rows="4" placeholder="Your post"></textarea>
+    <div id="blockerCheckboxes">
+      <label><input type="checkbox" value="Linewize"> Linewize</label>
+      <label><input type="checkbox" value="Securly"> Securly</label>
+      <label><input type="checkbox" value="Palo_alto"> Palo_alto</label>
+      <label><input type="checkbox" value="Blocksi"> Blocksi</label>
+      <label><input type="checkbox" value="Aristotle"> Aristotle</label>
+      <label><input type="checkbox" value="Lightspeed"> Lightspeed</label>
+      <label><input type="checkbox" value="Contentkeeper"> Contentkeeper</label>
+      <label><input type="checkbox" value="Lanschool"> Lanschool</label>
+      <label><input type="checkbox" value="Goguardian"> Goguardian</label>
+      <label><input type="checkbox" value="Fortiguard"> Fortiguard</label>
+      <label><input type="checkbox" value="Cisco_talos"> Cisco_talos</label>
+      <label><input type="checkbox" value="Deledao"> Deledao</label>
+    </div>
+    <button id="publishBtn">Publish Post</button>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+// Supabase config
+const supabaseUrl = 'https://saauhuiruadqjogzughm.supabase.co'
+const supabaseKey = 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F'
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+let selectedBlocker = null
+
+// Blocker selection
+document.querySelectorAll('#blockerSelection button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedBlocker = btn.textContent
+    fetchPosts()
+  })
+})
+
+// Fetch posts for selected blocker
+async function fetchPosts() {
+  if (!selectedBlocker) return
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('blocker', selectedBlocker)
+    .order('created_at', { ascending: true })
+  if (error) {
+    console.error(error)
+    return
+  }
+  const postsDiv = document.getElementById('posts')
+  postsDiv.innerHTML = data.map(p => `<p>${p.content}</p>`).join('')
+}
+
+// Admin panel toggle
+document.getElementById('showAdmin').addEventListener('click', () => {
+  const panel = document.getElementById('adminPanel')
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none'
+})
+
+// Admin login
+document.getElementById('loginBtn').addEventListener('click', () => {
+  const pw = document.getElementById('adminPassword').value
+  if (pw === 'EISisBetterForever') {
+    document.getElementById('adminContent').style.display = 'block'
+    alert('Admin login successful')
+  } else {
+    alert('Wrong password')
+  }
+})
+
+// Publish post
+document.getElementById('publishBtn').addEventListener('click', async () => {
+  const text = document.getElementById('postText').value.trim()
+  if (!text) return alert('Post cannot be empty')
+  const checkboxes = document.querySelectorAll('#blockerCheckboxes input[type="checkbox"]:checked')
+  if (checkboxes.length === 0) return alert('Select at least one blocker')
+
+  for (const cb of checkboxes) {
+    const { error } = await supabase.from('posts').insert([{ blocker: cb.value, content: text }])
+    if (error) console.error(error)
+  }
+  document.getElementById('postText').value = ''
+  fetchPosts()
+  alert('Post published')
+})
+
+// Auto-refresh every 5s for real-time updates
+setInterval(fetchPosts, 5000)
+</script>
+
+</body>
+</html>
