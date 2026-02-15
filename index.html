@@ -55,6 +55,7 @@
     font-size: 1.1rem;
     min-width: 160px; 
     flex: 0 1 auto; 
+    text-align: center;
   }
 
   .blocker-card:hover {
@@ -72,13 +73,27 @@
     background: var(--bg-sidebar);
   }
 
-  .branding-area { display: flex; flex-direction: column; }
+  /* Fixed Branding Area for perfect centering */
+  .branding-area { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+  }
   .branding-area h1 { margin: 0; font-size: 0.9rem; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
-  .branding-area h2 { margin: 0; font-size: 1.8rem; color: white; }
+  .branding-area h2 { margin: 0; font-size: 1.8rem; color: white; line-height: 1.2; }
   
   .change-blocker-link {
-    color: var(--text-muted); font-size: 0.8rem; text-decoration: underline; 
-    cursor: pointer; margin-top: 5px; background: none; border: none; padding: 0;
+    color: var(--text-muted); 
+    font-size: 0.8rem; 
+    text-decoration: underline; 
+    cursor: pointer; 
+    margin-top: 5px; 
+    background: none; 
+    border: none; 
+    padding: 0;
+    width: fit-content;
+    display: block;
   }
 
   .header-actions { display: flex; gap: 10px; }
@@ -220,7 +235,6 @@ blockers.forEach(b => {
 function selectBlocker(name) {
   selectedBlocker = name;
   localStorage.setItem('eli_selected_blocker', name);
-  // Clear posts immediately to prevent old data flicker
   document.getElementById('posts').innerHTML = '';
   showApp();
 }
@@ -249,7 +263,6 @@ async function fetchPosts() {
   if (!selectedBlocker) return;
   
   const postsDiv = document.getElementById('posts');
-  // Only show loading if the container is empty (first load/switch)
   if (postsDiv.innerHTML === '') {
       postsDiv.innerHTML = `<h3 style="color:var(--text-muted); margin-top: 50px; opacity:0.6;">Loading feed...</h3>`;
   }
@@ -266,7 +279,6 @@ async function fetchPosts() {
       return;
   }
   
-  // Single batch update to DOM prevents the double-jump stutter
   const postsHtml = data.map(p => `
     <div class="post-card">
       <div class="post-author">By: ${p.author || 'Anonymous'}</div>
