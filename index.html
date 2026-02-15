@@ -14,6 +14,7 @@
     --accent: #89b4fa;
     --accent-hover: #b4befe;
     --red: #f38ba8;
+    --green: #a6e3a1;
   }
 
   * { box-sizing: border-box; }
@@ -30,6 +31,7 @@
 
   .app-container { display: flex; width: 100%; height: 100%; }
 
+  /* Sidebar */
   aside {
     width: 260px;
     background-color: var(--bg-sidebar);
@@ -41,32 +43,36 @@
   }
 
   aside h2 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--accent);
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-align: center;
   }
 
-  #blockerSelection { display: flex; flex-direction: column; gap: 10px; }
+  #blockerSelection { display: flex; flex-direction: column; gap: 8px; }
 
   #blockerSelection button {
     background: transparent;
     border: none;
     color: var(--text-muted);
     text-align: left;
-    padding: 12px 15px;
+    padding: 10px 15px;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
+    font-size: 0.95rem;
   }
 
   #blockerSelection button:hover { background-color: var(--bg-card); color: var(--text-main); }
+  #blockerSelection button:focus { background-color: var(--accent); color: var(--bg-dark); font-weight: bold; }
 
+  /* Main Area */
   main { flex: 1; display: flex; flex-direction: column; position: relative; }
 
   .header {
-    padding: 20px 30px;
+    padding: 15px 30px;
     border-bottom: 1px solid #313244;
     background-color: var(--bg-dark);
     display: flex;
@@ -83,7 +89,6 @@
     gap: 15px;
   }
 
-  /* Post Card Styling */
   .post-card {
     background-color: var(--bg-card);
     padding: 15px 20px;
@@ -100,13 +105,7 @@
     text-transform: uppercase;
   }
 
-  .post-content { line-height: 1.5; word-wrap: break-word; }
-  
-  /* Make links clickable and blue */
-  .post-content a {
-    color: var(--accent-hover);
-    text-decoration: underline;
-  }
+  .post-content a { color: var(--accent-hover); text-decoration: underline; }
 
   #showAdmin {
     background-color: transparent;
@@ -115,6 +114,7 @@
     padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
+    font-size: 0.8rem;
   }
 
   /* Admin Panel Popup */
@@ -123,12 +123,12 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 350px;
+    width: 380px;
     background-color: var(--bg-card);
     border: 1px solid #45475a;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    padding: 20px;
-    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    padding: 25px;
+    border-radius: 16px;
     z-index: 100;
   }
 
@@ -136,54 +136,94 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
 
+  .admin-header h3 { margin: 0; font-size: 1.2rem; color: var(--accent); }
+
   .close-btn {
-    background: none;
+    background: #45475a;
     border: none;
-    color: var(--red);
-    font-size: 1.5rem;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
     cursor: pointer;
-    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
   }
+
+  .close-btn:hover { background: var(--red); }
 
   #adminPanel input, #adminPanel textarea {
     width: 100%;
     background-color: var(--bg-dark);
     border: 1px solid #45475a;
     color: white;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-family: inherit;
   }
 
-  #loginBtn, #publishBtn {
-    background-color: var(--accent);
-    color: var(--bg-dark);
-    border: none;
-    padding: 10px;
-    width: 100%;
-    border-radius: 6px;
-    cursor: pointer;
+  /* Clean Checkbox Grid */
+  .checkbox-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
     font-weight: bold;
   }
 
   #blockerCheckboxes {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    margin: 10px 0;
-    max-height: 100px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+    background: var(--bg-dark);
+    padding: 10px;
+    border-radius: 8px;
+    max-height: 140px;
     overflow-y: auto;
+    border: 1px solid #45475a;
   }
+
+  #blockerCheckboxes label {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #blockerCheckboxes label:hover { background: #313244; color: white; }
+  #blockerCheckboxes input { width: auto !important; margin: 0 10px 0 0 !important; cursor: pointer; }
+
+  #loginBtn, #publishBtn {
+    background-color: var(--accent);
+    color: var(--bg-dark);
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: transform 0.1s;
+  }
+
+  #publishBtn:active { transform: scale(0.98); }
 </style>
 </head>
 <body>
 
 <div class="app-container">
   <aside>
-    <h2>Blockers</h2>
+    <h2>Blocker List</h2>
     <div id="blockerSelection">
       <button>Linewize</button>
       <button>Securly</button>
@@ -202,7 +242,7 @@
 
   <main>
     <div class="header">
-      <h2 id="currentBlocker">Select a Blocker</h2>
+      <h2 id="currentBlocker">Select a Category</h2>
       <button id="showAdmin">Admin Access</button>
     </div>
     <div id="posts"></div>
@@ -211,33 +251,35 @@
 
 <div id="adminPanel">
   <div class="admin-header">
-    <h3>Admin Control</h3>
+    <h3>Admin Tools</h3>
     <button class="close-btn" id="closeAdmin">&times;</button>
   </div>
   
   <div id="loginSection">
-    <input type="password" id="adminPassword" placeholder="Enter password"/>
-    <button id="loginBtn">Login</button>
+    <input type="password" id="adminPassword" placeholder="Admin Password"/>
+    <button id="loginBtn">Unlock Panel</button>
   </div>
 
   <div id="adminContent" style="display:none;">
-    <input type="text" id="postAuthor" placeholder="By: (Name or Alias)">
-    <textarea id="postText" rows="4" placeholder="Your message... (links work automatically)"></textarea>
+    <input type="text" id="postAuthor" placeholder="By: (e.g. John Doe)">
+    <textarea id="postText" rows="3" placeholder="Write your message..."></textarea>
+    
+    <span class="checkbox-label">Post to:</span>
     <div id="blockerCheckboxes">
       <label><input type="checkbox" value="Linewize"> Linewize</label>
       <label><input type="checkbox" value="Securly"> Securly</label>
-      <label><input type="checkbox" value="Palo_alto"> Palo_alto</label>
+      <label><input type="checkbox" value="Palo_alto"> Palo Alto</label>
       <label><input type="checkbox" value="Blocksi"> Blocksi</label>
       <label><input type="checkbox" value="Aristotle"> Aristotle</label>
       <label><input type="checkbox" value="Lightspeed"> Lightspeed</label>
-      <label><input type="checkbox" value="Contentkeeper"> Contentkeeper</label>
-      <label><input type="checkbox" value="Lanschool"> Lanschool</label>
-      <label><input type="checkbox" value="Goguardian"> Goguardian</label>
-      <label><input type="checkbox" value="Fortiguard"> Fortiguard</label>
-      <label><input type="checkbox" value="Cisco_talos"> Cisco_talos</label>
+      <label><input type="checkbox" value="Contentkeeper"> Content Keeper</label>
+      <label><input type="checkbox" value="Lanschool"> LanSchool</label>
+      <label><input type="checkbox" value="Goguardian"> GoGuardian</label>
+      <label><input type="checkbox" value="Fortiguard"> FortiGuard</label>
+      <label><input type="checkbox" value="Cisco_talos"> Cisco Talos</label>
       <label><input type="checkbox" value="Deledao"> Deledao</label>
     </div>
-    <button id="publishBtn">Publish Post</button>
+    <button id="publishBtn">Broadcast Post</button>
   </div>
 </div>
 
@@ -250,7 +292,6 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 let selectedBlocker = null
 
-// Function to find URLs in text and turn them into <a> tags
 function linkify(text) {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   return text.replace(urlRegex, function(url) {
@@ -258,16 +299,14 @@ function linkify(text) {
   });
 }
 
-// Blocker selection
 document.querySelectorAll('#blockerSelection button').forEach(btn => {
   btn.addEventListener('click', () => {
     selectedBlocker = btn.textContent
-    document.getElementById('currentBlocker').textContent = selectedBlocker + " Feed"
+    document.getElementById('currentBlocker').textContent = selectedBlocker
     fetchPosts()
   })
 })
 
-// Fetch posts
 async function fetchPosts() {
   if (!selectedBlocker) return
   const { data, error } = await supabase
@@ -287,17 +326,14 @@ async function fetchPosts() {
   `).join('')
 }
 
-// Admin panel Toggle (Open)
 document.getElementById('showAdmin').addEventListener('click', () => {
   document.getElementById('adminPanel').style.display = 'block'
 })
 
-// Admin panel Toggle (Close)
 document.getElementById('closeAdmin').addEventListener('click', () => {
   document.getElementById('adminPanel').style.display = 'none'
 })
 
-// Admin login
 document.getElementById('loginBtn').addEventListener('click', () => {
   const pw = document.getElementById('adminPassword').value
   if (pw === 'EISisBetterForever') {
@@ -308,7 +344,6 @@ document.getElementById('loginBtn').addEventListener('click', () => {
   }
 })
 
-// Publish post
 document.getElementById('publishBtn').addEventListener('click', async () => {
   const text = document.getElementById('postText').value.trim()
   const author = document.getElementById('postAuthor').value.trim() || 'Anonymous'
@@ -318,13 +353,7 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
   if (checkboxes.length === 0) return alert('Select at least one blocker')
 
   for (const cb of checkboxes) {
-    const { error } = await supabase
-        .from('posts')
-        .insert([{ 
-            blocker: cb.value, 
-            content: text, 
-            author: author 
-        }])
+    const { error } = await supabase.from('posts').insert([{ blocker: cb.value, content: text, author: author }])
     if (error) console.error(error)
   }
   
@@ -333,7 +362,6 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
   alert('Post published')
 })
 
-// Refresh
 setInterval(fetchPosts, 5000)
 </script>
 
