@@ -53,7 +53,7 @@
   .app-container { display: none; width: 100%; height: 100%; flex-direction: column; }
   main { flex: 1; display: flex; flex-direction: column; background: var(--bg-dark); position: relative; }
 
-  /* Header & Search Bar */
+  /* Header */
   .header { padding: 15px 40px; border-bottom: 1px solid #313244; display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar); gap: 20px; }
   .branding-area { min-width: 150px; }
   .branding-area h1 { margin: 0; font-size: 0.75rem; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
@@ -65,7 +65,7 @@
     border: 1px solid #45475a; border-radius: 25px; color: white; 
     outline: none; transition: 0.3s; font-size: 1rem;
   }
-  .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(137, 180, 250, 0.1); }
+  .search-bar:focus { border-color: var(--accent); }
   .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
 
   .header-actions { display: flex; gap: 10px; align-items: center; }
@@ -90,6 +90,12 @@
   #adminPanel { display: none; position: fixed; bottom: 30px; right: 30px; width: 450px; background: var(--bg-card); border: 1px solid #45475a; padding: 25px; border-radius: 20px; z-index: 5000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
   .admin-input { width: 100%; padding: 14px; background: var(--bg-dark); border: 1px solid #45475a; color: white; border-radius: 10px; margin-bottom: 12px; font-family: inherit; font-size: 0.95rem; outline: none; transition: 0.2s; }
   .admin-input:focus { border-color: var(--accent); }
+  
+  /* Password Wrapper */
+  .pw-wrapper { position: relative; width: 100%; }
+  .toggle-pw { position: absolute; right: 15px; top: 14px; cursor: pointer; color: var(--text-muted); font-size: 1.2rem; user-select: none; }
+  .toggle-pw:hover { color: var(--accent); }
+
   .admin-primary-btn { width: 100%; padding: 14px; background: var(--accent); color: var(--bg-dark); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 1rem; margin-top: 5px; }
 
   .admin-tabs { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #45475a; }
@@ -99,8 +105,6 @@
   #adminBlockerButtons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 15px; }
   .admin-pill { padding: 10px 2px; border-radius: 8px; background: #1e1e2e; border: 1px solid #45475a; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; text-align: center; transition: 0.2s; }
   .admin-pill.selected { background: var(--accent); color: var(--bg-dark); border-color: var(--accent); }
-
-  .change-blocker-link { color: var(--text-muted); font-size: 0.75rem; text-decoration: underline; cursor: pointer; background: none; border: none; margin-top: 5px; }
 
   /* Logs Overlay */
   .log-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; overflow-y: auto; padding: 60px 20px; }
@@ -126,7 +130,7 @@
       <div class="branding-area">
         <h1>Eli's Proxies</h1>
         <h2 id="currentBlocker">Feed</h2>
-        <button class="change-blocker-link" id="changeBlockerBtn">← Back</button>
+        <button onclick="localStorage.removeItem('eli_selected_blocker'); location.reload();" class="btn-outline" style="font-size: 0.7rem; padding: 5px 12px; margin-top: 5px;">← Back</button>
       </div>
       <div class="search-container">
         <span class="search-icon">🔍</span>
@@ -157,7 +161,10 @@
   </div>
   
   <div id="loginSection">
-    <input type="password" id="adminPassword" class="admin-input" placeholder="Admin Password" onpaste="return false;" oncontextmenu="return false;">
+    <div class="pw-wrapper">
+      <input type="password" id="adminPassword" class="admin-input" placeholder="Admin Password" onpaste="return false;" oncontextmenu="return false;">
+      <span class="toggle-pw" id="togglePwBtn">👁️</span>
+    </div>
     <button id="loginBtn" class="admin-primary-btn">Unlock Admin</button>
   </div>
 
@@ -189,22 +196,13 @@ const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "L
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
 let isAdmin = false;
 
-function updateAdminUI() {
-  if (isAdmin) {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block';
-  } else {
-    document.getElementById('loginSection').style.display = 'block';
-    document.getElementById('adminContent').style.display = 'none';
-  }
-}
-
 function showNotice(msg, type = 'success') {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.background = type === 'success' ? 'var(--green)' : 'var(--red)';
   t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// Build Blocker Grid
 const grid = document.getElementById('gridContainer');
 blockers.forEach(b => {
   const card = document.createElement('div');
@@ -259,18 +257,36 @@ function renderPosts(posts) {
   }).join('');
 }
 
+// Password Toggle Logic
+document.getElementById('togglePwBtn').onclick = () => {
+  const pwInput = document.getElementById('adminPassword');
+  const btn = document.getElementById('togglePwBtn');
+  if (pwInput.type === 'password') {
+    pwInput.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    pwInput.type = 'password';
+    btn.textContent = '👁️';
+  }
+};
+
 const attemptLogin = () => {
-  if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
+  const pwInput = document.getElementById('adminPassword');
+  if (pwInput.value === 'EISisBetterForever') {
     isAdmin = true;
-    updateAdminUI();
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
     showNotice("Admin Mode Activated"); fetchPosts();
-  } else { showNotice("Invalid Password", "error"); }
+  } else { 
+    showNotice("Invalid Password", "error");
+    pwInput.value = ''; // DELETE PASSWORD ON FAILURE
+  }
 };
 
 document.getElementById('loginBtn').onclick = attemptLogin;
 document.getElementById('adminPassword').onkeypress = (e) => { if(e.key==='Enter') attemptLogin(); };
 
-// Immediate Delete - No Confirm
+// CRUD Logic
 window.deletePost = async (content) => {
   const { error } = await supabase.from('posts').delete().eq('content', content);
   if (!error) { showNotice("Post Wiped"); fetchPosts(); }
@@ -285,7 +301,7 @@ window.editPost = (content) => {
 document.getElementById('publishBtn').onclick = async () => {
   const text = document.getElementById('postText').value;
   const pills = document.querySelectorAll('.admin-pill.selected');
-  if(!text || pills.length === 0) return showNotice("Select blockers & write message", "error");
+  if(!text || pills.length === 0) return showNotice("Missing fields", "error");
   for (const p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, content: text, author: document.getElementById('postAuthor').value || 'Admin' }]);
   document.getElementById('postText').value = ''; showNotice("Success"); fetchPosts();
 };
@@ -299,13 +315,9 @@ document.getElementById('publishLogBtn').onclick = async () => {
   showNotice("Log Published");
 };
 
-// Immediate Log Delete - No Confirm
 window.deleteLog = async (id) => {
     const { error } = await supabase.from('logs').delete().eq('id', id);
-    if(!error) { 
-        showNotice("Log Removed"); 
-        document.getElementById('viewLogs').click(); 
-    }
+    if(!error) { showNotice("Log Removed"); document.getElementById('viewLogs').click(); }
 };
 
 document.getElementById('showAdmin').onclick = () => document.getElementById('adminPanel').style.display='block';
@@ -316,19 +328,12 @@ document.getElementById('viewLogs').onclick = async () => {
   const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
   document.getElementById('logList').innerHTML = data.map(l => `
     <div class="log-entry">
-      <h4>${l.heading}</h4>
-      <p>${l.body}</p>
+      <h4>${l.heading}</h4><p>${l.body}</p>
       ${isAdmin ? `<button class="small-action" style="color:var(--red); border-color:var(--red);" onclick="deleteLog('${l.id}')">🗑 Wipe Log</button>` : ''}
     </div>`).join('');
 };
 
-document.getElementById('changeBlockerBtn').onclick = () => { 
-  localStorage.removeItem('eli_selected_blocker'); 
-  document.getElementById('appContainer').style.display = 'none';
-  document.getElementById('selectionScreen').style.display = 'flex';
-};
-
-document.getElementById('refreshBtn').onclick = () => { location.reload(); };
+document.getElementById('refreshBtn').onclick = () => location.reload();
 
 document.getElementById('tabPostsBtn').onclick = () => {
   document.getElementById('adminTabPosts').style.display='block'; document.getElementById('adminTabLogs').style.display='none';
