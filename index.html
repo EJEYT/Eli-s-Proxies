@@ -45,15 +45,8 @@
     color: var(--text-main); font-size: 1.1rem; min-width: 160px; flex: 0 1 auto; text-align: center;
   }
 
-  .blocker-card.all-card {
-    border: 2px solid var(--accent);
-    color: var(--accent);
-  }
-
-  .blocker-card:hover {
-    transform: translateY(-5px); background: var(--accent); color: var(--bg-dark);
-    box-shadow: 0 10px 20px rgba(137, 180, 250, 0.2);
-  }
+  .blocker-card.all-card { border: 2px solid var(--accent); color: var(--accent); }
+  .blocker-card:hover { transform: translateY(-5px); background: var(--accent); color: var(--bg-dark); box-shadow: 0 10px 20px rgba(137, 180, 250, 0.2); }
 
   .app-container { display: none; width: 100%; height: 100%; flex-direction: column; }
   main { flex: 1; display: flex; flex-direction: column; position: relative; background: var(--bg-dark); }
@@ -70,7 +63,6 @@
   .change-blocker-link {
     color: var(--text-muted); font-size: 0.8rem; text-decoration: underline; 
     cursor: pointer; margin-top: 5px; background: none; border: none; padding: 0;
-    width: fit-content; display: block;
   }
 
   .header-actions { display: flex; gap: 10px; }
@@ -95,82 +87,36 @@
   .meta-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
   .post-author { font-size: 0.9rem; color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
   .post-date { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
-  /* Removed border and padding-top here */
   .post-unblocked-list { font-size: 0.75rem; color: var(--green); margin-top: 6px; font-weight: 600; font-family: monospace; }
 
   .post-content { white-space: pre-wrap; word-wrap: break-word; line-height: 1.6; font-size: 1.15rem; }
-  .post-content a { color: var(--accent) !important; text-decoration: underline; }
 
-  .admin-actions { 
-    position: absolute; 
-    top: 55px; 
-    right: 20px; 
-    display: flex; 
-    gap: 10px; 
-    z-index: 5;
-  }
-
-  .action-btn {
-    background: var(--bg-sidebar); border: 1px solid #45475a;
-    width: 35px; height: 35px; border-radius: 8px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: 0.2s;
-    color: var(--text-main);
-  }
-  .edit-btn:hover { border-color: var(--yellow); color: var(--yellow); background: #3e405a; }
-  .delete-btn:hover { border-color: var(--red); color: var(--red); background: #3e405a; }
-
+  /* Admin Panel Styling */
   #adminPanel {
     display: none; position: fixed; bottom: 30px; right: 30px;
     width: 480px; background-color: var(--bg-card); border: 1px solid #45475a;
-    padding: 30px; border-radius: 20px; z-index: 100; box-shadow: 0 10px 50px rgba(0,0,0,0.6);
+    padding: 25px; border-radius: 20px; z-index: 100; box-shadow: 0 10px 50px rgba(0,0,0,0.6);
   }
 
-  #toast {
-    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-    padding: 15px 30px; border-radius: 10px; color: var(--bg-dark); font-weight: bold; z-index: 1000; display: none;
-  }
+  .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #45475a; padding-bottom: 10px; }
+  .tab-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-weight: bold; padding: 5px 15px; font-size: 0.9rem; }
+  .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
 
-  .modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000;
-  }
+  #adminBlockerButtons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; background: var(--bg-dark); padding: 15px; border-radius: 12px; }
+  .admin-pill { padding: 10px 5px; border-radius: 8px; background: #45475a; color: var(--text-muted); font-size: 0.75rem; font-weight: bold; cursor: pointer; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-pill.selected { background: var(--accent); color: var(--bg-dark); }
 
-  .modal-box {
-    background: var(--bg-card); padding: 30px; border-radius: 20px; width: 450px; 
-    text-align: center; border: 1px solid #45475a; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  }
+  input, textarea { width: 100%; padding: 12px; background: var(--bg-dark); border: 1px solid #45475a; color: white; border-radius: 10px; margin-bottom: 12px; font-family: inherit; }
 
-  textarea.modal-input {
-    width: 100%; background: var(--bg-dark); border: 1px solid #45475a; color: white;
-    border-radius: 10px; padding: 15px; margin: 20px 0; font-family: inherit; font-size: 1rem; resize: vertical;
-  }
+  /* Log Overlay */
+  .log-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 3000; overflow-y: auto; padding: 50px 20px; }
+  .log-container { max-width: 700px; margin: 0 auto; background: var(--bg-sidebar); border-radius: 20px; padding: 40px; border: 1px solid #45475a; position: relative; }
+  .log-entry { border-bottom: 1px solid #313244; padding: 20px 0; }
+  .log-entry h4 { color: var(--accent); margin: 0 0 10px 0; font-size: 1.3rem; }
+  .log-entry p { margin: 0; color: var(--text-main); line-height: 1.5; }
+  .log-entry .log-date { font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; }
 
-  #adminBlockerButtons {
-    display: grid; 
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 8px; 
-    margin-bottom: 20px;
-    background: var(--bg-dark); 
-    padding: 15px; 
-    border-radius: 12px;
-  }
-
-  .admin-pill {
-    padding: 10px 5px; border-radius: 8px; background: #45475a; color: var(--text-muted);
-    font-size: 0.75rem; font-weight: bold; cursor: pointer; border: 1px solid transparent;
-    transition: 0.2s; user-select: none; text-align: center;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-
-  .admin-pill.selected {
-    background: var(--accent); color: var(--bg-dark); border-color: white;
-  }
-
-  .select-all-btn {
-    width: 100%; margin-bottom: 10px; padding: 6px; background: transparent;
-    border: 1px dashed var(--text-muted); color: var(--text-muted); border-radius: 8px;
-    cursor: pointer; font-size: 0.8rem;
-  }
+  #toast { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); padding: 15px 30px; border-radius: 10px; color: var(--bg-dark); font-weight: bold; z-index: 5000; display: none; }
 </style>
 </head>
 <body>
@@ -192,6 +138,7 @@
         <button class="change-blocker-link" id="changeBlockerBtn">← Switch Blocker</button>
       </div>
       <div class="header-actions">
+        <button id="viewLogs" class="btn-outline">Update Log</button>
         <button id="refreshBtn" class="btn-outline">↻ Refresh</button>
         <button id="showAdmin" class="btn-outline">Admin Access</button>
       </div>
@@ -200,47 +147,43 @@
   </main>
 </div>
 
-<div id="confirmModal" class="modal-overlay">
-  <div class="modal-box">
-    <h2 style="margin-top:0">Delete Post?</h2>
-    <p style="color: var(--text-muted)">This will wipe this message from ALL blockers.</p>
-    <div style="display:flex; gap:15px; margin-top:30px;">
-      <button id="cancelDel" style="flex:1; padding:12px; border-radius:10px; border:none; background:#45475a; color:white; cursor:pointer;">Cancel</button>
-      <button id="confirmDel" style="flex:1; padding:12px; border-radius:10px; border:none; background:var(--red); color:var(--bg-dark); font-weight:bold; cursor:pointer;">Delete Everywhere</button>
-    </div>
-  </div>
-</div>
-
-<div id="editModal" class="modal-overlay">
-  <div class="modal-box">
-    <h2 style="margin-top:0; color: var(--yellow);">Edit Post</h2>
-    <p style="color: var(--text-muted); font-size: 0.9rem;">Changes will apply to all blockers this was sent to.</p>
-    <textarea id="editPostText" rows="5" class="modal-input"></textarea>
-    <div style="display:flex; gap:15px;">
-      <button id="cancelEdit" style="flex:1; padding:12px; border-radius:10px; border:none; background:#45475a; color:white; cursor:pointer;">Cancel</button>
-      <button id="confirmEdit" style="flex:1; padding:12px; border-radius:10px; border:none; background:var(--yellow); color:var(--bg-dark); font-weight:bold; cursor:pointer;">Update Everywhere</button>
-    </div>
+<div id="logOverlay" class="log-overlay">
+  <div class="log-container">
+    <button onclick="document.getElementById('logOverlay').style.display='none'" style="position:absolute; top:20px; right:20px; background:none; border:none; color:white; font-size:2rem; cursor:pointer;">&times;</button>
+    <h2 style="margin-top:0; border-bottom: 2px solid var(--accent); padding-bottom:10px;">System Update Logs</h2>
+    <div id="logList"></div>
   </div>
 </div>
 
 <div id="adminPanel">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <h3 style="margin:0; color:var(--accent);">Admin Panel</h3>
-    <button id="closeAdmin" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:2rem;">&times;</button>
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+    <h3 style="margin:0; color:var(--accent);">Admin Dashboard</h3>
+    <button id="closeAdmin" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.5rem;">&times;</button>
   </div>
+
   <div id="loginSection">
-    <input type="password" id="adminPassword" style="width:100%; padding:15px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:15px;" placeholder="Password..."/>
+    <input type="password" id="adminPassword" placeholder="Password..."/>
     <button id="loginBtn" style="width:100%; padding:15px; background:var(--accent); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Login</button>
   </div>
-  <div id="adminContent" style="display:none;">
-    <input type="text" id="postAuthor" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Author Name">
-    <textarea id="postText" rows="4" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid #45475a; color:white; border-radius:10px; margin-bottom:12px;" placeholder="Message..."></textarea>
-    
-    <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;">Broadcast to:</label>
-    <button class="select-all-btn" id="selectAllAdmin">Toggle All Blockers</button>
-    <div id="adminBlockerButtons"></div>
 
-    <button id="publishBtn" style="width:100%; padding:15px; background:var(--accent); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Broadcast Message</button>
+  <div id="adminContent" style="display:none;">
+    <div class="admin-tabs">
+      <button class="tab-btn active" id="tabPostsBtn">Posts</button>
+      <button class="tab-btn" id="tabLogsBtn">Log</button>
+    </div>
+
+    <div id="adminTabPosts">
+      <input type="text" id="postAuthor" placeholder="Author Name">
+      <textarea id="postText" rows="3" placeholder="Proxy/Message..."></textarea>
+      <div id="adminBlockerButtons"></div>
+      <button id="publishBtn" style="width:100%; padding:15px; background:var(--accent); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Broadcast Post</button>
+    </div>
+
+    <div id="adminTabLogs" style="display:none;">
+      <input type="text" id="logHeading" placeholder="Update Heading (e.g. v2.1 Patch)">
+      <textarea id="logBody" rows="5" placeholder="Log details..."></textarea>
+      <button id="publishLogBtn" style="width:100%; padding:15px; background:var(--green); color:var(--bg-dark); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Post Update Log</button>
+    </div>
   </div>
 </div>
 
@@ -252,16 +195,13 @@ const supabaseKey = 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F'
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
-
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
-let isAdmin = false; 
-let pendingActionId = null;
-let originalContentToMatch = "";
+let isAdmin = false;
 
+// UI Setup
 const grid = document.getElementById('gridContainer');
-const adminPillsContainer = document.getElementById('adminBlockerButtons');
+const adminPills = document.getElementById('adminBlockerButtons');
 
-// Setup UI
 const allCard = document.createElement('div');
 allCard.className = 'blocker-card all-card';
 allCard.textContent = "All Blockers";
@@ -280,13 +220,12 @@ blockers.forEach(b => {
   pill.textContent = b;
   pill.dataset.value = b;
   pill.onclick = () => pill.classList.toggle('selected');
-  adminPillsContainer.appendChild(pill);
+  adminPills.appendChild(pill);
 });
 
 function selectBlocker(name) {
   selectedBlocker = name;
   localStorage.setItem('eli_selected_blocker', name);
-  document.getElementById('posts').innerHTML = '';
   showApp();
 }
 
@@ -294,165 +233,100 @@ function showApp() {
   document.getElementById('selectionScreen').style.display = 'none';
   document.getElementById('appContainer').style.display = 'flex';
   document.getElementById('currentBlocker').textContent = selectedBlocker;
-  if (isAdmin) {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block';
-  }
   fetchPosts();
 }
 
-document.getElementById('changeBlockerBtn').onclick = () => {
-  localStorage.removeItem('eli_selected_blocker');
-  selectedBlocker = null;
-  document.getElementById('appContainer').style.display = 'none';
-  document.getElementById('selectionScreen').style.display = 'flex';
-};
-
-document.getElementById('selectAllAdmin').onclick = () => {
-    const pills = document.querySelectorAll('.admin-pill');
-    const allSelected = Array.from(pills).every(p => p.classList.contains('selected'));
-    pills.forEach(p => allSelected ? p.classList.remove('selected') : p.classList.add('selected'));
-};
-
+// Data Fetching
 async function fetchPosts() {
-  if (!selectedBlocker) return;
   const postsDiv = document.getElementById('posts');
-  if (postsDiv.innerHTML === '') {
-      postsDiv.innerHTML = `<h3 style="color:var(--text-muted); margin-top: 50px; opacity:0.6;">Loading feed...</h3>`;
-  }
-
   let query = supabase.from('posts').select('*');
-  if (selectedBlocker !== "All") {
-      query = query.eq('blocker', selectedBlocker);
-  }
+  if (selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
   
-  const { data, error } = await query.order('created_at', { ascending: false });
-  
-  if (error || !data || data.length === 0) {
-    postsDiv.innerHTML = `<h3 style="color:var(--text-muted); margin-top: 50px;">No posts found.</h3>`;
-    return;
-  }
+  const { data } = await query.order('created_at', { ascending: false });
+  if (!data) return;
 
-  const groupedPosts = [];
+  const grouped = [];
   data.forEach(item => {
-      const existing = groupedPosts.find(g => g.content === item.content && g.author === item.author);
-      if (existing) {
-          if (!existing.blockers.includes(item.blocker)) existing.blockers.push(item.blocker);
-      } else {
-          groupedPosts.push({ ...item, blockers: [item.blocker] });
-      }
+    const ex = grouped.find(g => g.content === item.content && g.author === item.author);
+    if (ex) { if (!ex.blockers.includes(item.blocker)) ex.blockers.push(item.blocker); }
+    else { grouped.push({ ...item, blockers: [item.blocker] }); }
   });
-  
-  postsDiv.innerHTML = groupedPosts.map(p => {
-    const d = new Date(p.created_at);
-    const dateStr = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
-    
-    // Capitalize blocker names for the "All" view
-    const formattedBlockers = p.blockers.map(b => b.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())).join(', ');
 
-    const unblockedHtml = (selectedBlocker === "All") 
-        ? `<div class="post-unblocked-list">Unblocked for: ${formattedBlockers}</div>`
-        : '';
+  postsDiv.innerHTML = grouped.map(p => {
+    const formatted = p.blockers.map(b => b.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())).join(', ');
+    const unblocked = (selectedBlocker === "All") ? `<div class="post-unblocked-list">Unblocked for: ${formatted}</div>` : '';
+    return `<div class="post-card">
+      <div class="post-meta"><div class="meta-top"><div class="post-author">By: ${p.author}</div><div class="post-date">${new Date(p.created_at).toLocaleDateString()}</div></div>${unblocked}</div>
+      <div class="post-content">${p.content}</div>
+    </div>`;
+  }).join('');
+}
 
-    return `
-    <div class="post-card">
-      <div class="post-meta">
-        <div class="meta-top">
-          <div class="post-author">By: ${p.author || 'Anonymous'}</div>
-          <div class="post-date">Posted on ${dateStr}</div>
-        </div>
-        ${unblockedHtml}
-      </div>
-      <div class="post-content">${linkify(p.content)}</div>
-      ${isAdmin ? `
-        <div class="admin-actions">
-          <button class="action-btn edit-btn" title="Edit" onclick="openEditModal(${p.id}, \`${p.content.replace(/`/g, '\\`')}\`)">✎</button>
-          <button class="action-btn delete-btn" title="Delete" onclick="openDelModal(${p.id})">🗑</button>
-        </div>
-      ` : ''}
+async function fetchLogs() {
+  const logList = document.getElementById('logList');
+  const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
+  if (!data) return;
+  logList.innerHTML = data.map(l => `
+    <div class="log-entry">
+      <h4>${l.heading}</h4>
+      <p>${l.body}</p>
+      <div class="log-date">Released: ${new Date(l.created_at).toLocaleString()}</div>
     </div>
-  `}).join('');
+  `).join('');
 }
 
-function showToast(msg, type = 'success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.backgroundColor = type === 'success' ? 'var(--green)' : 'var(--red)';
-  t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 3000);
-}
-
-function linkify(text) {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
-}
-
-document.getElementById('refreshBtn').onclick = () => { fetchPosts(); showToast('Feed updated'); };
-document.getElementById('showAdmin').onclick = () => {
-    document.getElementById('adminPanel').style.display = 'block';
-    document.getElementById('adminPassword').focus();
-};
-document.getElementById('closeAdmin').onclick = () => document.getElementById('adminPanel').style.display = 'none';
-
-const handleLogin = () => {
+// Admin Logic
+document.getElementById('loginBtn').onclick = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
     isAdmin = true;
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
-    showToast('Admin Access Granted');
-    fetchPosts(); 
-  } else { showToast('Invalid Password', 'error'); }
+  }
+};
+document.getElementById('adminPassword').onkeypress = (e) => { if(e.key==='Enter') document.getElementById('loginBtn').click(); };
+
+// Tab Switching
+document.getElementById('tabPostsBtn').onclick = () => {
+  document.getElementById('adminTabPosts').style.display = 'block';
+  document.getElementById('adminTabLogs').style.display = 'none';
+  document.getElementById('tabPostsBtn').classList.add('active');
+  document.getElementById('tabLogsBtn').classList.remove('active');
+};
+document.getElementById('tabLogsBtn').onclick = () => {
+  document.getElementById('adminTabPosts').style.display = 'none';
+  document.getElementById('adminTabLogs').style.display = 'block';
+  document.getElementById('tabLogsBtn').classList.add('active');
+  document.getElementById('tabPostsBtn').classList.remove('active');
 };
 
-document.getElementById('loginBtn').onclick = handleLogin;
-document.getElementById('adminPassword').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
-
+// Publishing
 document.getElementById('publishBtn').onclick = async () => {
   const text = document.getElementById('postText').value;
-  const author = document.getElementById('postAuthor').value.trim() || 'Anonymous';
-  const selectedPills = document.querySelectorAll('.admin-pill.selected');
-  if (!text.trim() || selectedPills.length === 0) return showToast('Check inputs!', 'error');
-  for (const pill of selectedPills) {
-    await supabase.from('posts').insert([{ blocker: pill.dataset.value, content: text, author: author }]);
+  const author = document.getElementById('postAuthor').value || 'Anonymous';
+  const selected = document.querySelectorAll('.admin-pill.selected');
+  for (const p of selected) {
+    await supabase.from('posts').insert([{ blocker: p.dataset.value, content: text, author: author }]);
   }
   document.getElementById('postText').value = '';
-  document.querySelectorAll('.admin-pill').forEach(p => p.classList.remove('selected'));
-  showToast('Broadcast Sent');
   fetchPosts();
 };
 
-window.openDelModal = (id) => {
-  pendingActionId = id;
-  document.getElementById('confirmModal').style.display = 'flex';
+document.getElementById('publishLogBtn').onclick = async () => {
+  const heading = document.getElementById('logHeading').value;
+  const body = document.getElementById('logBody').value;
+  if(!heading || !body) return;
+  await supabase.from('logs').insert([{ heading, body }]);
+  document.getElementById('logHeading').value = '';
+  document.getElementById('logBody').value = '';
+  alert('Update Log Published!');
 };
 
-document.getElementById('cancelDel').onclick = () => document.getElementById('confirmModal').style.display = 'none';
-document.getElementById('confirmDel').onclick = async () => {
-  const { data: postToMatch } = await supabase.from('posts').select('content').eq('id', pendingActionId).single();
-  if (postToMatch) {
-    const { error } = await supabase.from('posts').delete().eq('content', postToMatch.content);
-    document.getElementById('confirmModal').style.display = 'none';
-    if (error) showToast('Delete failed', 'error');
-    else { showToast('Message wiped globally'); fetchPosts(); }
-  }
-};
-
-window.openEditModal = (id, content) => {
-  pendingActionId = id;
-  originalContentToMatch = content;
-  document.getElementById('editPostText').value = content;
-  document.getElementById('editModal').style.display = 'flex';
-};
-
-document.getElementById('cancelEdit').onclick = () => document.getElementById('editModal').style.display = 'none';
-document.getElementById('confirmEdit').onclick = async () => {
-  const newContent = document.getElementById('editPostText').value;
-  if (!newContent.trim()) return showToast('Post cannot be empty', 'error');
-  const { error } = await supabase.from('posts').update({ content: newContent }).eq('content', originalContentToMatch);
-  document.getElementById('editModal').style.display = 'none';
-  if (error) showToast('Update failed', 'error');
-  else { showToast('Updated across all blockers'); fetchPosts(); }
-};
+// UI Toggles
+document.getElementById('viewLogs').onclick = () => { document.getElementById('logOverlay').style.display='block'; fetchLogs(); };
+document.getElementById('showAdmin').onclick = () => { document.getElementById('adminPanel').style.display='block'; document.getElementById('adminPassword').focus(); };
+document.getElementById('closeAdmin').onclick = () => document.getElementById('adminPanel').style.display='none';
+document.getElementById('changeBlockerBtn').onclick = () => { localStorage.removeItem('eli_selected_blocker'); location.reload(); };
+document.getElementById('refreshBtn').onclick = () => fetchPosts();
 
 if (selectedBlocker) showApp();
 </script>
