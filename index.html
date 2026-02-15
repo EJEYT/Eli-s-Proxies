@@ -140,7 +140,7 @@
       </div>
       <div class="search-container">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" class="search-bar" placeholder="Search key words...">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search proxies or authors...">
       </div>
       <div class="header-actions">
         <button id="viewLogs" class="btn-outline">Update Log</button>
@@ -173,8 +173,8 @@
 
   <div id="adminContent" style="display:none;">
     <div class="admin-tabs">
-      <button class="tab-btn active" id="tabPostsBtn">Broadcast Post</button>
-      <button class="tab-btn" id="tabLogsBtn">System Update</button>
+      <button class="tab-btn active" id="tabPostsBtn">Post</button>
+      <button class="tab-btn" id="tabLogsBtn">Updates</button>
     </div>
     <div id="adminTabPosts">
       <input type="text" id="postAuthor" class="admin-input" placeholder="Author Name">
@@ -198,13 +198,16 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
 
-// SESSION PERSISTENCE FOR ADMIN
-let isAdmin = sessionStorage.getItem('eli_is_admin') === 'true';
+// GLOBAL VARIABLE - Resets on page refresh, stays on view change
+let isAdmin = false;
 
 function updateAdminUI() {
   if (isAdmin) {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
+  } else {
+    document.getElementById('loginSection').style.display = 'block';
+    document.getElementById('adminContent').style.display = 'none';
   }
 }
 
@@ -271,7 +274,6 @@ function renderPosts(posts) {
 const attemptLogin = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
     isAdmin = true;
-    sessionStorage.setItem('eli_is_admin', 'true');
     updateAdminUI();
     showNotice("Admin Mode Activated"); fetchPosts();
   } else { showNotice("Invalid Password", "error"); }
@@ -280,7 +282,6 @@ const attemptLogin = () => {
 document.getElementById('loginBtn').onclick = attemptLogin;
 document.getElementById('adminPassword').onkeypress = (e) => { if(e.key==='Enter') attemptLogin(); };
 
-// ... (existing post/delete/tab logic) ...
 window.deletePost = async (content) => {
   const { error } = await supabase.from('posts').delete().eq('content', content);
   if (!error) { showNotice("Post Wiped Everywhere"); fetchPosts(); }
@@ -316,12 +317,16 @@ document.getElementById('viewLogs').onclick = async () => {
   const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
   document.getElementById('logList').innerHTML = data.map(l => `<div style="border-bottom:1px solid #313244; padding:15px 0;"><h4>${l.heading}</h4><p>${l.body}</p></div>`).join('');
 };
+
 document.getElementById('changeBlockerBtn').onclick = () => { 
   localStorage.removeItem('eli_selected_blocker'); 
   document.getElementById('appContainer').style.display = 'none';
   document.getElementById('selectionScreen').style.display = 'flex';
 };
-document.getElementById('refreshBtn').onclick = () => { fetchPosts(); showNotice("Feed Updated"); };
+
+document.getElementById('refreshBtn').onclick = () => { 
+  location.reload(); // Hard refresh to reset Admin and pull new data
+};
 
 document.getElementById('tabPostsBtn').onclick = () => {
   document.getElementById('adminTabPosts').style.display='block'; document.getElementById('adminTabLogs').style.display='none';
@@ -333,7 +338,6 @@ document.getElementById('tabLogsBtn').onclick = () => {
 };
 
 // INITIALIZE
-updateAdminUI();
 if (selectedBlocker) selectBlocker(selectedBlocker);
 </script>
 </body>
