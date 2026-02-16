@@ -60,8 +60,9 @@
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
   #posts { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-  .post-card { background: var(--bg-card); padding: 25px; border-radius: 16px; border-left: 6px solid var(--accent); width: 100%; max-width: 800px; }
+  .post-card { background: var(--bg-card); padding: 25px; border-radius: 16px; border-left: 6px solid var(--accent); width: 100%; max-width: 800px; position: relative; }
   .post-author { color: var(--accent); font-weight: 800; }
+  .post-unblocked-list { font-size: 0.75rem; color: var(--green); margin-top: 4px; font-weight: 600; font-family: monospace; }
   .post-content { white-space: pre-wrap; font-size: 1.1rem; margin-top: 10px; word-break: break-all; }
   .post-content a { color: var(--accent); text-decoration: underline; }
 
@@ -214,14 +215,26 @@ async function fetchPosts() {
   const grouped = [];
   data.forEach(item => {
     const ex = grouped.find(g => g.content === item.content && g.author === item.author);
-    if (ex) { ex.ids.push(item.id); }
-    else { grouped.push({ ...item, ids: [item.id] }); }
+    if (ex) { 
+        if (!ex.blockers.includes(item.blocker)) ex.blockers.push(item.blocker);
+        ex.ids.push(item.id); 
+    }
+    else { grouped.push({ ...item, ids: [item.id], blockers: [item.blocker] }); }
   });
 
-  document.getElementById('posts').innerHTML = grouped.map(p => `
+  document.getElementById('posts').innerHTML = grouped.map(p => {
+    // Logic for "Unblocked for:" list ONLY in "All" view
+    const unblockedList = (selectedBlocker === "All") 
+        ? `<div class="post-unblocked-list">Unblocked for: ${p.blockers.map(b => b.replace(/_/g, ' ')).join(', ')}</div>` 
+        : '';
+
+    return `
     <div class="post-card">
       <div style="display:flex; justify-content:space-between">
-        <span class="post-author">${p.author}</span>
+        <div>
+            <span class="post-author">${p.author}</span>
+            ${unblockedList}
+        </div>
         <span style="font-size:0.8rem; color:var(--text-muted)">${new Date(p.created_at).toLocaleDateString()}</span>
       </div>
       <div class="post-content">${linkify(p.content)}</div>
@@ -229,8 +242,8 @@ async function fetchPosts() {
         <button class="small-action" onclick="window.startEdit('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit</button>
         <button class="small-action" style="color:var(--red)" onclick="window.deletePost('${p.ids.join(',')}')">Delete</button>
       </div>` : ''}
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 window.switchTab = (tab) => {
