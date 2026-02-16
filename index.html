@@ -164,7 +164,10 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
-let isAdmin = localStorage.getItem('eli_is_admin') === 'true';
+
+// SESSION STORAGE: Stays while navigating, dies on page refresh
+let isAdmin = sessionStorage.getItem('eli_is_admin') === 'true'; 
+
 let editingPostIds = [];
 
 function showNotice(msg, type = 'success') {
@@ -207,8 +210,9 @@ window.selectBlocker = (name) => {
 };
 
 window.goBack = () => {
+  // Navigation back to selection screen doesn't count as a refresh, so session stays.
   localStorage.removeItem('eli_selected_blocker');
-  location.reload();
+  location.reload(); 
 }
 
 async function fetchPosts() {
@@ -297,7 +301,6 @@ window.deleteGroup = async (ids) => {
   showNotice("Post Removed Everywhere"); fetchPosts();
 };
 
-// --- ENTER KEY LOGIC ---
 document.getElementById('adminPassword').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     document.getElementById('loginBtn').click();
@@ -307,7 +310,7 @@ document.getElementById('adminPassword').addEventListener('keydown', (e) => {
 document.getElementById('loginBtn').onclick = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
     isAdmin = true;
-    localStorage.setItem('eli_is_admin', 'true');
+    sessionStorage.setItem('eli_is_admin', 'true'); // SESSION ONLY
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
     showNotice("Admin Mode Activated"); fetchPosts();
