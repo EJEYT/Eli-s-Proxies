@@ -181,13 +181,13 @@
 
 <div id="editPanel" class="panel">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-    <h3 style="margin:0; color:var(--accent); font-size: 1.1rem;">Edit Proxy</h3>
+    <h3 style="margin:0; color:var(--accent); font-size: 1.1rem;">Global Edit</h3>
     <button onclick="window.cancelEdit()" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">&times;</button>
   </div>
+  <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Editing this will update it for <b>all</b> blockers it belongs to.</p>
   <input type="text" id="editAuthor" class="admin-input" placeholder="Author">
   <textarea id="editText" class="admin-input" rows="4" placeholder="Proxy link..."></textarea>
-  <p style="font-size:0.7rem; color:var(--text-muted); margin-bottom: 10px;">Note: Changes apply to all filtered instances of this link.</p>
-  <button id="updateBtn" class="admin-primary-btn">Update All</button>
+  <button id="updateBtn" class="admin-primary-btn">Apply Global Update</button>
   <button onclick="window.cancelEdit()" class="admin-primary-btn" style="background:#45475a; margin-top:5px;">Cancel</button>
 </div>
 
@@ -234,7 +234,7 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
 let isAdmin = false; 
-let editingIds = [];
+let currentEditingIds = [];
 
 function showNotice(msg, type='success') {
   const t = document.getElementById('toast');
@@ -282,20 +282,20 @@ async function fetchPosts() {
   const { data } = await query.order('created_at', { ascending: false });
   if (!data) return;
 
+  // LOGIC: Group entries by content so they appear as one card
   const grouped = [];
   data.forEach(item => {
-    const ex = grouped.find(g => g.content === item.content && g.author === item.author);
-    if (ex) { 
-        if (!ex.blockers.includes(item.blocker)) ex.blockers.push(item.blocker);
-        ex.ids.push(item.id); 
+    const existing = grouped.find(g => g.content === item.content && g.author === item.author);
+    if (existing) { 
+        if (!existing.blockers.includes(item.blocker)) existing.blockers.push(item.blocker);
+        existing.ids.push(item.id); 
     }
     else { grouped.push({ ...item, ids: [item.id], blockers: [item.blocker] }); }
   });
 
   document.getElementById('posts').innerHTML = grouped.map(p => {
-    const unblockedList = (selectedBlocker === "All") 
-        ? `<div class="post-unblocked-list">Unblocked: ${p.blockers.map(b => b.replace(/_/g, ' ')).join(', ')}</div>` 
-        : '';
+    // Show blocker tags only in "All" view or if it belongs to many
+    const unblockedList = `<div class="post-unblocked-list">Blockers: ${p.blockers.map(b => b.replace(/_/g, ' ')).join(', ')}</div>`;
 
     return `
     <div class="post-card">
@@ -308,8 +308,8 @@ async function fetchPosts() {
       </div>
       <div class="post-content">${linkify(p.content)}</div>
       ${isAdmin ? `<div style="margin-top:10px; text-align:right;">
-        <button class="small-action" onclick="window.startEdit('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit</button>
-        <button class="small-action" style="color:var(--red)" onclick="window.deletePost('${p.ids.join(',')}')">Delete</button>
+        <button class="small-action" onclick="window.startEdit('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit Global</button>
+        <button class="small-action" style="color:var(--red)" onclick="window.deletePost('${p.ids.join(',')}')">Delete All</button>
       </div>` : ''}
     </div>`;
   }).join('');
@@ -339,23 +339,25 @@ document.getElementById('loginBtn').onclick = () => {
   } else showNotice("Wrong Pass", "error");
 };
 
-// CREATE LOGIC
+// PUBLISH NEW
 document.getElementById('publishBtn').onclick = async () => {
   const author = document.getElementById('postAuthor').value || 'Admin';
   const content = document.getElementById('postText').value;
   const pills = document.querySelectorAll('#adminPanel .admin-pill.selected');
   if (!content) return;
-  if (pills.length === 0) return showNotice("Select a blocker", "error");
+  if (pills.length === 0) return showNotice("Select at least 1 blocker", "error");
   
-  for (let p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
-  showNotice("Published");
+  for (let p of pills) {
+    await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
+  }
+  showNotice("Published Successfully");
   document.getElementById('postText').value = '';
   fetchPosts();
 };
 
-// EDIT LOGIC
+// GLOBAL EDIT LOGIC
 window.startEdit = (ids, author, content) => {
-  editingIds = ids.split(',');
+  currentEditingIds = ids.split(','); // Store all IDs related to this group
   document.getElementById('editPanel').style.display = 'block';
   document.getElementById('editAuthor').value = author;
   document.getElementById('editText').value = content;
@@ -364,25 +366,32 @@ window.startEdit = (ids, author, content) => {
 document.getElementById('updateBtn').onclick = async () => {
   const author = document.getElementById('editAuthor').value || 'Admin';
   const content = document.getElementById('editText').value;
-  if (!content || editingIds.length === 0) return;
+  if (!content || currentEditingIds.length === 0) return;
 
-  for (let id of editingIds) await supabase.from('posts').update({ author, content }).eq('id', id);
-  showNotice("Updated Everywhere");
+  // Update every single record that was part of this "group"
+  for (let id of currentEditingIds) {
+    await supabase.from('posts').update({ author, content }).eq('id', id);
+  }
+
+  showNotice("Global Update Complete");
   window.cancelEdit();
   fetchPosts();
 };
 
 window.cancelEdit = () => {
-  editingIds = [];
+  currentEditingIds = [];
   document.getElementById('editPanel').style.display = 'none';
 };
 
 window.deletePost = async (ids) => {
-  if(!confirm("Delete this proxy?")) return;
-  for (let id of ids.split(',')) await supabase.from('posts').delete().eq('id', id);
+  if(!confirm("This will delete this proxy from ALL categorized blockers. Proceed?")) return;
+  for (let id of ids.split(',')) {
+    await supabase.from('posts').delete().eq('id', id);
+  }
   fetchPosts();
 };
 
+// LOGS
 document.getElementById('publishLogBtn').onclick = async () => {
   const heading = document.getElementById('logHeading').value;
   const body = document.getElementById('logBody').value;
