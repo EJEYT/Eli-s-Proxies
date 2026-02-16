@@ -164,11 +164,7 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
-
-// NO STORAGE: This variable will ALWAYS reset to false on page refresh
-let isAdmin = false; 
-
-let editingPostIds = [];
+let isAdmin = false; // Reset to false on refresh, stays true during JS navigation
 
 function showNotice(msg, type = 'success') {
   const t = document.getElementById('toast');
@@ -181,6 +177,7 @@ function linkify(text) {
   return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
 }
 
+// Initial Grid Build
 const grid = document.getElementById('gridContainer');
 blockers.forEach(b => {
   const card = document.createElement('div');
@@ -201,7 +198,7 @@ window.selectBlocker = (name) => {
   document.getElementById('appContainer').style.display = 'flex';
   document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
   
-  // Only shows admin content if the live isAdmin variable is true
+  // Refresh Admin UI state without re-logging
   if(isAdmin) {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
@@ -214,8 +211,11 @@ window.selectBlocker = (name) => {
 };
 
 window.goBack = () => {
+  // FIXED: No location.reload(). Just toggle visibility.
   localStorage.removeItem('eli_selected_blocker');
-  location.reload(); 
+  document.getElementById('selectionScreen').style.display = 'flex';
+  document.getElementById('appContainer').style.display = 'none';
+  // If admin panel was open, we leave it open/hidden based on logic, but don't reset JS
 }
 
 async function fetchPosts() {
@@ -265,20 +265,10 @@ window.startEdit = (ids, author, content) => {
   document.getElementById('adminPanelTitle').textContent = "Editing Post...";
 };
 
-document.getElementById('cancelEditBtn').onclick = () => {
-  editingPostIds = [];
-  document.getElementById('postAuthor').value = '';
-  document.getElementById('postText').value = '';
-  document.getElementById('publishBtn').textContent = "Post Everywhere";
-  document.getElementById('cancelEditBtn').style.display = "none";
-  document.getElementById('adminPanelTitle').textContent = "Admin Panel";
-};
-
 document.getElementById('publishBtn').onclick = async () => {
   const author = document.getElementById('postAuthor').value || 'Admin';
   const content = document.getElementById('postText').value;
   const pills = document.querySelectorAll('.admin-pill.selected');
-
   if (!content) return showNotice("Post cannot be empty", "error");
 
   if (editingPostIds.length > 0) {
@@ -298,16 +288,8 @@ document.getElementById('publishBtn').onclick = async () => {
   fetchPosts();
 };
 
-window.deleteGroup = async (ids) => {
-  const idArray = ids.split(',');
-  for (let id of idArray) await supabase.from('posts').delete().eq('id', id);
-  showNotice("Post Removed Everywhere"); fetchPosts();
-};
-
 document.getElementById('adminPassword').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    document.getElementById('loginBtn').click();
-  }
+  if (e.key === 'Enter') document.getElementById('loginBtn').click();
 });
 
 document.getElementById('loginBtn').onclick = () => {
@@ -315,7 +297,8 @@ document.getElementById('loginBtn').onclick = () => {
     isAdmin = true;
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
-    showNotice("Admin Mode Activated"); fetchPosts();
+    showNotice("Admin Mode Activated"); 
+    fetchPosts(); // Re-render with edit buttons
   } else showNotice("Invalid Password", "error");
 };
 
@@ -334,12 +317,9 @@ document.getElementById('viewLogs').onclick = async () => {
 
 document.getElementById('showAdmin').onclick = () => document.getElementById('adminPanel').style.display='block';
 document.getElementById('closeAdmin').onclick = () => document.getElementById('adminPanel').style.display='none';
+document.getElementById('refreshBtn').onclick = () => fetchPosts();
 
-document.getElementById('refreshBtn').onclick = () => {
-    fetchPosts();
-    showNotice("Posts Refreshed");
-};
-
+// Auto-run if blocker already saved (on a hard refresh)
 if (selectedBlocker) selectBlocker(selectedBlocker);
 </script>
 </body>
