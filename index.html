@@ -165,8 +165,8 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
 
-// SESSION STORAGE: Stays while navigating, dies on page refresh
-let isAdmin = sessionStorage.getItem('eli_is_admin') === 'true'; 
+// NO STORAGE: This variable will ALWAYS reset to false on page refresh
+let isAdmin = false; 
 
 let editingPostIds = [];
 
@@ -201,16 +201,19 @@ window.selectBlocker = (name) => {
   document.getElementById('appContainer').style.display = 'flex';
   document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
   
+  // Only shows admin content if the live isAdmin variable is true
   if(isAdmin) {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
+  } else {
+    document.getElementById('loginSection').style.display = 'block';
+    document.getElementById('adminContent').style.display = 'none';
   }
   
   fetchPosts();
 };
 
 window.goBack = () => {
-  // Navigation back to selection screen doesn't count as a refresh, so session stays.
   localStorage.removeItem('eli_selected_blocker');
   location.reload(); 
 }
@@ -310,7 +313,6 @@ document.getElementById('adminPassword').addEventListener('keydown', (e) => {
 document.getElementById('loginBtn').onclick = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
     isAdmin = true;
-    sessionStorage.setItem('eli_is_admin', 'true'); // SESSION ONLY
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
     showNotice("Admin Mode Activated"); fetchPosts();
