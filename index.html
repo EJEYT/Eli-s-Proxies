@@ -4,7 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Eli's Proxies | Start your unblocking journey</title>
+  <title>Eli's Proxies</title>
+  <meta name="title" content="Eli's Proxies | Start your unblocking journey">
+  <meta name="description" content="The ultimate destination for unblocked links and proxy feeds.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://elis-proxies.com/"> 
+  <meta property="og:title" content="Eli's Proxies | Start your unblocking journey">
+  <meta property="og:description" content="Get the latest unblocked links for Linewize, Securly, GoGuardian, and more.">
+  <meta property="og:image" content="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
+
+  <link rel="icon" type="image/png" href="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
+
   <style>
     :root {
       --bg-dark: #1e1e2e;
@@ -22,20 +33,24 @@
     * { box-sizing: border-box; }
     body { 
       font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-      margin: 0; background: var(--bg-dark); color: var(--text-main); 
-      height: 100vh; overflow: hidden; 
+      margin: 0; 
+      background: var(--bg-dark); 
+      color: var(--text-main); 
+      height: 100vh; 
+      overflow: hidden; 
     }
 
-    /* --- TOAST --- */
+    /* --- TOAST NOTIFICATIONS --- */
     #toast {
       position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
       padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold;
       z-index: 12000; transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5); pointer-events: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px;
+      width: auto; max-width: 90%; text-align: center; pointer-events: none;
     }
     #toast.show { top: 20px; }
 
-    /* --- MODALS & PANELS --- */
+    /* --- CUSTOM CONFIRM MODAL --- */
     #confirmModal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: var(--overlay); z-index: 10000; align-items: center; justify-content: center;
@@ -43,37 +58,67 @@
     }
     .modal-content {
       background: var(--bg-card); padding: 25px; border-radius: 20px;
-      width: 90%; max-width: 400px; border: 1px solid #45475a; text-align: center;
+      width: 90%; max-width: 400px; border: 1px solid #45475a;
+      text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
     .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-    .modal-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+    .modal-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn-cancel { background: #45475a; color: white; }
+    .btn-confirm { background: var(--red); color: white; }
+    .btn-confirm:hover { filter: brightness(1.1); }
 
+    /* --- SELECTION SCREEN --- */
+    #selectionScreen {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; background: radial-gradient(circle at center, #24273a 0%, #1e1e2e 100%);
+      overflow-y: auto; padding: 20px;
+    }
+    .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; margin-top: 20px; }
+    .blocker-card {
+      background: var(--bg-card); border: 1px solid #45475a; padding: 20px;
+      border-radius: 15px; cursor: pointer; transition: 0.3s; font-weight: bold;
+      text-align: center; color: var(--text-main); display: flex; align-items: center; justify-content: center; min-height: 80px;
+    }
+    .blocker-card:hover { transform: translateY(-3px); background: var(--accent); color: var(--bg-dark); }
+    
+    /* --- MAIN APP LAYOUT --- */
     .app-container { display: none; width: 100%; height: 100%; flex-direction: column; }
-    .header { padding: 10px 20px; border-bottom: 1px solid #313244; display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar); }
-    .search-bar { flex: 1; margin: 0 15px; padding: 8px 15px; background: var(--bg-dark); border: 1px solid #45475a; border-radius: 20px; color: white; outline: none; }
-    
+    .header { padding: 10px 20px; border-bottom: 1px solid #313244; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; background: var(--bg-sidebar); gap: 10px; z-index: 10; }
+    .branding-area { display: flex; align-items: center; gap: 10px; }
+    .branding-area h2 { margin: 0; font-size: 1.2rem; color: white; white-space: nowrap; }
+    .search-bar { flex: 1; min-width: 150px; padding: 8px 15px; background: var(--bg-dark); border: 1px solid #45475a; border-radius: 20px; color: white; outline: none; }
+    .header-actions { display: flex; gap: 5px; }
+    .btn-outline { background:none; border:1px solid var(--text-muted); color:var(--text-muted); border-radius:20px; padding:6px 12px; cursor:pointer; font-weight:bold; transition: 0.2s; font-size: 0.85rem; white-space: nowrap; }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
     #posts { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 15px; }
-    .post-card { background: var(--bg-card); padding: 20px; border-radius: 16px; border-left: 5px solid var(--accent); width: 100%; max-width: 700px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-    
-    .panel { display: none; position: fixed; bottom: 20px; width: 400px; max-width: calc(100% - 40px); background: var(--bg-card); border: 1px solid #45475a; padding: 20px; border-radius: 20px; z-index: 5000; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+    .post-card { background: var(--bg-card); padding: 20px; border-radius: 16px; border-left: 5px solid var(--accent); width: 100%; max-width: 700px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; }
+    .post-unblocked-list { font-size: 0.7rem; color: var(--green); margin-top: 2px; font-weight: 600; font-family: monospace; }
+    .post-content { white-space: pre-wrap; font-size: 1rem; margin-top: 10px; word-break: break-all; line-height: 1.4; }
+    .post-content a { color: var(--accent); text-decoration: underline; }
+
+    /* --- PANELS --- */
+    .panel { display: none; position: fixed; bottom: 20px; width: 400px; max-width: calc(100% - 40px); background: var(--bg-card); border: 1px solid #45475a; padding: 20px; border-radius: 20px; z-index: 11000; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
     #adminPanel { right: 20px; }
-    #editPanel, #editLogPanel { left: 20px; }
+    #editPanel, #editLogPanel { left: 20px; border-left: 5px solid var(--accent); }
 
     .admin-input { width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid #45475a; color: white; border-radius: 8px; margin-bottom: 10px; outline: none; }
-    .admin-primary-btn { width: 100%; padding: 12px; background: var(--accent); color: var(--bg-dark); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 5px; }
-    
-    .btn-outline { background:none; border:1px solid var(--text-muted); color:var(--text-muted); border-radius:20px; padding:6px 12px; cursor:pointer; font-weight:bold; }
-    .small-action { background: #1e1e2e; border: 1px solid #45475a; color: white; padding: 4px 8px; border-radius: 5px; cursor: pointer; font-size: 0.7rem; margin-left: 5px; }
-    
-    .log-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 6000; padding: 20px; }
-    .log-container { max-width: 600px; margin: 0 auto; background: var(--bg-sidebar); border-radius: 20px; padding: 20px; max-height: 90vh; overflow-y: auto; }
-
-    #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
-    .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; margin-top: 20px; }
-    .blocker-card { background: var(--bg-card); padding: 20px; border-radius: 15px; cursor: pointer; text-align: center; }
+    .admin-primary-btn { width: 100%; padding: 12px; background: var(--accent); color: var(--bg-dark); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    .admin-tabs { display: flex; gap: 5px; margin-bottom: 15px; background: var(--bg-dark); padding: 4px; border-radius: 8px; }
+    .admin-tab { flex: 1; padding: 6px; text-align: center; cursor: pointer; border-radius: 6px; font-size: 0.75rem; color: var(--text-muted); }
+    .admin-tab.active { background: var(--bg-card); color: var(--accent); font-weight: bold; }
     .blocker-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 10px; }
-    .admin-pill { padding: 5px; border-radius: 6px; background: #1e1e2e; border: 1px solid #45475a; font-size: 0.65rem; cursor: pointer; text-align: center; }
+    .admin-pill { padding: 5px; border-radius: 6px; background: #1e1e2e; border: 1px solid #45475a; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; text-align: center; }
     .admin-pill.selected { background: var(--accent); color: var(--bg-dark); }
+
+    .log-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 6000; padding: 20px; }
+    .log-container { max-width: 600px; margin: 0 auto; background: var(--bg-sidebar); border-radius: 20px; padding: 20px; max-height: 90vh; overflow-y: auto; border: 1px solid #45475a; }
+
+    @media (max-width: 600px) {
+      #adminPanel, #editPanel, #editLogPanel { bottom: 0; right: 0; left: 0; width: 100%; border-radius: 20px 20px 0 0; max-width: 100%; }
+    }
+    .small-action { background: #1e1e2e; border: 1px solid #45475a; color: white; padding: 4px 8px; border-radius: 5px; cursor: pointer; font-size: 0.7rem; margin-left: 5px; }
   </style>
 </head>
 <body>
@@ -82,27 +127,30 @@
 
 <div id="confirmModal">
   <div class="modal-content">
-    <h3>Confirm Deletion</h3>
-    <p id="confirmMsg" style="color:var(--text-muted); font-size: 0.9rem;">Are you sure?</p>
+    <h3 style="margin-top:0">Delete Proxy?</h3>
+    <p style="color:var(--text-muted); font-size: 0.9rem;">This will remove this proxy from ALL categorized blockers. This cannot be undone.</p>
     <div class="modal-actions">
-      <button class="modal-btn" style="background:#45475a; color:white;" onclick="closeConfirm()">Cancel</button>
-      <button class="modal-btn" style="background:var(--red); color:white;" id="finalDeleteBtn">Delete</button>
+      <button class="modal-btn btn-cancel" id="confirmCancel">Go Back</button>
+      <button class="modal-btn btn-confirm" id="confirmDelete">Delete All</button>
     </div>
   </div>
 </div>
 
 <div id="selectionScreen">
-  <h1 style="color: white;">Eli's Proxies</h1>
+  <h1 style="color: white; font-size: 2rem; margin-bottom: 5px;">Eli's Proxies</h1>
+  <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Select your filter</p>
   <div class="blocker-grid" id="gridContainer"></div>
-  <div class="blocker-card" style="margin-top:20px; background: var(--accent); color: var(--bg-dark);" onclick="selectBlocker('All')">All Proxies</div>
+  <div class="blocker-card" style="margin-top:20px; width:100%; max-width:300px; background: var(--accent); color: var(--bg-dark);" onclick="selectBlocker('All')">All Proxies</div>
 </div>
 
 <div class="app-container" id="appContainer">
   <div class="header">
-    <button onclick="goBack()" class="btn-outline">←</button>
-    <h2 id="currentBlocker" style="margin:0 10px; font-size:1.1rem;">Feed</h2>
+    <div class="branding-area">
+      <button onclick="goBack()" class="btn-outline" style="padding: 4px 8px;">←</button>
+      <h2 id="currentBlocker">Feed</h2>
+    </div>
     <input type="text" id="searchInput" class="search-bar" placeholder="Search...">
-    <div style="display:flex; gap:5px;">
+    <div class="header-actions">
       <button id="refreshBtn" class="btn-outline">↻</button>
       <button id="viewLogs" class="btn-outline">Logs</button>
       <button id="showAdmin" class="btn-outline">Admin</button>
@@ -114,7 +162,7 @@
 <div id="logOverlay" class="log-overlay">
   <div class="log-container">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-      <h2>Update Logs</h2>
+      <h2 style="margin:0">Update Logs</h2>
       <button onclick="document.getElementById('logOverlay').style.display='none'" class="btn-outline">Close</button>
     </div>
     <div id="logList"></div>
@@ -122,45 +170,52 @@
 </div>
 
 <div id="editPanel" class="panel">
-  <h3 style="color:var(--accent)">Edit Global Post</h3>
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+    <h3 style="margin:0; color:var(--accent); font-size: 1.1rem;">Global Edit</h3>
+    <button onclick="window.cancelEdit()" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">&times;</button>
+  </div>
   <input type="text" id="editAuthor" class="admin-input" placeholder="Author">
-  <textarea id="editText" class="admin-input" rows="4"></textarea>
-  <button id="updateBtn" class="admin-primary-btn">Update All</button>
-  <button onclick="closePanels()" class="admin-primary-btn" style="background:#45475a;">Cancel</button>
+  <textarea id="editText" class="admin-input" rows="4" placeholder="Proxy link..."></textarea>
+  <button id="updateBtn" class="admin-primary-btn">Apply Global Update</button>
+  <button onclick="window.cancelEdit()" class="admin-primary-btn" style="background:#45475a; margin-top:5px;">Cancel</button>
 </div>
 
 <div id="editLogPanel" class="panel">
-  <h3 style="color:var(--green)">Edit Update Log</h3>
-  <input type="text" id="editLogTitle" class="admin-input" placeholder="Title">
-  <textarea id="editLogBody" class="admin-input" rows="4"></textarea>
-  <button id="updateLogBtn" class="admin-primary-btn" style="background:var(--green); color:black;">Update Log</button>
-  <button onclick="closePanels()" class="admin-primary-btn" style="background:#45475a;">Cancel</button>
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+    <h3 style="margin:0; color:var(--green); font-size: 1.1rem;">Edit Log</h3>
+    <button onclick="window.cancelLogEdit()" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">&times;</button>
+  </div>
+  <input type="text" id="editLogHeading" class="admin-input" placeholder="Heading">
+  <textarea id="editLogBody" class="admin-input" rows="4" placeholder="Log details..."></textarea>
+  <button id="updateLogBtn" class="admin-primary-btn">Update Log</button>
+  <button onclick="window.cancelLogEdit()" class="admin-primary-btn" style="background:#45475a; margin-top:5px;">Cancel</button>
 </div>
 
 <div id="adminPanel" class="panel">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-    <h3>Admin</h3>
-    <button onclick="closePanels()" style="background:none; border:none; color:white; font-size:1.5rem;">&times;</button>
+    <h3 style="margin:0; color:var(--accent); font-size: 1.1rem;">Admin Controls</h3>
+    <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">&times;</button>
   </div>
   <div id="loginSection">
     <input type="password" id="adminPassword" class="admin-input" placeholder="Password">
     <button id="loginBtn" class="admin-primary-btn">Login</button>
   </div>
   <div id="adminContent" style="display:none;">
-    <div style="display:flex; gap:5px; margin-bottom:10px;">
-        <button onclick="setTab('post')" id="tabP" style="flex:1" class="btn-outline">Proxy</button>
-        <button onclick="setTab('log')" id="tabL" style="flex:1" class="btn-outline">Log</button>
+    <div class="admin-tabs">
+      <div class="admin-tab active" id="tabPost" onclick="switchTab('post')">New Proxy</div>
+      <div class="admin-tab" id="tabLog" onclick="switchTab('log')">Add Log</div>
     </div>
     <div id="panePost">
-        <input type="text" id="postAuthor" class="admin-input" placeholder="Author">
-        <textarea id="postText" class="admin-input" placeholder="Content"></textarea>
-        <div id="adminBlockerButtons" class="blocker-pills"></div>
-        <button id="publishBtn" class="admin-primary-btn">Publish</button>
+      <input type="text" id="postAuthor" class="admin-input" placeholder="Author">
+      <textarea id="postText" class="admin-input" rows="3" placeholder="Proxy link..."></textarea>
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-size:0.7rem; color:var(--text-muted)">Blockers:</span><button onclick="selectAllBlockers()" style="background:none; border:none; color:var(--accent); cursor:pointer; font-size:0.7rem;">Select All</button></div>
+      <div id="adminBlockerButtons" class="blocker-pills"></div>
+      <button id="publishBtn" class="admin-primary-btn">Publish</button>
     </div>
     <div id="paneLog" style="display:none;">
-        <input type="text" id="logTitle" class="admin-input" placeholder="Title">
-        <textarea id="logBody" class="admin-input" placeholder="Details"></textarea>
-        <button id="publishLogBtn" class="admin-primary-btn">Add Log</button>
+      <input type="text" id="logHeading" class="admin-input" placeholder="Title">
+      <textarea id="logBody" class="admin-input" rows="4" placeholder="Update details..."></textarea>
+      <button id="publishLogBtn" class="admin-primary-btn">Add Log</button>
     </div>
   </div>
 </div>
@@ -172,8 +227,9 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_selected_blocker');
 let isAdmin = false; 
-let editIds = [];
-let editLogId = null;
+let currentEditingIds = [];
+let currentEditingLogId = null;
+let idsToDelete = null;
 
 function showNotice(msg, type='success') {
   const t = document.getElementById('toast');
@@ -181,15 +237,9 @@ function showNotice(msg, type='success') {
   t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// Localize Date - converts UTC to User's specific Calendar Day
-function formatDate(isoString) {
-  const date = new Date(isoString);
-  return date.toLocaleDateString(); // No time, just the day relative to user's location
-}
-
 function linkify(text) {
   const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-  return text.replace(urlPattern, '<a href="$1" target="_blank" style="color:var(--accent)">$1</a>');
+  return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
 blockers.forEach(b => {
@@ -209,155 +259,195 @@ window.selectBlocker = (name) => {
   localStorage.setItem('eli_selected_blocker', name);
   document.getElementById('selectionScreen').style.display = 'none';
   document.getElementById('appContainer').style.display = 'flex';
-  document.getElementById('currentBlocker').textContent = name.replace(/_/g, ' ');
+  document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
   fetchPosts();
 };
 
 window.goBack = () => {
   localStorage.removeItem('eli_selected_blocker');
-  location.reload();
+  document.getElementById('selectionScreen').style.display = 'flex';
+  document.getElementById('appContainer').style.display = 'none';
 };
 
-async function fetchPosts(silent = true) {
+async function fetchPosts(isSilent = true) {
   let query = supabase.from('posts').select('*');
-  if (selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
+  if (selectedBlocker && selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
   const { data } = await query.order('created_at', { ascending: false });
   if (!data) return;
-
   const grouped = [];
   data.forEach(item => {
     const existing = grouped.find(g => g.content === item.content && g.author === item.author);
     if (existing) { 
         if (!existing.blockers.includes(item.blocker)) existing.blockers.push(item.blocker);
         existing.ids.push(item.id); 
-    } else { grouped.push({ ...item, ids: [item.id], blockers: [item.blocker] }); }
+    }
+    else { grouped.push({ ...item, ids: [item.id], blockers: [item.blocker] }); }
   });
-
-  document.getElementById('posts').innerHTML = grouped.map(p => `
+  document.getElementById('posts').innerHTML = grouped.map(p => {
+    return `
     <div class="post-card">
-      <div style="display:flex; justify-content:space-between">
-        <span class="post-author" style="color:var(--accent); font-weight:bold">${p.author}</span>
-        <span style="font-size:0.75rem; color:var(--text-muted)">${formatDate(p.created_at)}</span>
+      <div style="display:flex; justify-content:space-between; align-items: flex-start;">
+        <div>
+            <span class="post-author">${p.author}</span>
+            <div class="post-unblocked-list">Blockers: ${p.blockers.map(b => b.replace(/_/g, ' ')).join(', ')}</div>
+        </div>
+        <span style="font-size:0.75rem; color:var(--text-muted)">${new Date(p.created_at).toLocaleDateString()}</span>
       </div>
-      <div style="font-size:0.7rem; color:var(--green)">${p.blockers.join(', ')}</div>
-      <div style="margin-top:10px; white-space:pre-wrap;">${linkify(p.content)}</div>
-      ${isAdmin ? `<div style="text-align:right; margin-top:10px;">
-        <button class="small-action" onclick="startEditPost('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit</button>
-        <button class="small-action" style="color:var(--red)" onclick="askDelPost('${p.ids.join(',')}')">Delete</button>
+      <div class="post-content">${linkify(p.content)}</div>
+      ${isAdmin ? `<div style="margin-top:10px; text-align:right;">
+        <button class="small-action" onclick="window.startEdit('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit Global</button>
+        <button class="small-action" style="color:var(--red)" onclick="window.requestDelete('${p.ids.join(',')}')">Delete All</button>
       </div>` : ''}
-    </div>
-  `).join('');
-  if(!silent) showNotice("Posts refreshed");
+    </div>`;
+  }).join('');
+  
+  if(!isSilent) showNotice("Posts refreshed");
 }
 
-window.startEditPost = (ids, author, content) => {
-  editIds = ids.split(',');
+window.switchTab = (tab) => {
+  document.getElementById('panePost').style.display = tab === 'post' ? 'block' : 'none';
+  document.getElementById('paneLog').style.display = tab === 'log' ? 'block' : 'none';
+  document.getElementById('tabPost').classList.toggle('active', tab === 'post');
+  document.getElementById('tabLog').classList.toggle('active', tab === 'log');
+};
+
+window.selectAllBlockers = () => {
+  document.querySelectorAll('#adminPanel .admin-pill').forEach(p => p.classList.add('selected'));
+};
+
+const loginAction = () => {
+  if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
+    isAdmin = true;
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    showNotice("Admin Mode On"); fetchPosts();
+  } else showNotice("Wrong Pass", "error");
+};
+
+document.getElementById('loginBtn').onclick = loginAction;
+document.getElementById('adminPassword').onkeydown = (e) => {
+  if (e.key === 'Enter') loginAction();
+};
+
+document.getElementById('publishBtn').onclick = async () => {
+  const author = document.getElementById('postAuthor').value || 'Admin';
+  const content = document.getElementById('postText').value;
+  const pills = document.querySelectorAll('#adminPanel .admin-pill.selected');
+  if (!content || pills.length === 0) return;
+  for (let p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
+  showNotice("Published Successfully");
+  document.getElementById('postText').value = '';
+  fetchPosts();
+};
+
+// LOG PUBLISH
+document.getElementById('publishLogBtn').onclick = async () => {
+  const heading = document.getElementById('logHeading').value;
+  const body = document.getElementById('logBody').value;
+  if (!heading || !body) return;
+  await supabase.from('logs').insert([{ heading, body }]);
+  showNotice("Log Added");
+  document.getElementById('logHeading').value = '';
+  document.getElementById('logBody').value = '';
+};
+
+// LOG EDITING LOGIC
+window.startLogEdit = (id, heading, body) => {
+  currentEditingLogId = id;
+  document.getElementById('editLogHeading').value = heading;
+  document.getElementById('editLogBody').value = body;
+  document.getElementById('editLogPanel').style.display = 'block';
+};
+
+window.cancelLogEdit = () => {
+  document.getElementById('editLogPanel').style.display = 'none';
+  currentEditingLogId = null;
+};
+
+document.getElementById('updateLogBtn').onclick = async () => {
+  const heading = document.getElementById('editLogHeading').value;
+  const body = document.getElementById('editLogBody').value;
+  if (!heading || !body) return;
+  await supabase.from('logs').update({ heading, body }).eq('id', currentEditingLogId);
+  showNotice("Log Updated");
+  window.cancelLogEdit();
+  document.getElementById('viewLogs').click(); // Refresh logs view
+};
+
+window.deleteLog = async (id) => {
+  if (confirm("Permanently delete this log?")) {
+    await supabase.from('logs').delete().eq('id', id);
+    showNotice("Log Deleted");
+    document.getElementById('viewLogs').click();
+  }
+};
+
+// POST EDIT
+window.startEdit = (ids, author, content) => {
+  currentEditingIds = ids.split(',');
   document.getElementById('editPanel').style.display = 'block';
   document.getElementById('editAuthor').value = author;
   document.getElementById('editText').value = content;
 };
 
 document.getElementById('updateBtn').onclick = async () => {
-  const author = document.getElementById('editAuthor').value;
+  const author = document.getElementById('editAuthor').value || 'Admin';
   const content = document.getElementById('editText').value;
-  for (let id of editIds) await supabase.from('posts').update({ author, content }).eq('id', id);
-  showNotice("Updated Globally");
-  closePanels(); fetchPosts();
+  for (let id of currentEditingIds) await supabase.from('posts').update({ author, content }).eq('id', id);
+  showNotice("Global Update Complete");
+  window.cancelEdit();
+  fetchPosts();
 };
 
-window.startEditLog = (id, title, body) => {
-  editLogId = id;
-  document.getElementById('editLogPanel').style.display = 'block';
-  document.getElementById('editLogTitle').value = title;
-  document.getElementById('editLogBody').value = body;
-};
+window.cancelEdit = () => { document.getElementById('editPanel').style.display = 'none'; };
 
-document.getElementById('updateLogBtn').onclick = async () => {
-  const heading = document.getElementById('editLogTitle').value;
-  const body = document.getElementById('editLogBody').value;
-  await supabase.from('logs').update({ heading, body }).eq('id', editLogId);
-  showNotice("Log Updated");
-  closePanels();
-  document.getElementById('viewLogs').click(); 
-};
-
-window.askDelPost = (ids) => {
-  document.getElementById('confirmMsg').textContent = "Delete this proxy from ALL categories?";
+window.requestDelete = (ids) => {
+  idsToDelete = ids;
   document.getElementById('confirmModal').style.display = 'flex';
-  document.getElementById('finalDeleteBtn').onclick = async () => {
-    for (let id of ids.split(',')) await supabase.from('posts').delete().eq('id', id);
-    closeConfirm(); fetchPosts();
-  };
 };
 
-window.closeConfirm = () => document.getElementById('confirmModal').style.display = 'none';
-window.closePanels = () => { 
-    document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+document.getElementById('confirmCancel').onclick = () => {
+  idsToDelete = null;
+  document.getElementById('confirmModal').style.display = 'none';
 };
 
-document.getElementById('loginBtn').onclick = () => {
-  if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
-    isAdmin = true;
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block';
-    showNotice("Admin Active"); fetchPosts();
-  } else showNotice("Wrong Pass", "error");
-};
-
-document.getElementById('adminPassword').onkeydown = (e) => { if(e.key === 'Enter') document.getElementById('loginBtn').click(); };
-
-document.getElementById('publishBtn').onclick = async () => {
-  const author = document.getElementById('postAuthor').value || 'Admin';
-  const content = document.getElementById('postText').value;
-  const pills = document.querySelectorAll('.admin-pill.selected');
-  if(!content || pills.length === 0) return;
-  for (let p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
-  showNotice("Published"); document.getElementById('postText').value = ''; fetchPosts();
-};
-
-document.getElementById('publishLogBtn').onclick = async () => {
-  const heading = document.getElementById('logTitle').value;
-  const body = document.getElementById('logBody').value;
-  if(!heading) return;
-  await supabase.from('logs').insert([{ heading, body }]);
-  showNotice("Log Added");
-  document.getElementById('logTitle').value = ''; document.getElementById('logBody').value = '';
-};
-
-window.setTab = (t) => {
-    document.getElementById('panePost').style.display = t === 'post' ? 'block' : 'none';
-    document.getElementById('paneLog').style.display = t === 'log' ? 'block' : 'none';
+document.getElementById('confirmDelete').onclick = async () => {
+  if (idsToDelete) {
+    for (let id of idsToDelete.split(',')) {
+      await supabase.from('posts').delete().eq('id', id);
+    }
+    showNotice("Group Deleted", "success");
+    idsToDelete = null;
+    document.getElementById('confirmModal').style.display = 'none';
+    fetchPosts();
+  }
 };
 
 document.getElementById('viewLogs').onclick = async () => {
   document.getElementById('logOverlay').style.display = 'block';
   const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
-  document.getElementById('logList').innerHTML = data.map(l => `
+  document.getElementById('logList').innerHTML = data.map(l => {
+    return `
     <div style="border-bottom:1px solid #45475a; padding:15px 0;">
-      <div style="display:flex; justify-content:space-between">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
         <strong style="color:var(--accent)">${l.heading}</strong>
-        <span style="font-size:0.7rem; color:var(--text-muted)">${formatDate(l.created_at)}</span>
+        ${isAdmin ? `
+          <div>
+            <button class="small-action" onclick="window.startLogEdit('${l.id}', \`${l.heading}\`, \`${l.body}\`)">Edit</button>
+            <button class="small-action" style="color:var(--red)" onclick="window.deleteLog('${l.id}')">Delete</button>
+          </div>
+        ` : ''}
       </div>
-      <p style="font-size:0.85rem">${linkify(l.body)}</p>
-      ${isAdmin ? `<div>
-        <button class="small-action" onclick="startEditLog('${l.id}', \`${l.heading}\`, \`${l.body}\`)">Edit</button>
-        <button class="small-action" style="color:var(--red)" onclick="deleteLog('${l.id}')">Delete</button>
-      </div>` : ''}
-    </div>
-  `).join('');
-};
-
-window.deleteLog = async (id) => {
-    if(!confirm("Delete log?")) return;
-    await supabase.from('logs').delete().eq('id', id);
-    document.getElementById('viewLogs').click();
+      <p>${linkify(l.body)}</p>
+    </div>`;
+  }).join('');
 };
 
 document.getElementById('refreshBtn').onclick = () => fetchPosts(false);
 document.getElementById('showAdmin').onclick = () => document.getElementById('adminPanel').style.display='block';
 document.getElementById('searchInput').oninput = (e) => {
   const term = e.target.value.toLowerCase();
-  document.querySelectorAll('.post-card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(term) ? 'block' : 'none');
+  document.querySelectorAll('.post-card').forEach(card => card.style.display = card.innerText.toLowerCase().includes(term) ? 'block' : 'none');
 };
 
 if (selectedBlocker) selectBlocker(selectedBlocker);
