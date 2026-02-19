@@ -22,6 +22,7 @@
       --bg-dark: #1e1e2e; --bg-sidebar: #181825; --bg-card: #313244;
       --text-main: #cdd6f4; --text-muted: #a6adc8; --accent: #89b4fa;
       --red: #f38ba8; --green: #a6e3a1; --border: #45475a; --overlay: rgba(0,0,0,0.7);
+      --yellow: #f9e2af;
     }
     [data-theme="dark"] {
       --bg-dark: #121212; --bg-sidebar: #1e1e1e; --bg-card: #242424;
@@ -48,6 +49,9 @@
     body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; }
 
     #announcementBanner { background: var(--accent); color: var(--bg-dark); padding: 8px; text-align: center; font-weight: bold; font-size: 0.85rem; display: none; }
+
+    /* Universal Link Styling */
+    a { color: var(--accent) !important; text-decoration: underline; }
 
     /* Toast */
     #toast {
@@ -82,19 +86,33 @@
     .post-unblocked-list { font-size: 0.7rem; color: var(--green); margin-top: 2px; font-weight: 600; font-family: monospace; }
     .post-content { white-space: pre-wrap; font-size: 1rem; margin-top: 10px; word-break: break-all; line-height: 1.4; }
 
-    /* Settings Menu */
+    /* Settings Menu & Nested Themes */
     .settings-dropdown { position: relative; }
     .gear-icon { font-size: 1.4rem; cursor: pointer; color: var(--text-muted); padding: 5px; }
     .gear-icon:hover { color: var(--accent); }
+    
     .settings-menu { 
         display: none; position: absolute; right: 0; top: 40px; 
         background: var(--bg-card); border: 1px solid var(--border); 
-        border-radius: 12px; width: 180px; padding: 8px; z-index: 100;
+        border-radius: 12px; width: 200px; padding: 8px; z-index: 100;
         box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
     .settings-menu.show { display: block; }
-    .menu-item { padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; color: var(--text-main); }
+    
+    .menu-item { 
+        padding: 10px; border-radius: 8px; cursor: pointer; 
+        font-size: 0.85rem; font-weight: bold; color: var(--text-main); 
+        display: flex; justify-content: space-between; align-items: center;
+    }
     .menu-item:hover { background: var(--bg-dark); color: var(--accent); }
+
+    /* Nested Theme Menu */
+    .theme-submenu {
+        display: none; position: absolute; right: 100%; top: 0;
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 12px; width: 150px; padding: 8px; margin-right: 5px;
+    }
+    .menu-item.themes-trigger:hover .theme-submenu { display: block; }
 
     /* Modals & Panels */
     .panel { display: none; position: fixed; bottom: 20px; right: 20px; width: 400px; max-width: calc(100% - 40px); background: var(--bg-card); border: 1px solid var(--border); padding: 20px; border-radius: 20px; z-index: 15000; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
@@ -144,15 +162,6 @@
   <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Select your filter</p>
   <div class="blocker-grid" id="gridContainer"></div>
   <div class="blocker-card" style="margin-top:20px; width:100%; max-width:300px; background: var(--accent); color: var(--bg-dark);" onclick="selectBlocker('All')">All Proxies</div>
-  
-  <div style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">
-    <button class="btn-outline" onclick="setTheme('catppuccin')">Original</button>
-    <button class="btn-outline" onclick="setTheme('dark')">Dark</button>
-    <button class="btn-outline" onclick="setTheme('oled')">OLED</button>
-    <button class="btn-outline" onclick="setTheme('light')">Light</button>
-    <button class="btn-outline" onclick="setTheme('emerald')" style="border-color:#10b981; color:#10b981;">Emerald</button>
-    <button class="btn-outline" onclick="setTheme('rose')" style="border-color:#f43f5e; color:#f43f5e;">Rose</button>
-  </div>
 </div>
 
 <div class="app-container" id="appContainer">
@@ -167,6 +176,19 @@
       <div id="settingsMenu" class="settings-menu">
         <div class="menu-item" onclick="fetchPosts(false)">↻ Refresh Feed</div>
         <div class="menu-item" onclick="showLogs()">📜 View Logs</div>
+        
+        <div class="menu-item themes-trigger">
+            🎨 Themes <span>❯</span>
+            <div class="theme-submenu">
+                <div class="menu-item" onclick="setTheme('catppuccin')">Original</div>
+                <div class="menu-item" onclick="setTheme('dark')">Dark</div>
+                <div class="menu-item" onclick="setTheme('oled')">OLED</div>
+                <div class="menu-item" onclick="setTheme('light')">Light</div>
+                <div class="menu-item" onclick="setTheme('emerald')" style="color:#10b981">Emerald</div>
+                <div class="menu-item" onclick="setTheme('rose')" style="color:#f43f5e">Rose</div>
+            </div>
+        </div>
+
         <div class="menu-item" onclick="document.getElementById('adminPanel').style.display='block'">🔑 Admin Panel</div>
       </div>
     </div>
@@ -239,7 +261,11 @@ window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t
 setTheme(localStorage.getItem('eli_theme') || 'catppuccin');
 
 window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
-window.onclick = (e) => { if (!e.target.matches('.gear-icon')) document.getElementById('settingsMenu').classList.remove('show'); };
+window.onclick = (e) => { 
+    if (!e.target.closest('.settings-dropdown')) {
+        document.getElementById('settingsMenu').classList.remove('show');
+    }
+};
 
 function showNotice(msg, type='success') {
   const t = document.getElementById('toast');
@@ -252,7 +278,6 @@ function linkify(text) {
   return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
-// Global Modal Control
 window.closeModal = () => document.getElementById('confirmModal').style.display = 'none';
 
 // --- REPORTING ---
