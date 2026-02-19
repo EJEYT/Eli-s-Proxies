@@ -28,6 +28,7 @@
       --red: #f38ba8;
       --green: #a6e3a1;
       --overlay: rgba(0, 0, 0, 0.7);
+      --yellow: #f9e2af;
     }
 
     * { box-sizing: border-box; }
@@ -40,6 +41,17 @@
       overflow: hidden; 
     }
 
+    /* --- ANNOUNCEMENT BANNER --- */
+    #announcementBanner {
+      background: var(--accent);
+      color: var(--bg-dark);
+      padding: 8px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+      display: none; /* Hidden by default, show via script or style if needed */
+    }
+
     /* --- TOAST NOTIFICATIONS --- */
     #toast {
       position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
@@ -49,6 +61,18 @@
       width: auto; max-width: 90%; text-align: center; pointer-events: none;
     }
     #toast.show { top: 20px; }
+
+    /* --- NEW INDICATOR --- */
+    .badge-new {
+      background: var(--green);
+      color: var(--bg-dark);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      margin-left: 8px;
+      text-transform: uppercase;
+    }
 
     /* --- CUSTOM CONFIRM MODAL --- */
     #confirmModal {
@@ -119,11 +143,15 @@
       #adminPanel, #editPanel, #editLogPanel { bottom: 0; right: 0; left: 0; width: 100%; border-radius: 20px 20px 0 0; max-width: 100%; }
     }
     .small-action { background: #1e1e2e; border: 1px solid #45475a; color: white; padding: 4px 8px; border-radius: 5px; cursor: pointer; font-size: 0.7rem; margin-left: 5px; }
+    .copy-btn { background: var(--bg-dark); border: 1px solid #45475a; color: var(--accent); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.7rem; transition: 0.2s; }
+    .copy-btn:hover { background: var(--accent); color: var(--bg-dark); }
   </style>
 </head>
 <body>
 
 <div id="toast"></div>
+
+<div id="announcementBanner">📢 New links added daily! Stay tuned for more proxies.</div>
 
 <div id="confirmModal">
   <div class="modal-content">
@@ -242,6 +270,13 @@ function linkify(text) {
   return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
+// COPY FUNCTION
+window.copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text).then(() => {
+    showNotice("Link copied to clipboard!");
+  });
+};
+
 blockers.forEach(b => {
   const card = document.createElement('div');
   card.className = 'blocker-card'; card.textContent = b.replace(/_/g, ' ');
@@ -260,6 +295,10 @@ window.selectBlocker = (name) => {
   document.getElementById('selectionScreen').style.display = 'none';
   document.getElementById('appContainer').style.display = 'flex';
   document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
+  
+  // Show banner when entering feed
+  document.getElementById('announcementBanner').style.display = 'block';
+  
   fetchPosts();
 };
 
@@ -267,6 +306,7 @@ window.goBack = () => {
   localStorage.removeItem('eli_selected_blocker');
   document.getElementById('selectionScreen').style.display = 'flex';
   document.getElementById('appContainer').style.display = 'none';
+  document.getElementById('announcementBanner').style.display = 'none';
 };
 
 async function fetchPosts(isSilent = true) {
@@ -283,21 +323,33 @@ async function fetchPosts(isSilent = true) {
     }
     else { grouped.push({ ...item, ids: [item.id], blockers: [item.blocker] }); }
   });
+
+  const now = new Date();
+
   document.getElementById('posts').innerHTML = grouped.map(p => {
+    const postDate = new Date(p.created_at);
+    // Is post newer than 24 hours?
+    const isNew = (now - postDate) < (24 * 60 * 60 * 1000);
+
     return `
     <div class="post-card">
       <div style="display:flex; justify-content:space-between; align-items: flex-start;">
         <div>
             <span class="post-author">${p.author}</span>
+            ${isNew ? '<span class="badge-new">New</span>' : ''}
             <div class="post-unblocked-list">Blockers: ${p.blockers.map(b => b.replace(/_/g, ' ')).join(', ')}</div>
         </div>
-        <span style="font-size:0.75rem; color:var(--text-muted)">${new Date(p.created_at).toLocaleDateString()}</span>
+        <span style="font-size:0.75rem; color:var(--text-muted)">${postDate.toLocaleDateString()}</span>
       </div>
       <div class="post-content">${linkify(p.content)}</div>
-      ${isAdmin ? `<div style="margin-top:10px; text-align:right;">
-        <button class="small-action" onclick="window.startEdit('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit Global</button>
-        <button class="small-action" style="color:var(--red)" onclick="window.requestDelete('${p.ids.join(',')}')">Delete All</button>
-      </div>` : ''}
+      
+      <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
+        <button class="copy-btn" onclick="window.copyToClipboard(\`${p.content}\`)">Copy Link</button>
+        ${isAdmin ? `<div>
+          <button class="small-action" onclick="window.startEdit('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit Global</button>
+          <button class="small-action" style="color:var(--red)" onclick="window.requestDelete('${p.ids.join(',')}')">Delete All</button>
+        </div>` : ''}
+      </div>
     </div>`;
   }).join('');
   
