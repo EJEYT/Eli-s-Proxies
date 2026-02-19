@@ -270,11 +270,19 @@ function linkify(text) {
   return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
-// COPY FUNCTION
+// --- UPDATED COPY LOGIC: COPIES ONLY THE URLS ---
 window.copyToClipboard = (text) => {
-  navigator.clipboard.writeText(text).then(() => {
-    showNotice("Link copied to clipboard!");
-  });
+  const urlPattern = /https?:\/\/[^\s]+/g;
+  const linksFound = text.match(urlPattern);
+
+  if (linksFound && linksFound.length > 0) {
+    const onlyLinks = linksFound.join(' ');
+    navigator.clipboard.writeText(onlyLinks).then(() => {
+      showNotice("Link copied!");
+    });
+  } else {
+    showNotice("No URL found", "error");
+  }
 };
 
 blockers.forEach(b => {
@@ -295,10 +303,7 @@ window.selectBlocker = (name) => {
   document.getElementById('selectionScreen').style.display = 'none';
   document.getElementById('appContainer').style.display = 'flex';
   document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
-  
-  // Show banner when entering feed
   document.getElementById('announcementBanner').style.display = 'block';
-  
   fetchPosts();
 };
 
@@ -328,7 +333,6 @@ async function fetchPosts(isSilent = true) {
 
   document.getElementById('posts').innerHTML = grouped.map(p => {
     const postDate = new Date(p.created_at);
-    // Is post newer than 24 hours?
     const isNew = (now - postDate) < (24 * 60 * 60 * 1000);
 
     return `
@@ -392,7 +396,6 @@ document.getElementById('publishBtn').onclick = async () => {
   fetchPosts();
 };
 
-// LOG PUBLISH
 document.getElementById('publishLogBtn').onclick = async () => {
   const heading = document.getElementById('logHeading').value;
   const body = document.getElementById('logBody').value;
@@ -403,7 +406,6 @@ document.getElementById('publishLogBtn').onclick = async () => {
   document.getElementById('logBody').value = '';
 };
 
-// LOG EDITING LOGIC
 window.startLogEdit = (id, heading, body) => {
   currentEditingLogId = id;
   document.getElementById('editLogHeading').value = heading;
@@ -423,7 +425,7 @@ document.getElementById('updateLogBtn').onclick = async () => {
   await supabase.from('logs').update({ heading, body }).eq('id', currentEditingLogId);
   showNotice("Log Updated");
   window.cancelLogEdit();
-  document.getElementById('viewLogs').click(); // Refresh logs view
+  document.getElementById('viewLogs').click();
 };
 
 window.deleteLog = async (id) => {
@@ -434,7 +436,6 @@ window.deleteLog = async (id) => {
   }
 };
 
-// POST EDIT
 window.startEdit = (ids, author, content) => {
   currentEditingIds = ids.split(',');
   document.getElementById('editPanel').style.display = 'block';
