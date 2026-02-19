@@ -241,7 +241,11 @@
       <button id="publishLogBtn" class="admin-primary-btn">Add Log</button>
     </div>
     <div id="paneBanner" style="display:none;">
-      <textarea id="bannerTextInput" class="admin-input" rows="4" placeholder="Enter global banner text..."></textarea>
+      <textarea id="bannerTextInput" class="admin-input" rows="3" placeholder="Enter global banner text..."></textarea>
+      <div style="margin-bottom:10px; display:flex; align-items:center; gap:10px;">
+        <span style="font-size:0.75rem; color:var(--text-muted)">Color:</span>
+        <input type="color" id="bannerColorInput" value="#89b4fa" style="border:none; background:none; cursor:pointer; width:30px; height:30px;">
+      </div>
       <button id="updateBannerBtn" class="admin-primary-btn">Update Live Banner</button>
     </div>
   </div>
@@ -279,18 +283,21 @@ window.copyToClipboard = (text) => {
 
 // --- BANNER SYNC ---
 async function syncBanner() {
-  const { data } = await supabase.from('settings').select('content').eq('id', 'announcement_banner').single();
+  const { data } = await supabase.from('settings').select('content, color').eq('id', 'announcement_banner').single();
   if (data) {
     const banner = document.getElementById('announcementBanner');
     banner.textContent = data.content;
+    banner.style.background = data.color || 'var(--accent)';
     document.getElementById('bannerTextInput').value = data.content;
+    document.getElementById('bannerColorInput').value = data.color || '#89b4fa';
     banner.style.display = data.content.trim() === "" ? 'none' : 'block';
   }
 }
 
 document.getElementById('updateBannerBtn').onclick = async () => {
   const newText = document.getElementById('bannerTextInput').value;
-  const { error } = await supabase.from('settings').update({ content: newText }).eq('id', 'announcement_banner');
+  const newColor = document.getElementById('bannerColorInput').value;
+  const { error } = await supabase.from('settings').update({ content: newText, color: newColor }).eq('id', 'announcement_banner');
   if (error) showNotice("Update Failed", "error");
   else { showNotice("Banner Updated!"); syncBanner(); }
 };
@@ -368,10 +375,8 @@ async function fetchPosts(isSilent = true) {
 window.switchTab = (tab) => {
   ['panePost', 'paneLog', 'paneBanner'].forEach(p => document.getElementById(p).style.display = 'none');
   ['tabPost', 'tabLog', 'tabBanner'].forEach(t => document.getElementById(t).classList.remove('active'));
-  
   const targetId = 'pane' + tab.charAt(0).toUpperCase() + tab.slice(1);
   const tabId = 'tab' + tab.charAt(0).toUpperCase() + tab.slice(1);
-  
   document.getElementById(targetId).style.display = 'block';
   document.getElementById(tabId).classList.add('active');
 };
@@ -380,60 +385,20 @@ window.selectAllBlockers = () => {
   document.querySelectorAll('#adminPanel .admin-pill').forEach(p => p.classList.add('selected'));
 };
 
-// ... existing Supabase initialization ...
-
-// --- LOGIN LOGIC (WITH ENTER KEY FIX) ---
 const loginAction = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
     isAdmin = true;
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
-    showNotice("Admin Mode On"); 
-    fetchPosts(); 
-    syncBanner();
-  } else {
-    showNotice("Wrong Pass", "error");
-  }
+    showNotice("Admin Mode On"); fetchPosts(); syncBanner();
+  } else showNotice("Wrong Pass", "error");
 };
 
 document.getElementById('loginBtn').onclick = loginAction;
-
-// THE FIX: Listen for Enter key on the password field
 document.getElementById('adminPassword').onkeydown = (e) => {
   if (e.key === 'Enter') loginAction();
 };
 
-// --- UPDATED BANNER SYNC (WITH COLOR SUPPORT) ---
-async function syncBanner() {
-  const { data } = await supabase.from('settings').select('content, color').eq('id', 'announcement_banner').single();
-  if (data) {
-    const banner = document.getElementById('announcementBanner');
-    banner.textContent = data.content;
-    banner.style.background = data.color || 'var(--accent)'; // Apply color from DB
-    
-    document.getElementById('bannerTextInput').value = data.content;
-    document.getElementById('bannerColorInput').value = data.color || '#89b4fa';
-    
-    banner.style.display = data.content.trim() === "" ? 'none' : 'block';
-  }
-}
-
-document.getElementById('updateBannerBtn').onclick = async () => {
-  const newText = document.getElementById('bannerTextInput').value;
-  const newColor = document.getElementById('bannerColorInput').value;
-  
-  const { error } = await supabase.from('settings')
-    .update({ content: newText, color: newColor })
-    .eq('id', 'announcement_banner');
-
-  if (error) showNotice("Update Failed", "error");
-  else { 
-    showNotice("Banner Updated!"); 
-    syncBanner(); 
-  }
-};
-
-document.getElementById('loginBtn').onclick = loginAction;
 document.getElementById('publishBtn').onclick = async () => {
   const author = document.getElementById('postAuthor').value || 'Admin';
   const content = document.getElementById('postText').value;
