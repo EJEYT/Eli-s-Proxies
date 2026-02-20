@@ -108,6 +108,12 @@
     .copy-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--accent); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
     .report-btn { color: var(--red); border: 1px solid var(--red); background: transparent; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; margin-left: 8px; }
 
+    .vote-container { display: flex; gap: 12px; margin-top: 15px; align-items: center; }
+    .vote-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main); padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+    .vote-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+    .vote-btn.active-like { border-color: var(--green); color: var(--green); }
+    .vote-btn.active-dislike { border-color: var(--red); color: var(--red); }
+
     .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:50000; backdrop-filter: blur(8px); align-items:center; justify-content:center; }
     .modal-content { background: var(--bg-card); padding: 30px; border-radius: 24px; width: 90%; max-width: 400px; border: 1px solid var(--border); }
   </style>
@@ -291,6 +297,22 @@ function linkify(text) {
 
 // --- FEATURES ---
 
+window.voteProxy = async (id, type) => {
+    const storageKey = `voted_${id}`;
+    if(localStorage.getItem(storageKey)) return showNotice("Already voted on this", "error");
+
+    const col = type === 'like' ? 'likes' : 'dislikes';
+    const { data: current } = await supabase.from('posts').select(col).eq('id', id).single();
+    const newValue = (current[col] || 0) + 1;
+
+    const { error } = await supabase.from('posts').update({ [col]: newValue }).eq('id', id);
+    if(!error) {
+        localStorage.setItem(storageKey, type);
+        showNotice(`Voted ${type}!`);
+        fetchPosts(true); // Silent refresh
+    }
+};
+
 window.copyLinksFromPost = (text) => {
     const urlPattern = /(https?:\/\/[^\s]+)/gi;
     const matches = text.match(urlPattern);
@@ -306,6 +328,7 @@ window.openRequestModal = () => {
         if(!msg) return showNotice("Please enter a request", "error");
         
         const payload = {
+            content: "<@949801961962741770>",
             embeds: [{
                 title: "📬 New Proxy Request",
                 color: 8991994, 
@@ -402,6 +425,7 @@ async function fetchPosts(silent = true) {
   const now = new Date();
   document.getElementById('posts').innerHTML = grouped.map(p => {
     const isNew = (now - new Date(p.created_at)) < (24 * 60 * 60 * 1000);
+    const userVote = localStorage.getItem(`voted_${p.ids[0]}`);
     return `
     <div class="post-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -412,6 +436,16 @@ async function fetchPosts(silent = true) {
         <span style="font-size:0.75rem; color:var(--text-muted); opacity:0.7;">${new Date(p.created_at).toLocaleDateString()}</span>
       </div>
       <div class="post-content">${linkify(p.content)}</div>
+      
+      <div class="vote-container">
+        <button class="vote-btn ${userVote === 'like' ? 'active-like' : ''}" onclick="window.voteProxy('${p.ids[0]}', 'like')">
+            👍 ${p.likes || 0}
+        </button>
+        <button class="vote-btn ${userVote === 'dislike' ? 'active-dislike' : ''}" onclick="window.voteProxy('${p.ids[0]}', 'dislike')">
+            👎 ${p.dislikes || 0}
+        </button>
+      </div>
+
       <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
         <div>
             <button class="copy-btn" onclick="window.copyLinksFromPost(\`${p.content}\`)">Copy Link(s)</button>
