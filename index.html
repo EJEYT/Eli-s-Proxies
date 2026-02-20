@@ -76,7 +76,6 @@
     .settings-menu.show { display: block; }
     .menu-item { padding: 12px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: bold; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
     .menu-item:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
-    .menu-item img.icon { width: 20px; height: 20px; opacity: 0.8; }
     
     .themes-sub-list { display: none; flex-direction: column; padding-left: 15px; margin-top: 5px; border-left: 2px solid var(--border); }
     .themes-sub-list.open { display: flex; }
@@ -178,12 +177,10 @@
             <div class="theme-opt" onclick="setTheme('rose')" style="color:#f43f5e">Rose</div>
         </div>
         <div class="menu-item" onclick="showLogs()">📜 View Logs</div>
-        <a href="https://discord.gg/hns6EJVZ3k" target="_blank">
-            <div class="menu-item">
-                <span>💬 Join Discord</span>
-            </div>
-        </a>
         <div class="menu-item" onclick="document.getElementById('adminPanel').style.display='block'">🔑 Admin Panel</div>
+        <a href="https://discord.gg/hns6EJVZ3k" target="_blank">
+          <div class="menu-item">💬 Join Discord</div>
+        </a>
       </div>
     </div>
   </div>
