@@ -53,13 +53,13 @@
     #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold; z-index: 60000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     #toast.show { top: 20px; }
 
-    #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: transparent; overflow-y: auto; padding: 20px; }
+    #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: transparent; overflow-y: auto; padding: 20px; position: relative; }
     .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; margin-top: 20px; }
     .blocker-card { background: var(--bg-card); border: 1px solid var(--border); padding: 20px; border-radius: 18px; cursor: pointer; transition: 0.3s; font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     .blocker-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); border-color: var(--accent); }
     
     .app-container { display: none; width: 100%; height: 100%; flex-direction: column; }
-    .header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar); z-index: 10; backdrop-filter: blur(var(--glass-blur)); }
+    .header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar); z-index: 10; backdrop-filter: blur(var(--glass-blur)); position: relative; }
     .search-bar { flex: 0.6; padding: 12px 25px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 30px; color: var(--text-main); outline: none; margin: 0 15px; backdrop-filter: blur(var(--glass-blur)); }
     .search-bar:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
     
@@ -68,7 +68,12 @@
     .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; }
     .post-content { white-space: pre-wrap; font-size: 1.05rem; margin-top: 12px; word-break: break-all; line-height: 1.5; }
 
-    .settings-dropdown { position: relative; }
+    /* Discord Button */
+    .discord-btn { position: absolute; top: 15px; right: 20px; width: 32px; height: 32px; cursor: pointer; transition: transform 0.2s; z-index: 20; display: flex; align-items: center; justify-content: center; background: white; border-radius: 50%; padding: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .discord-btn:hover { transform: scale(1.1); }
+    .discord-btn img { width: 100%; height: auto; filter: brightness(0); } /* Ensures logo stays black as requested */
+
+    .settings-dropdown { position: relative; margin-right: 50px; } /* Room for Discord Icon */
     .gear-icon { font-size: 1.5rem; cursor: pointer; color: var(--text-muted); padding: 5px; }
     .settings-menu { display: none; position: absolute; right: 0; top: 45px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; width: 240px; padding: 10px; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.4); backdrop-filter: blur(30px); }
     .settings-menu.show { display: block; }
@@ -110,6 +115,10 @@
 
 <div id="toast"></div>
 <div id="announcementBanner"></div>
+
+<a href="https://discord.gg/hns6EJVZ3k" target="_blank" class="discord-btn" title="Join Discord">
+  <img src="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png" alt="Discord">
+</a>
 
 <div id="reportModal" class="modal-overlay">
   <div class="modal-content">
@@ -283,7 +292,7 @@ window.openReportModal = (postId, author, content) => {
         if(!msg) return showNotice("Enter a reason", "error");
         
         const payload = {
-            content: "<@949801961962741770>", // Ping for the specified User ID
+            content: "<@949801961962741770>", 
             embeds: [{
                 title: "🚨 New Proxy Report",
                 color: 15548997, 
