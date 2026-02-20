@@ -197,15 +197,14 @@
     <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.8rem;">&times;</button>
   </div>
   <div id="loginSection">
-    <input type="password" id="adminPassword" class="admin-input" placeholder="Password">
-    <button id="loginBtn" class="admin-primary-btn">Authenticate</button>
+    <input type="password" id="adminPassword" class="admin-input" placeholder="Password" onkeydown="if(event.key === 'Enter') loginAction()">
+    <button id="loginBtn" class="admin-primary-btn" onclick="loginAction()">Authenticate</button>
   </div>
   <div id="adminContent" style="display:none;">
     <div class="admin-tabs">
       <div class="admin-tab active" id="tabPost" onclick="switchTab('post')">New Proxy</div>
       <div class="admin-tab" id="tabLog" onclick="switchTab('log')">New Log</div>
       <div class="admin-tab" id="tabBanner" onclick="switchTab('banner')">Banner</div>
-      <div class="admin-tab" id="tabReports" onclick="switchTab('reports')">Reports</div>
     </div>
     <div id="panePost">
       <input type="text" id="postAuthor" class="admin-input" placeholder="Author Name">
@@ -221,10 +220,6 @@
     <div id="paneBanner" style="display:none;">
       <textarea id="bannerTextInput" class="admin-input" rows="3" placeholder="Global announcement text..."></textarea>
       <button id="updateBannerBtn" class="admin-primary-btn">Update Banner</button>
-    </div>
-    <div id="paneReports" style="display:none; max-height:300px; overflow-y:auto;">
-      <p style="text-align:center; opacity:0.6; font-size:0.8rem;">Reports are now sent directly to Discord.</p>
-      <div id="reportListAdmin"></div>
     </div>
   </div>
 </div>
@@ -312,18 +307,9 @@ window.openReportModal = (postId, author, content) => {
                 document.getElementById('reportModal').style.display = 'none';
                 document.getElementById('reportInput').value = '';
                 showNotice("Report Sent to Discord");
-            } else {
-                throw new Error();
-            }
-        } catch (e) {
-            showNotice("Discord Error", "error");
-        }
+            } else throw new Error();
+        } catch (e) { showNotice("Discord Error", "error"); }
     };
-}
-
-async function loadReportsAdmin() {
-    // Left empty or for legacy viewing since reports now go to Discord
-    document.getElementById('reportListAdmin').innerHTML = "";
 }
 
 // --- CORE ---
@@ -409,7 +395,7 @@ window.deleteProxy = async (ids) => {
     showNotice("Deleted"); fetchPosts();
 };
 
-const loginAction = () => {
+window.loginAction = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
     isAdmin = true; 
     document.getElementById('loginSection').style.display = 'none';
@@ -417,7 +403,6 @@ const loginAction = () => {
     showNotice("Admin Active"); fetchPosts();
   } else showNotice("Wrong Pass", "error");
 };
-document.getElementById('loginBtn').onclick = loginAction;
 
 blockers.forEach(b => {
   const card = document.createElement('div');
@@ -446,11 +431,10 @@ window.showLogs = async () => {
 };
 
 window.switchTab = (t) => {
-  ['panePost', 'paneLog', 'paneBanner', 'paneReports'].forEach(p => document.getElementById(p).style.display = 'none');
-  ['tabPost', 'tabLog', 'tabBanner', 'tabReports'].forEach(b => document.getElementById(b).classList.remove('active'));
+  ['panePost', 'paneLog', 'paneBanner'].forEach(p => document.getElementById(p).style.display = 'none');
+  ['tabPost', 'tabLog', 'tabBanner'].forEach(b => document.getElementById(b).classList.remove('active'));
   document.getElementById('pane' + t.charAt(0).toUpperCase() + t.slice(1)).style.display = 'block';
   document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.add('active');
-  if(t === 'reports') loadReportsAdmin();
 };
 
 document.getElementById('publishBtn').onclick = async () => {
