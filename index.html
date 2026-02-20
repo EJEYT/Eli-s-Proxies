@@ -22,7 +22,6 @@
       --bg-dark: #1e1e2e; --bg-sidebar: #181825; --bg-card: #313244;
       --text-main: #cdd6f4; --text-muted: #a6adc8; --accent: #89b4fa;
       --red: #f38ba8; --green: #a6e3a1; --border: #45475a; --overlay: rgba(0,0,0,0.7);
-      --yellow: #f9e2af;
     }
     [data-theme="dark"] { --bg-dark: #121212; --bg-sidebar: #1e1e1e; --bg-card: #242424; --text-main: #e0e0e0; --text-muted: #909090; --accent: #bb86fc; --border: #333333; }
     [data-theme="oled"] { --bg-dark: #000000; --bg-sidebar: #000000; --bg-card: #111111; --text-main: #ffffff; --text-muted: #888888; --accent: #ffffff; --border: #222222; }
@@ -36,7 +35,7 @@
     #announcementBanner { background: var(--accent); color: var(--bg-dark); padding: 8px; text-align: center; font-weight: bold; font-size: 0.85rem; display: none; }
     a { color: var(--accent) !important; text-decoration: underline; }
 
-    /* Toast (The "Popup" at the top) */
+    /* Toast */
     #toast {
       position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
       padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold;
@@ -68,10 +67,9 @@
     .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; }
     .post-content { white-space: pre-wrap; font-size: 1rem; margin-top: 10px; word-break: break-all; line-height: 1.4; }
 
-    /* Settings Menu & Sub-Section */
+    /* Settings Menu */
     .settings-dropdown { position: relative; }
     .gear-icon { font-size: 1.4rem; cursor: pointer; color: var(--text-muted); padding: 5px; }
-    .gear-icon:hover { color: var(--accent); }
     .settings-menu { 
         display: none; position: absolute; right: 0; top: 40px; 
         background: var(--bg-card); border: 1px solid var(--border); 
@@ -79,24 +77,30 @@
         box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
     .settings-menu.show { display: block; }
-    .menu-item { 
-        padding: 10px; border-radius: 8px; cursor: pointer; 
-        font-size: 0.85rem; font-weight: bold; color: var(--text-main); 
-        display: flex; justify-content: space-between; align-items: center;
-    }
+    .menu-item { padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
     .menu-item:hover { background: var(--bg-dark); color: var(--accent); }
     .themes-sub-list { display: none; flex-direction: column; padding-left: 15px; margin-top: 5px; border-left: 2px solid var(--border); }
     .themes-sub-list.open { display: flex; }
     .theme-opt { padding: 6px 10px; font-size: 0.8rem; cursor: pointer; border-radius: 4px; }
     .theme-opt:hover { background: var(--bg-dark); color: var(--accent); }
 
-    /* Modals & Panels */
+    /* Generic Panels */
     .panel { display: none; position: fixed; bottom: 20px; right: 20px; width: 400px; max-width: calc(100% - 40px); background: var(--bg-card); border: 1px solid var(--border); padding: 20px; border-radius: 20px; z-index: 15000; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+    
+    /* Left Side Edit Panel */
+    #editPanel { 
+      position: fixed; left: -420px; top: 0; width: 400px; height: 100vh; 
+      background: var(--bg-sidebar); border-right: 1px solid var(--border); 
+      z-index: 25000; padding: 30px 20px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+    }
+    #editPanel.open { left: 0; }
+
     .admin-input { width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid var(--border); color: white; border-radius: 8px; margin-bottom: 10px; outline: none; }
     .admin-primary-btn { width: 100%; padding: 12px; background: var(--accent); color: var(--bg-dark); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 5px; }
     
-    .admin-tabs { display: flex; gap: 5px; margin-bottom: 15px; background: var(--bg-dark); padding: 4px; border-radius: 8px; overflow-x: auto; }
-    .admin-tab { flex: 1; padding: 6px; text-align: center; cursor: pointer; border-radius: 6px; font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; }
+    .admin-tabs { display: flex; gap: 5px; margin-bottom: 15px; background: var(--bg-dark); padding: 4px; border-radius: 8px; }
+    .admin-tab { flex: 1; padding: 6px; text-align: center; cursor: pointer; border-radius: 6px; font-size: 0.7rem; color: var(--text-muted); }
     .admin-tab.active { background: var(--bg-card); color: var(--accent); font-weight: bold; }
     
     .blocker-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 10px; }
@@ -107,8 +111,6 @@
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
     .copy-btn { background: var(--bg-dark); border: 1px solid var(--border); color: var(--accent); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.7rem; }
     .report-btn { color: var(--red); border: 1px solid var(--red); background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.7rem; margin-left: 5px; }
-
-    #confirmModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--overlay); z-index: 30000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
   </style>
 </head>
 <body>
@@ -116,17 +118,26 @@
 <div id="toast"></div>
 <div id="announcementBanner"></div>
 
-<div id="confirmModal">
-  <div class="modal-content" style="background:var(--bg-card); padding:25px; border-radius:20px; width:90%; max-width:400px; border:1px solid var(--border); text-align:center;">
-    <h3 id="confirmTitle" style="margin-top:0">Action</h3>
-    <div id="modalInputArea">
-      <textarea id="modalTextArea" class="admin-input" rows="3"></textarea>
-    </div>
-    <p id="confirmText" style="color:var(--text-muted); font-size: 0.85rem;"></p>
-    <div style="display:flex; gap:10px; margin-top:20px;">
-      <button class="admin-primary-btn" style="background:#45475a; color:white;" onclick="closeModal()">Cancel</button>
-      <button id="confirmActionBtn" class="admin-primary-btn">Confirm</button>
-    </div>
+<div id="editPanel">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h3 id="editTitle" style="margin:0; color:var(--accent);">Edit Item</h3>
+    <button onclick="closeEditPanel()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.5rem;">&times;</button>
+  </div>
+  
+  <div id="editPostFields">
+    <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px; display:block;">Author</label>
+    <input type="text" id="editAuthor" class="admin-input">
+    <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px; display:block;">Content (Updates Everywhere)</label>
+    <textarea id="editContent" class="admin-input" rows="5"></textarea>
+    <button id="saveEditBtn" class="admin-primary-btn">Save Changes</button>
+  </div>
+
+  <div id="editLogFields" style="display:none;">
+    <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px; display:block;">Heading</label>
+    <input type="text" id="editLogHeading" class="admin-input">
+    <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px; display:block;">Update Details</label>
+    <textarea id="editLogBody" class="admin-input" rows="8"></textarea>
+    <button id="saveLogEditBtn" class="admin-primary-btn">Update Log</button>
   </div>
 </div>
 
@@ -148,10 +159,7 @@
       <div class="gear-icon" onclick="toggleSettings()">⚙</div>
       <div id="settingsMenu" class="settings-menu">
         <div class="menu-item" onclick="refreshNow()">↻ Refresh Feed</div>
-        
-        <div class="menu-item" onclick="toggleThemeList()">
-            🎨 Themes <span id="themeArrow">▼</span>
-        </div>
+        <div class="menu-item" onclick="toggleThemeList()">🎨 Themes <span id="themeArrow">▼</span></div>
         <div id="themesSubList" class="themes-sub-list">
             <div class="theme-opt" onclick="setTheme('catppuccin')">Original</div>
             <div class="theme-opt" onclick="setTheme('dark')">Dark</div>
@@ -160,7 +168,6 @@
             <div class="theme-opt" onclick="setTheme('emerald')" style="color:#10b981">Emerald</div>
             <div class="theme-opt" onclick="setTheme('rose')" style="color:#f43f5e">Rose</div>
         </div>
-
         <div class="menu-item" onclick="showLogs()">📜 View Logs</div>
         <div class="menu-item" onclick="document.getElementById('adminPanel').style.display='block'">🔑 Admin Panel</div>
       </div>
@@ -220,24 +227,19 @@ const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "L
 let selectedBlocker = localStorage.getItem('eli_last_blocker') || null;
 let isAdmin = false; 
 
-// --- THEMES ---
+// --- UI THEMES ---
 window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eli_theme', t); };
 setTheme(localStorage.getItem('eli_theme') || 'catppuccin');
 
-// --- UI HELPERS ---
+// --- PANEL CONTROLS ---
 window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
-window.toggleThemeList = () => {
-    const list = document.getElementById('themesSubList');
-    const arrow = document.getElementById('themeArrow');
-    list.classList.toggle('open');
-    if(arrow) arrow.textContent = list.classList.contains('open') ? '▲' : '▼';
-};
+window.toggleThemeList = () => document.getElementById('themesSubList').classList.toggle('open');
+window.closeEditPanel = () => document.getElementById('editPanel').classList.remove('open');
+
 window.onclick = (e) => { 
     if (!e.target.closest('.settings-dropdown')) {
         document.getElementById('settingsMenu').classList.remove('show');
         document.getElementById('themesSubList').classList.remove('open');
-        const arrow = document.getElementById('themeArrow');
-        if(arrow) arrow.textContent = '▼';
     }
 };
 
@@ -252,9 +254,7 @@ function linkify(text) {
   return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
-window.closeModal = () => document.getElementById('confirmModal').style.display = 'none';
-
-// --- CORE LOGIC ---
+// --- CORE APP LOGIC ---
 window.selectBlocker = (name) => {
   selectedBlocker = name;
   localStorage.setItem('eli_last_blocker', name);
@@ -305,11 +305,10 @@ async function fetchPosts(silent = true) {
       <div style="margin-top:12px; display:flex; justify-content:space-between;">
         <div>
           <button class="copy-btn" onclick="navigator.clipboard.writeText(\`${p.content}\`).then(()=>showNotice('Copied!'))">Copy</button>
-          <button class="report-btn" onclick="window.openReportModal('${p.ids.join(',')}', \`${p.content}\`)">Report</button>
         </div>
         ${isAdmin ? `
             <div>
-                <button class="btn-outline" style="border-color:var(--accent); color:var(--accent); margin-right:5px;" onclick="window.editProxy('${p.ids.join(',')}', \`${p.content}\`)">Edit</button>
+                <button class="btn-outline" style="border-color:var(--accent); color:var(--accent); margin-right:5px;" onclick="window.openEditProxy('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit</button>
                 <button class="btn-outline" style="color:var(--red); border-color:var(--red);" onclick="window.deleteProxy('${p.ids.join(',')}')">Delete</button>
             </div>
         ` : ''}
@@ -318,13 +317,49 @@ async function fetchPosts(silent = true) {
   if(!silent) showNotice("Refreshed");
 }
 
+// --- EDIT PANEL LOGIC ---
+window.openEditProxy = (ids, author, content) => {
+    document.getElementById('editTitle').textContent = "Edit Proxy Everywhere";
+    document.getElementById('editPostFields').style.display = 'block';
+    document.getElementById('editLogFields').style.display = 'none';
+    document.getElementById('editAuthor').value = author;
+    document.getElementById('editContent').value = content;
+    document.getElementById('editPanel').classList.add('open');
+    document.getElementById('saveEditBtn').onclick = async () => {
+        const newA = document.getElementById('editAuthor').value;
+        const newC = document.getElementById('editContent').value;
+        for(let id of ids.split(',')) {
+            await supabase.from('posts').update({ author: newA, content: newC }).eq('id', id);
+        }
+        showNotice("Proxy Updated!"); closeEditPanel(); fetchPosts();
+    };
+};
+
+window.openEditLog = (id, heading, body) => {
+    document.getElementById('editTitle').textContent = "Edit Update Log";
+    document.getElementById('editPostFields').style.display = 'none';
+    document.getElementById('editLogFields').style.display = 'block';
+    document.getElementById('editLogHeading').value = heading;
+    document.getElementById('editLogBody').value = body;
+    document.getElementById('editPanel').classList.add('open');
+    document.getElementById('saveLogEditBtn').onclick = async () => {
+        await supabase.from('logs').update({ heading: document.getElementById('editLogHeading').value, body: document.getElementById('editLogBody').value }).eq('id', id);
+        showNotice("Log Updated!"); closeEditPanel(); showLogs();
+    };
+};
+
+window.deleteProxy = async (ids) => {
+    if(!confirm("Are you sure you want to delete this link?")) return;
+    for(let id of ids.split(',')) await supabase.from('posts').delete().eq('id', id);
+    showNotice("Deleted"); fetchPosts();
+};
+
 // --- INITIALIZATION ---
 blockers.forEach(b => {
   const card = document.createElement('div');
   card.className = 'blocker-card'; card.textContent = b.replace(/_/g, ' ');
   card.onclick = () => selectBlocker(b);
   document.getElementById('gridContainer').appendChild(card);
-  
   const pill = document.createElement('div');
   pill.className = 'admin-pill'; pill.textContent = b.replace(/_/g, ' ');
   pill.onclick = () => pill.classList.toggle('selected');
@@ -334,7 +369,7 @@ blockers.forEach(b => {
 
 if (selectedBlocker) selectBlocker(selectedBlocker);
 
-// --- ADMIN & MODALS ---
+// --- ADMIN AUTH ---
 const loginAction = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
     isAdmin = true; 
@@ -347,28 +382,7 @@ const loginAction = () => {
 document.getElementById('loginBtn').onclick = loginAction;
 document.getElementById('adminPassword').onkeydown = (e) => { if(e.key==='Enter') loginAction(); };
 
-window.editProxy = (ids, oldContent) => {
-    document.getElementById('confirmTitle').textContent = "Edit Proxy";
-    document.getElementById('modalInputArea').style.display = 'block';
-    document.getElementById('modalTextArea').value = oldContent;
-    document.getElementById('confirmText').textContent = "Update this link everywhere.";
-    document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = async () => {
-        const newC = document.getElementById('modalTextArea').value;
-        for(let id of ids.split(',')) await supabase.from('posts').update({ content: newC }).eq('id', id);
-        showNotice("Updated!"); closeModal(); fetchPosts();
-    };
-};
-window.deleteProxy = (ids) => {
-    document.getElementById('confirmTitle').textContent = "Delete Proxy?";
-    document.getElementById('modalInputArea').style.display = 'none';
-    document.getElementById('confirmText').textContent = "This cannot be undone.";
-    document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = async () => {
-        for(let id of ids.split(',')) await supabase.from('posts').delete().eq('id', id);
-        showNotice("Deleted"); closeModal(); fetchPosts();
-    };
-};
+// --- LOGS & ADMIN ACTIONS ---
 window.showLogs = async () => {
   document.getElementById('logOverlay').style.display = 'block';
   const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
@@ -378,7 +392,7 @@ window.showLogs = async () => {
         <strong style="color:var(--accent)">${l.heading}</strong>
         ${isAdmin ? `
             <div style="display:flex; gap:5px;">
-                <button class="copy-btn" onclick="window.editLog('${l.id}', \`${l.heading}\`, \`${l.body}\`)">Edit</button>
+                <button class="copy-btn" onclick="window.openEditLog('${l.id}', \`${l.heading}\`, \`${l.body}\`)">Edit</button>
                 <button class="report-btn" onclick="window.deleteLog('${l.id}')">Del</button>
             </div>
         ` : ''}
@@ -387,18 +401,7 @@ window.showLogs = async () => {
     </div>`).join('');
 };
 
-window.editLog = (id, oldH, oldB) => {
-    document.getElementById('confirmTitle').textContent = "Edit Log Entry";
-    document.getElementById('modalInputArea').style.display = 'block';
-    document.getElementById('modalTextArea').value = oldB;
-    document.getElementById('confirmText').textContent = "Heading: " + oldH;
-    document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = async () => {
-        await supabase.from('logs').update({ body: document.getElementById('modalTextArea').value }).eq('id', id);
-        showNotice("Log Updated"); closeModal(); showLogs();
-    };
-}
-window.deleteLog = async (id) => { await supabase.from('logs').delete().eq('id', id); showLogs(); };
+window.deleteLog = async (id) => { if(confirm("Delete this log?")) { await supabase.from('logs').delete().eq('id', id); showLogs(); } };
 
 window.switchTab = (t) => {
   ['panePost', 'paneLog', 'paneBanner'].forEach(p => document.getElementById(p).style.display = 'none');
@@ -414,14 +417,17 @@ document.getElementById('publishBtn').onclick = async () => {
   for(let p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
   showNotice("Published!"); fetchPosts();
 };
+
 document.getElementById('publishLogBtn').onclick = async () => {
     await supabase.from('logs').insert([{ heading: document.getElementById('logHeading').value, body: document.getElementById('logBody').value }]);
     showNotice("Log Added");
 };
+
 document.getElementById('updateBannerBtn').onclick = async () => {
   await supabase.from('settings').update({ content: document.getElementById('bannerTextInput').value }).eq('id', 'announcement_banner');
   showNotice("Banner Updated"); syncBanner();
 };
+
 document.getElementById('searchInput').oninput = (e) => {
   const term = e.target.value.toLowerCase();
   document.querySelectorAll('.post-card').forEach(card => card.style.display = card.innerText.toLowerCase().includes(term) ? 'block' : 'none');
