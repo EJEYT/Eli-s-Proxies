@@ -272,7 +272,7 @@ window.selectBlocker = (name) => {
 };
 
 window.goBackToSelection = () => {
-    localStorage.removeItem('eli_last_blocker'); // Clear saved so they don't auto-jump next time they visit
+    localStorage.removeItem('eli_last_blocker');
     document.getElementById('appContainer').style.display = 'none';
     document.getElementById('selectionScreen').style.display = 'flex';
 };
@@ -334,49 +334,69 @@ blockers.forEach(b => {
   document.getElementById('adminBlockerButtons').appendChild(pill);
 });
 
-// Auto-Load saved blocker
-if (selectedBlocker) {
-    selectBlocker(selectedBlocker);
-}
+if (selectedBlocker) selectBlocker(selectedBlocker);
 
-// --- ADMIN & MISC (Same as previous version) ---
+// --- MODALS & ACTIONS ---
 window.confirmRefresh = () => {
+    const actionBtn = document.getElementById('confirmActionBtn');
     document.getElementById('confirmTitle').textContent = "Refresh Feed?";
     document.getElementById('modalInputArea').style.display = 'none';
-    document.getElementById('confirmText').textContent = "Checking for new updates...";
+    document.getElementById('confirmText').textContent = "Check for the latest links.";
     document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = () => { fetchPosts(false); closeModal(); };
+    actionBtn.textContent = "Refresh";
+    actionBtn.onclick = () => { fetchPosts(false); closeModal(); };
 };
+
+// --- ADMIN AUTH ---
+const loginAction = () => {
+  if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
+    isAdmin = true; 
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block'; 
+    showNotice("Admin Authenticated");
+    fetchPosts();
+  } else showNotice("Wrong password", "error");
+};
+document.getElementById('loginBtn').onclick = loginAction;
+document.getElementById('adminPassword').onkeydown = (e) => { if(e.key==='Enter') loginAction(); };
+
+// --- OTHER ACTIONS ---
 window.openReportModal = (ids, content) => {
+    const actionBtn = document.getElementById('confirmActionBtn');
     document.getElementById('confirmTitle').textContent = "Report Link";
     document.getElementById('modalInputArea').style.display = 'block';
     document.getElementById('modalTextArea').value = '';
     document.getElementById('modalTextArea').placeholder = "What's wrong? (Optional)";
     document.getElementById('confirmText').textContent = "";
     document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = async () => {
+    actionBtn.textContent = "Submit Report";
+    actionBtn.onclick = async () => {
         await supabase.from('reports').insert([{ post_ids: ids, content_preview: content.substring(0, 40), message: document.getElementById('modalTextArea').value }]);
         showNotice("Reported!"); closeModal();
     };
 };
 window.editProxy = (ids, oldContent) => {
+    const actionBtn = document.getElementById('confirmActionBtn');
     document.getElementById('confirmTitle').textContent = "Edit Proxy";
     document.getElementById('modalInputArea').style.display = 'block';
     document.getElementById('modalTextArea').value = oldContent;
     document.getElementById('confirmText').textContent = "Updates all instances of this link.";
     document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = async () => {
+    actionBtn.textContent = "Update";
+    actionBtn.onclick = async () => {
         const newC = document.getElementById('modalTextArea').value;
         for(let id of ids.split(',')) await supabase.from('posts').update({ content: newC }).eq('id', id);
         showNotice("Updated!"); closeModal(); fetchPosts();
     };
 };
 window.deleteProxy = (ids) => {
+    const actionBtn = document.getElementById('confirmActionBtn');
     document.getElementById('confirmTitle').textContent = "Delete Proxy?";
     document.getElementById('modalInputArea').style.display = 'none';
     document.getElementById('confirmText').textContent = "This action is permanent.";
     document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = async () => {
+    actionBtn.textContent = "Delete";
+    actionBtn.onclick = async () => {
         for(let id of ids.split(',')) await supabase.from('posts').delete().eq('id', id);
         showNotice("Deleted"); closeModal(); fetchPosts();
     };
@@ -399,13 +419,6 @@ window.switchTab = (t) => {
   ['tabPost', 'tabLog', 'tabBanner', 'tabReport'].forEach(b => document.getElementById(b).classList.remove('active'));
   document.getElementById('pane' + t.charAt(0).toUpperCase() + t.slice(1)).style.display = 'block';
   document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.add('active');
-  if (t === 'report') fetchReports();
-};
-document.getElementById('loginBtn').onclick = () => {
-  if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
-    isAdmin = true; document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block'; fetchPosts();
-  } else showNotice("Wrong password", "error");
 };
 document.getElementById('publishBtn').onclick = async () => {
   const author = document.getElementById('postAuthor').value || 'Admin';
