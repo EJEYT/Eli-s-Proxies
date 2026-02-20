@@ -50,6 +50,11 @@
     }
 
     * { box-sizing: border-box; transition: background 0.3s, color 0.3s, border 0.3s; }
+    
+    /* Global Scrollbar Hiding */
+    *::-webkit-scrollbar { display: none; }
+    * { -ms-overflow-style: none; scrollbar-width: none; }
+
     body { 
         font-family: 'Segoe UI', system-ui, sans-serif; 
         margin: 0; 
@@ -68,7 +73,7 @@
     #toast {
       position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
       padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold;
-      z-index: 50000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      z-index: 60000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     #toast.show { top: 20px; }
 
@@ -105,7 +110,16 @@
     }
     .search-bar:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
     
-    #posts { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    #posts { 
+        flex: 1; 
+        padding: 20px; 
+        padding-bottom: 100px; /* Ensures last post is fully visible */
+        overflow-y: auto; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 20px; 
+    }
     .post-card { 
       background: var(--bg-card); padding: 25px; border-radius: 20px; 
       width: 100%; max-width: 750px; position: relative; border: 1px solid var(--border); 
