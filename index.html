@@ -306,29 +306,26 @@ window.voteProxy = async (id, type) => {
 
     const column = type === 'like' ? 'likes' : 'dislikes';
     
-    // Fetch current count
-    const { data: post, error: fetchError } = await supabase
-        .from('posts')
-        .select(column)
-        .eq('id', id)
-        .single();
+    // ATOMIC INCREMENT logic (Fetches, Adds, Saves)
+    // 1. Get current count
+    const { data: current, error: getErr } = await supabase.from('posts').select(column).eq('id', id).single();
+    if(getErr) {
+        console.error(getErr);
+        return showNotice("Vote failed - Check Console", "error");
+    }
 
-    if (fetchError) return showNotice("Vote failed", "error");
+    const newVal = (current[column] || 0) + 1;
 
-    const newCount = (post[column] || 0) + 1;
+    // 2. Update with new count
+    const { error: setErr } = await supabase.from('posts').update({ [column]: newVal }).eq('id', id);
 
-    // Update with new count
-    const { error: updateError } = await supabase
-        .from('posts')
-        .update({ [column]: newCount })
-        .eq('id', id);
-
-    if(!updateError) {
+    if(!setErr) {
         localStorage.setItem(storageKey, type);
         showNotice(`Voted ${type}!`);
-        fetchPosts(true); // Silent refresh UI
+        fetchPosts(true); 
     } else {
-        showNotice("Database error", "error");
+        console.error(setErr);
+        showNotice("Update Denied", "error");
     }
 };
 
