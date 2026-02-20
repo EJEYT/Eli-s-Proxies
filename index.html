@@ -30,7 +30,17 @@
     [data-theme="emerald"] { --bg-dark: #06120e; --bg-sidebar: #0a1a15; --bg-card: #122a22; --text-main: #ecfdf5; --text-muted: #6ee7b7; --accent: #10b981; --border: #065f46; }
     [data-theme="rose"] { --bg-dark: #1a1012; --bg-sidebar: #24181a; --bg-card: #3d2b2e; --text-main: #fff1f2; --text-muted: #fda4af; --accent: #f43f5e; --border: #9f1239; }
     
-    /* NEW THEMES */
+    /* ADDED THEMES */
+    [data-theme="cyberpunk"] { --bg-dark: #000b1e; --bg-sidebar: #00162d; --bg-card: #002244; --text-main: #00ffcc; --text-muted: #fdee00; --accent: #ff007f; --border: #00ffcc; }
+    [data-theme="forest"] { --bg-dark: #0b120b; --bg-sidebar: #131d13; --bg-card: #1b2b1b; --text-main: #d4e4d4; --text-muted: #7da17d; --accent: #4caf50; --border: #2e442e; }
+    [data-theme="lava"] { --bg-dark: #0d0000; --bg-sidebar: #1a0000; --bg-card: #2d0000; --text-main: #ffd1d1; --text-muted: #ff6b6b; --accent: #ff4500; --border: #4d0000; }
+    [data-theme="dracula"] { --bg-dark: #282a36; --bg-sidebar: #1e1f29; --bg-card: #44475a; --text-main: #f8f8f2; --text-muted: #6272a4; --accent: #bd93f9; --border: #bd93f9; }
+    [data-theme="sakura"] { --bg-dark: #fff5f7; --bg-sidebar: #ffe0e9; --bg-card: #ffffff; --text-main: #d01d56; --text-muted: #f1a7bb; --accent: #ff8fa3; --border: #ffcad4; }
+    [data-theme="synthwave"] { --bg-dark: #241744; --bg-sidebar: #2d1b5a; --bg-card: #37246e; --text-main: #fede5d; --text-muted: #ff7edb; --accent: #2de2e6; --border: #72f1b8; }
+    [data-theme="ghost"] { --bg-dark: #f0f2f5; --bg-sidebar: #ffffff; --bg-card: #ffffff; --text-main: #2c3e50; --text-muted: #95a5a6; --accent: #34495e; --border: #dcdde1; }
+    [data-theme="gold"] { --bg-dark: #0a0a0a; --bg-sidebar: #141414; --bg-card: #1a1a1a; --text-main: #ffffff; --text-muted: #888888; --accent: #d4af37; --border: #333333; }
+    
+    /* PREVIOUS THEMES */
     [data-theme="ocean"] { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: #334155; --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #38bdf8; --border: #475569; }
     [data-theme="midnight"] { --bg-dark: #020617; --bg-sidebar: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-muted: #64748b; --accent: #6366f1; --border: #334155; }
     [data-theme="coffee"] { --bg-dark: #1c1917; --bg-sidebar: #292524; --bg-card: #44403c; --text-main: #fafaf9; --text-muted: #a8a29e; --accent: #d97706; --border: #57534e; }
@@ -67,10 +77,17 @@
     .blocker-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); border-color: var(--accent); }
     
     .app-container { display: none; width: 100%; height: 100%; flex-direction: column; }
-    .header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar); z-index: 10; backdrop-filter: blur(var(--glass-blur)); position: relative; }
-    .search-bar { flex: 0.6; padding: 12px 25px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 30px; color: var(--text-main); outline: none; margin: 0 15px; backdrop-filter: blur(var(--glass-blur)); }
+    .header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; background: var(--bg-sidebar); z-index: 10; backdrop-filter: blur(var(--glass-blur)); position: relative; gap: 10px; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .header-bottom { display: flex; gap: 10px; width: 100%; align-items: center; }
+
+    .search-bar { flex: 1; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 30px; color: var(--text-main); outline: none; backdrop-filter: blur(var(--glass-blur)); }
     .search-bar:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
     
+    .filter-pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; }
+    .filter-pill { padding: 6px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; font-size: 0.75rem; cursor: pointer; white-space: nowrap; font-weight: bold; color: var(--text-muted); }
+    .filter-pill.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
     #posts { flex: 1; padding: 20px; padding-bottom: 100px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .post-card { background: var(--bg-card); padding: 25px; border-radius: 20px; width: 100%; max-width: 750px; position: relative; border: 1px solid var(--border); backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
     .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
@@ -84,7 +101,7 @@
     .gear-icon { font-size: 1.8rem; cursor: pointer; color: var(--text-muted); padding: 5px; transition: 0.3s; display: block; }
     .gear-icon:hover { color: var(--accent); transform: rotate(45deg); }
     
-    .settings-menu { display: none; position: absolute; right: 0; top: 50px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; width: 240px; padding: 10px; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.4); backdrop-filter: blur(30px); }
+    .settings-menu { display: none; position: absolute; right: 0; top: 50px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; width: 240px; padding: 10px; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.4); backdrop-filter: blur(30px); max-height: 80vh; overflow-y: auto; }
     .settings-menu.show { display: block; }
     .menu-item { padding: 12px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: bold; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
     .menu-item:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
@@ -169,14 +186,6 @@
     <textarea id="editContent" class="admin-input" rows="6"></textarea>
     <button id="saveEditBtn" class="admin-primary-btn">Apply Changes</button>
   </div>
-
-  <div id="editLogFields" style="display:none;">
-    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Heading</label>
-    <input type="text" id="editLogHeading" class="admin-input">
-    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Update Details</label>
-    <textarea id="editLogBody" class="admin-input" rows="10"></textarea>
-    <button id="saveLogEditBtn" class="admin-primary-btn">Update Log</button>
-  </div>
 </div>
 
 <div id="selectionScreen">
@@ -188,38 +197,53 @@
 
 <div class="app-container" id="appContainer">
   <div class="header">
-    <div style="display:flex; align-items:center; gap:15px;">
-      <button onclick="goBackToSelection()" class="btn-outline">← Back</button>
-      <h2 id="currentBlocker" style="font-size:1.2rem; margin:0; font-weight: 800;">Feed</h2>
-    </div>
-    <input type="text" id="searchInput" class="search-bar" placeholder="Search for proxies...">
-    <div class="settings-dropdown">
-      <div class="gear-icon" onclick="toggleSettings()">⚙</div>
-      <div id="settingsMenu" class="settings-menu">
-        <div class="menu-item" onclick="refreshNow()">↻ Refresh Feed</div>
-        <div class="menu-item" onclick="toggleThemeList()">🎨 Themes <span id="themeArrow">▼</span></div>
-        <div id="themesSubList" class="themes-sub-list">
-            <div class="theme-opt" onclick="setTheme('liquid')" style="color:#0ea5e9; font-weight: bold;">Liquid Glass ✨</div>
-            <div class="theme-opt" onclick="setTheme('catppuccin')">Original</div>
-            <div class="theme-opt" onclick="setTheme('dark')">Dark</div>
-            <div class="theme-opt" onclick="setTheme('oled')">OLED</div>
-            <div class="theme-opt" onclick="setTheme('light')">Light</div>
-            <div class="theme-opt" onclick="setTheme('emerald')" style="color:#10b981">Emerald</div>
-            <div class="theme-opt" onclick="setTheme('rose')" style="color:#f43f5e">Rose</div>
-            <div class="theme-opt" onclick="setTheme('ocean')" style="color:#38bdf8">Ocean Blue</div>
-            <div class="theme-opt" onclick="setTheme('midnight')" style="color:#6366f1">Midnight</div>
-            <div class="theme-opt" onclick="setTheme('coffee')" style="color:#d97706">Coffee House</div>
-            <div class="theme-opt" onclick="setTheme('nebula')" style="color:#d946ef">Nebula</div>
-            <div class="theme-opt" onclick="setTheme('amber')" style="color:#f59e0b">Amber</div>
-            <div class="theme-opt" onclick="setTheme('nord')" style="color:#88c0d0">Nordic Frost</div>
+    <div class="header-top">
+        <div style="display:flex; align-items:center; gap:15px;">
+          <button onclick="goBackToSelection()" class="btn-outline">← Back</button>
+          <h2 id="currentBlocker" style="font-size:1.2rem; margin:0; font-weight: 800;">Feed</h2>
         </div>
-        <div class="menu-item" onclick="showLogs()">📜 View Logs</div>
-        <div class="menu-item" onclick="openRequestModal()">📥 Request Proxy</div>
-        <div class="menu-item" onclick="document.getElementById('adminPanel').style.display='block'">🔑 Admin Panel</div>
-        <a href="https://discord.gg/hns6EJVZ3k" target="_blank">
-          <div class="menu-item">💬 Join Discord</div>
-        </a>
-      </div>
+        <div class="settings-dropdown">
+          <div class="gear-icon" onclick="toggleSettings()">⚙</div>
+          <div id="settingsMenu" class="settings-menu">
+            <div class="menu-item" onclick="refreshNow()">↻ Refresh Feed</div>
+            <div class="menu-item" onclick="toggleThemeList()">🎨 Themes <span id="themeArrow">▼</span></div>
+            <div id="themesSubList" class="themes-sub-list">
+                <div class="theme-opt" onclick="setTheme('liquid')" style="color:#0ea5e9; font-weight: bold;">Liquid Glass ✨</div>
+                <div class="theme-opt" onclick="setTheme('cyberpunk')" style="color:#ff007f">Cyberpunk</div>
+                <div class="theme-opt" onclick="setTheme('synthwave')" style="color:#ff7edb">Synthwave</div>
+                <div class="theme-opt" onclick="setTheme('lava')" style="color:#ff4500">Lava Flow</div>
+                <div class="theme-opt" onclick="setTheme('gold')" style="color:#d4af37">Pure Gold</div>
+                <div class="theme-opt" onclick="setTheme('sakura')" style="color:#ff8fa3">Sakura</div>
+                <div class="theme-opt" onclick="setTheme('dracula')" style="color:#bd93f9">Dracula</div>
+                <div class="theme-opt" onclick="setTheme('forest')" style="color:#4caf50">Forest</div>
+                <div class="theme-opt" onclick="setTheme('catppuccin')">Original</div>
+                <div class="theme-opt" onclick="setTheme('dark')">Dark</div>
+                <div class="theme-opt" onclick="setTheme('oled')">OLED</div>
+                <div class="theme-opt" onclick="setTheme('light')">Light</div>
+                <div class="theme-opt" onclick="setTheme('ocean')">Ocean Blue</div>
+                <div class="theme-opt" onclick="setTheme('midnight')">Midnight</div>
+                <div class="theme-opt" onclick="setTheme('coffee')">Coffee House</div>
+                <div class="theme-opt" onclick="setTheme('nebula')">Nebula</div>
+                <div class="theme-opt" onclick="setTheme('amber')">Amber</div>
+                <div class="theme-opt" onclick="setTheme('nord')">Nordic Frost</div>
+                <div class="theme-opt" onclick="setTheme('ghost')">Ghostly</div>
+            </div>
+            <div class="menu-item" onclick="showLogs()">📜 View Logs</div>
+            <div class="menu-item" onclick="openRequestModal()">📥 Request Proxy</div>
+            <div class="menu-item" onclick="document.getElementById('adminPanel').style.display='block'">🔑 Admin Panel</div>
+            <a href="https://discord.gg/hns6EJVZ3k" target="_blank">
+              <div class="menu-item">💬 Join Discord</div>
+            </a>
+          </div>
+        </div>
+    </div>
+    <div class="header-bottom">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search for proxies...">
+        <div class="filter-pills">
+            <div class="filter-pill active" onclick="setSort('new')" id="sort-new">Newest</div>
+            <div class="filter-pill" onclick="setSort('likes')" id="sort-likes">Most Liked</div>
+            <div class="filter-pill" onclick="setSort('links')" id="sort-links">Most Links</div>
+        </div>
     </div>
   </div>
   <div id="posts"></div>
@@ -275,6 +299,7 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_last_blocker') || null;
 let isAdmin = false; 
+let currentSort = 'new'; // 'new', 'likes', 'links'
 
 const REPORT_WEBHOOK = 'https://discord.com/api/webhooks/1474238339811905662/pPriqbRbPjky3JzVqKl8AXDHZCMrS0uZmOMlxrmy-q0-mfLKJ-eABDhYc8Fi9jpGpL-r';
 const REQUEST_WEBHOOK = 'https://discord.com/api/webhooks/1474498106195181811/Gdd0aDSE8htLTf9cHAd6eEUR30fgnm3YI-rUgdRODWZXhdz_r-vLaMO75mH2xRre-OhZ';
@@ -299,6 +324,13 @@ window.onclick = (e) => {
     }
 };
 
+window.setSort = (type) => {
+    currentSort = type;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    document.getElementById(`sort-${type}`).classList.add('active');
+    fetchPosts(true);
+};
+
 function showNotice(msg, type='success') {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.background = type === 'success' ? '#a6e3a1' : '#f38ba8';
@@ -321,28 +353,17 @@ window.voteProxy = async (id, type) => {
     }
 
     const column = type === 'like' ? 'likes' : 'dislikes';
-    
-    // ATOMIC INCREMENT logic (Fetches, Adds, Saves)
-    // 1. Get current count
     const { data: current, error: getErr } = await supabase.from('posts').select(column).eq('id', id).single();
-    if(getErr) {
-        console.error(getErr);
-        return showNotice("Vote failed - Check Console", "error");
-    }
+    if(getErr) return showNotice("Vote failed", "error");
 
     const newVal = (current[column] || 0) + 1;
-
-    // 2. Update with new count
     const { error: setErr } = await supabase.from('posts').update({ [column]: newVal }).eq('id', id);
 
     if(!setErr) {
         localStorage.setItem(storageKey, type);
         showNotice(`Voted ${type}!`);
         fetchPosts(true); 
-    } else {
-        console.error(setErr);
-        showNotice("Update Denied", "error");
-    }
+    } else showNotice("Update Denied", "error");
 };
 
 window.copyLinksFromPost = (btn, text) => {
@@ -367,17 +388,7 @@ window.openRequestModal = () => {
     document.getElementById('sendRequestBtn').onclick = async () => {
         const msg = document.getElementById('requestInput').value;
         if(!msg) return showNotice("Please enter a request", "error");
-        
-        const payload = {
-            content: "<@949801961962741770>",
-            embeds: [{
-                title: "📬 New Proxy Request",
-                color: 8991994, 
-                description: msg,
-                timestamp: new Date().toISOString()
-            }]
-        };
-
+        const payload = { content: "<@949801961962741770>", embeds: [{ title: "📬 New Proxy Request", color: 8991994, description: msg, timestamp: new Date().toISOString() }] };
         try {
             const resp = await fetch(REQUEST_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
             if (resp.ok) {
@@ -394,22 +405,7 @@ window.openReportModal = (postId, author, content) => {
     document.getElementById('sendReportBtn').onclick = async () => {
         const msg = document.getElementById('reportInput').value;
         if(!msg) return showNotice("Enter a reason", "error");
-        
-        const payload = {
-            content: "<@949801961962741770>", 
-            embeds: [{
-                title: "🚨 New Proxy Report",
-                color: 15548997, 
-                fields: [
-                    { name: "Reason", value: msg },
-                    { name: "Proxy Author", value: author, inline: true },
-                    { name: "Post ID", value: postId, inline: true },
-                    { name: "Content", value: content }
-                ],
-                timestamp: new Date().toISOString()
-            }]
-        };
-
+        const payload = { content: "<@949801961962741770>", embeds: [{ title: "🚨 New Proxy Report", color: 15548997, fields: [{ name: "Reason", value: msg }, { name: "Proxy Author", value: author, inline: true }, { name: "Post ID", value: postId, inline: true }, { name: "Content", value: content }], timestamp: new Date().toISOString() }] };
         try {
             const resp = await fetch(REPORT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
             if (resp.ok) {
@@ -454,8 +450,10 @@ async function syncBanner() {
 async function fetchPosts(silent = true) {
   let query = supabase.from('posts').select('*');
   if (selectedBlocker && selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
-  const { data } = await query.order('created_at', { ascending: false });
+  
+  const { data } = await query;
   if (!data) return;
+
   const grouped = [];
   data.forEach(item => {
     const existing = grouped.find(g => g.content === item.content && g.author === item.author);
@@ -463,11 +461,26 @@ async function fetchPosts(silent = true) {
     else { grouped.push({ ...item, ids: [item.id] }); }
   });
 
+  // Apply Sorting
+  if (currentSort === 'likes') {
+    grouped.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+  } else if (currentSort === 'links') {
+    grouped.sort((a, b) => {
+        const countA = (a.content.match(/https?:\/\//gi) || []).length;
+        const countB = (b.content.match(/https?:\/\//gi) || []).length;
+        return countB - countA;
+    });
+  } else {
+    grouped.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  }
+
   const now = new Date();
   document.getElementById('posts').innerHTML = grouped.map(p => {
     const isNew = (now - new Date(p.created_at)) < (24 * 60 * 60 * 1000);
     const isHot = (p.likes || 0) >= 5;
     const userVote = localStorage.getItem(`voted_${p.ids[0]}`);
+    const linkCount = (p.content.match(/https?:\/\//gi) || []).length;
+    
     return `
     <div class="post-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -476,7 +489,9 @@ async function fetchPosts(silent = true) {
             ${isHot ? `<span class="hot-badge" title="Hot Streak!">🔥</span>` : ''}
             ${isNew ? `<span class="new-badge">NEW</span>` : ''}
         </span>
-        <span style="font-size:0.75rem; color:var(--text-muted); opacity:0.7;">${new Date(p.created_at).toLocaleDateString()}</span>
+        <span style="font-size:0.75rem; color:var(--text-muted); opacity:0.7;">
+            ${linkCount > 1 ? `<b>${linkCount} links</b> | ` : ''}${new Date(p.created_at).toLocaleDateString()}
+        </span>
       </div>
       <div class="post-content">${linkify(p.content)}</div>
       
@@ -508,7 +523,6 @@ async function fetchPosts(silent = true) {
 window.openEditProxy = (ids, author, content) => {
     document.getElementById('editTitle').textContent = "Edit Proxy";
     document.getElementById('editPostFields').style.display = 'block';
-    document.getElementById('editLogFields').style.display = 'none';
     document.getElementById('editAuthor').value = author;
     document.getElementById('editContent').value = content;
     document.getElementById('editPanel').classList.add('open');
@@ -587,6 +601,15 @@ document.getElementById('updateBannerBtn').onclick = async () => {
     const content = document.getElementById('bannerTextInput').value;
     await supabase.from('settings').update({ content }).eq('id', 'announcement_banner');
     showNotice("Banner Updated!"); syncBanner();
+};
+
+document.getElementById('searchInput').oninput = (e) => {
+    const term = e.target.value.toLowerCase();
+    const cards = document.querySelectorAll('.post-card');
+    cards.forEach(c => {
+        const text = c.innerText.toLowerCase();
+        c.style.display = text.includes(term) ? 'block' : 'none';
+    });
 };
 </script>
 </body>
