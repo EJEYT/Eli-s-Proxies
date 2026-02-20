@@ -3,21 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <title>Eli's Proxies</title>
-  <meta name="title" content="Eli's Proxies | Start your unblocking journey">
-  <meta name="description" content="The ultimate destination for unblocked links and proxy feeds.">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://elis-proxies.com/"> 
-  <meta property="og:title" content="Eli's Proxies | Start your unblocking journey">
-  <meta property="og:description" content="Get the latest unblocked links for Linewize, Securly, GoGuardian, and more.">
-  <meta property="og:image" content="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
-
-  <link rel="icon" type="image/png" href="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
 
   <style>
-    /* Themes */
     :root { 
       --bg-dark: #1e1e2e; --bg-sidebar: #181825; --bg-card: #313244;
       --text-main: #cdd6f4; --text-muted: #a6adc8; --accent: #89b4fa;
@@ -27,239 +15,129 @@
     [data-theme="dark"] { --bg-dark: #121212; --bg-sidebar: #1e1e1e; --bg-card: #242424; --text-main: #e0e0e0; --text-muted: #909090; --accent: #bb86fc; --border: #333333; }
     [data-theme="oled"] { --bg-dark: #000000; --bg-sidebar: #000000; --bg-card: #111111; --text-main: #ffffff; --text-muted: #888888; --accent: #ffffff; --border: #222222; }
     [data-theme="light"] { --bg-dark: #eff1f5; --bg-sidebar: #e6e9ef; --bg-card: #ffffff; --text-main: #4c4f69; --text-muted: #6c6f85; --accent: #1e66f5; --border: #ccd0da; }
-    [data-theme="emerald"] { --bg-dark: #06120e; --bg-sidebar: #0a1a15; --bg-card: #122a22; --text-main: #ecfdf5; --text-muted: #6ee7b7; --accent: #10b981; --border: #065f46; }
-    [data-theme="rose"] { --bg-dark: #1a1012; --bg-sidebar: #24181a; --bg-card: #3d2b2e; --text-main: #fff1f2; --text-muted: #fda4af; --accent: #f43f5e; --border: #9f1239; }
-    
     [data-theme="liquid"] { 
       --bg-dark: linear-gradient(-45deg, #0f172a, #1e293b, #082f49, #0f172a); 
       --bg-animate: gradientMove 15s ease infinite;
-      --bg-sidebar: rgba(255, 255, 255, 0.08); 
+      --bg-sidebar: rgba(255, 255, 255, 0.1); 
       --bg-card: rgba(255, 255, 255, 0.05); 
-      --text-main: #ffffff; 
-      --text-muted: rgba(255, 255, 255, 0.6); 
-      --accent: #ffffff; 
-      --border: rgba(255, 255, 255, 0.2);
+      --text-main: #ffffff; --accent: #ffffff; --border: rgba(255, 255, 255, 0.2);
       --glass-blur: 16px;
     }
+    @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    * { box-sizing: border-box; transition: background 0.3s, color 0.3s, border 0.3s; }
+    * { box-sizing: border-box; transition: background 0.2s; }
     *::-webkit-scrollbar { display: none; }
-    * { -ms-overflow-style: none; scrollbar-width: none; }
+    body { font-family: system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg-dark); background-size: 400% 400%; animation: var(--bg-animate); color: var(--text-main); height: 100vh; overflow: hidden; }
 
-    body { 
-        font-family: 'Segoe UI', system-ui, sans-serif; 
-        margin: 0; background: var(--bg-dark); background-size: 400% 400%; animation: var(--bg-animate);
-        color: var(--text-main); height: 100vh; overflow: hidden; 
-    }
-
-    #announcementBanner { background: var(--accent); color: #000; padding: 8px; text-align: center; font-weight: bold; font-size: 0.85rem; display: none; z-index: 100; }
-    a { color: var(--accent) !important; text-decoration: underline; }
-
-    #toast {
-      position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-      padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold;
-      z-index: 60000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
+    #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 12px; font-weight: bold; z-index: 99999; transition: 0.4s; }
     #toast.show { top: 20px; }
 
-    #selectionScreen {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      height: 100vh; background: transparent; overflow-y: auto; padding: 20px;
-    }
-    .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; margin-top: 20px; }
-    .blocker-card {
-      background: var(--bg-card); border: 1px solid var(--border); padding: 20px;
-      border-radius: 18px; cursor: pointer; transition: 0.3s; font-weight: bold;
-      text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px;
-      backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .blocker-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); border-color: var(--accent); }
-    
+    /* Layout */
+    #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 20px; }
+    .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 900px; margin-top: 20px; }
+    .blocker-card { background: var(--bg-card); border: 1px solid var(--border); padding: 20px; border-radius: 15px; cursor: pointer; text-align: center; backdrop-filter: blur(var(--glass-blur)); font-weight: bold; }
+    .blocker-card:hover { border-color: var(--accent); transform: scale(1.02); }
+
     .app-container { display: none; width: 100%; height: 100%; flex-direction: column; }
-    .header { 
-        padding: 15px 25px; border-bottom: 1px solid var(--border); 
-        display: flex; justify-content: space-between; align-items: center; 
-        background: var(--bg-sidebar); z-index: 10; backdrop-filter: blur(var(--glass-blur)); 
-    }
-    .search-bar { 
-        flex: 0.6; padding: 12px 25px; background: var(--bg-card); border: 1px solid var(--border); 
-        border-radius: 30px; color: var(--text-main); outline: none; margin: 0 15px; backdrop-filter: blur(var(--glass-blur)); 
-    }
-    
-    #posts { 
-        flex: 1; padding: 20px; padding-bottom: 100px; overflow-y: auto; 
-        display: flex; flex-direction: column; align-items: center; gap: 20px; 
-    }
-    .post-card { 
-      background: var(--bg-card); padding: 25px; border-radius: 20px; 
-      width: 100%; max-width: 750px; position: relative; border: 1px solid var(--border); 
-      backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; text-transform: uppercase; }
-    .post-content { white-space: pre-wrap; font-size: 1.05rem; margin-top: 12px; word-break: break-all; line-height: 1.5; }
+    .header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar); backdrop-filter: blur(var(--glass-blur)); }
+    .search-bar { flex: 0.6; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; color: white; outline: none; }
 
+    #posts { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .post-card { background: var(--bg-card); padding: 20px; border-radius: 15px; width: 100%; max-width: 700px; border: 1px solid var(--border); backdrop-filter: blur(var(--glass-blur)); }
+    .post-author { color: var(--accent); font-weight: bold; font-size: 0.9rem; }
+    .post-content { margin-top: 10px; white-space: pre-wrap; word-break: break-all; }
+
+    /* Dropdown */
     .settings-dropdown { position: relative; }
-    .gear-icon { font-size: 1.5rem; cursor: pointer; color: var(--text-muted); padding: 5px; }
-    .settings-menu { 
-        display: none; position: absolute; right: 0; top: 45px; 
-        background: var(--bg-card); border: 1px solid var(--border); 
-        border-radius: 16px; width: 240px; padding: 10px; z-index: 100;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.4); backdrop-filter: blur(30px);
-    }
+    .settings-menu { display: none; position: absolute; right: 0; top: 40px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; width: 200px; padding: 8px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
     .settings-menu.show { display: block; }
-    .menu-item { padding: 12px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-    .menu-item:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
-    .themes-sub-list { display: none; flex-direction: column; padding-left: 15px; margin-top: 5px; border-left: 2px solid var(--border); }
-    .themes-sub-list.open { display: flex; }
-    .theme-opt { padding: 8px 12px; font-size: 0.8rem; cursor: pointer; border-radius: 6px; }
+    .menu-item { padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 500; }
+    .menu-item:hover { background: rgba(255,255,255,0.1); }
+    .themes-sub { display: none; padding-left: 10px; border-left: 1px solid var(--border); margin-top: 5px; }
+    .themes-sub.show { display: block; }
 
-    .panel { display: none; position: fixed; bottom: 30px; right: 30px; width: 420px; max-width: calc(100% - 60px); background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 24px; z-index: 15000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(40px); }
-    
-    #editPanel { 
-      position: fixed; left: -450px; top: 0; width: 420px; height: 100vh; 
-      background: var(--bg-sidebar); border-right: 1px solid var(--border); 
-      z-index: 30000; padding: 40px 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 20px 0 60px rgba(0,0,0,0.6); backdrop-filter: blur(40px);
-    }
-    #editPanel.open { left: 0; }
-
-    .admin-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 10px; margin-bottom: 12px; outline: none; }
-    .admin-primary-btn { width: 100%; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; transition: 0.2s; }
-    
-    .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 12px; }
-    .admin-tab { flex: 1; padding: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-size: 0.75rem; color: var(--text-muted); }
+    /* Admin Panel */
+    .panel { display: none; position: fixed; bottom: 20px; right: 20px; width: 400px; background: var(--bg-card); border: 1px solid var(--border); padding: 20px; border-radius: 20px; z-index: 10000; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+    .admin-input { width: 100%; padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 8px; margin-bottom: 10px; }
+    .admin-btn { width: 100%; padding: 12px; background: var(--accent); border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    .admin-tabs { display: flex; gap: 5px; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 10px; }
+    .admin-tab { flex: 1; padding: 6px; text-align: center; cursor: pointer; border-radius: 6px; font-size: 0.7rem; color: var(--text-muted); }
     .admin-tab.active { background: var(--bg-card); color: var(--accent); font-weight: bold; }
+
+    /* Utils */
+    .btn-outline { background: none; border: 1px solid var(--border); color: var(--text-main); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; }
+    .copy-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--accent); padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 0.7rem; font-weight: bold; }
+    .report-btn { border: 1px solid var(--red); color: var(--red); background: none; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 0.7rem; margin-left: 5px; }
     
-    .blocker-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
-    .admin-pill { padding: 6px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: var(--text-muted); font-size: 0.7rem; cursor: pointer; text-align: center; }
-    .admin-pill.selected { background: var(--accent); color: #000; }
-
-    .btn-outline { background:none; border:1px solid var(--border); color:var(--text-main); border-radius:25px; padding:8px 16px; cursor:pointer; font-weight:bold; font-size: 0.85rem; }
-    .copy-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--accent); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
-    .report-btn { color: var(--red); border: 1px solid var(--red); background: transparent; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; margin-left: 8px; }
-
-    .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:50000; backdrop-filter: blur(8px); align-items:center; justify-content:center; }
-    .modal-content { background: var(--bg-card); padding: 30px; border-radius: 24px; width: 90%; max-width: 400px; border: 1px solid var(--border); }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+    .modal-content { background: var(--bg-card); padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; border: 1px solid var(--border); }
   </style>
 </head>
 <body>
 
 <div id="toast"></div>
-<div id="announcementBanner"></div>
 
-<div id="reportModal" class="modal-overlay">
+<div id="reportModal" class="modal">
   <div class="modal-content">
     <h3 style="margin-top:0; color:var(--red);">Report Proxy</h3>
-    <textarea id="reportInput" class="admin-input" rows="4" placeholder="Reason for reporting..."></textarea>
+    <textarea id="reportText" class="admin-input" rows="4" placeholder="Why is this proxy broken?"></textarea>
     <div style="display:flex; gap:10px;">
-        <button id="sendReportBtn" class="admin-primary-btn" style="background:var(--red); color:white;">Send Report</button>
-        <button onclick="document.getElementById('reportModal').style.display='none'" class="admin-primary-btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main);">Cancel</button>
+        <button id="submitReport" class="admin-btn" style="background:var(--red); color:white;">Send</button>
+        <button onclick="document.getElementById('reportModal').style.display='none'" class="admin-btn" style="background:none; border:1px solid var(--border); color:white;">Cancel</button>
     </div>
-  </div>
-</div>
-
-<div id="editPanel">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
-    <h3 id="editTitle" style="margin:0; color:var(--accent); font-size: 1.4rem;">Edit Item</h3>
-    <button onclick="closeEditPanel()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:2rem;">&times;</button>
-  </div>
-  <div id="editPostFields">
-    <input type="text" id="editAuthor" class="admin-input">
-    <textarea id="editContent" class="admin-input" rows="6"></textarea>
-    <button id="saveEditBtn" class="admin-primary-btn">Apply Changes</button>
-  </div>
-  <div id="editLogFields" style="display:none;">
-    <input type="text" id="editLogHeading" class="admin-input">
-    <textarea id="editLogBody" class="admin-input" rows="10"></textarea>
-    <button id="saveLogEditBtn" class="admin-primary-btn">Update Log</button>
   </div>
 </div>
 
 <div id="selectionScreen">
-  <h1 style="color: var(--text-main); font-size: 2.5rem; margin-bottom: 8px;">Eli's Proxies</h1>
-  <p style="color: var(--text-muted); margin-bottom: 30px;">Choose a filter to begin</p>
-  <div class="blocker-grid" id="gridContainer"></div>
-  <div class="blocker-card" style="margin-top:25px; width:100%; max-width:320px; color:var(--accent);" onclick="selectBlocker('All')">View All Proxies</div>
+  <h1 style="margin-bottom:0;">Eli's Proxies</h1>
+  <p style="opacity:0.6; margin-bottom:30px;">Select a filter to start</p>
+  <div class="blocker-grid" id="grid"></div>
+  <div class="blocker-card" style="margin-top:20px; width:100%; max-width:300px; color:var(--accent);" onclick="selectBlocker('All')">View All</div>
 </div>
 
-<div class="app-container" id="appContainer">
+<div id="app" class="app-container">
   <div class="header">
-    <div style="display:flex; align-items:center; gap:15px;">
-      <button onclick="goBackToSelection()" class="btn-outline">← Back</button>
-      <h2 id="currentBlocker" style="font-size:1.2rem; margin:0; font-weight: 800;">Feed</h2>
-    </div>
-    <input type="text" id="searchInput" class="search-bar" placeholder="Search for proxies...">
+    <button onclick="location.reload()" class="btn-outline">← Home</button>
+    <input type="text" id="search" class="search-bar" placeholder="Search proxies...">
     <div class="settings-dropdown">
-      <div class="gear-icon" onclick="toggleSettings()">⚙</div>
-      <div id="settingsMenu" class="settings-menu">
-        <div class="menu-item" onclick="refreshNow()">↻ Refresh Feed</div>
-        <div class="menu-item" onclick="toggleThemeList()">🎨 Themes <span id="themeArrow">▼</span></div>
-        <div id="themesSubList" class="themes-sub-list">
-            <div class="theme-opt" onclick="setTheme('liquid')">Liquid ✨</div>
-            <div class="theme-opt" onclick="setTheme('catppuccin')">Original</div>
-            <div class="theme-opt" onclick="setTheme('dark')">Dark</div>
-            <div class="theme-opt" onclick="setTheme('oled')">OLED</div>
-            <div class="theme-opt" onclick="setTheme('light')">Light</div>
-            <div class="theme-opt" onclick="setTheme('emerald')">Emerald</div>
-            <div class="theme-opt" onclick="setTheme('rose')">Rose</div>
+      <div onclick="toggleSettings()" style="cursor:pointer; font-size:1.5rem;">⚙</div>
+      <div id="menu" class="settings-menu">
+        <div class="menu-item" onclick="toggleThemes()">🎨 Themes</div>
+        <div id="themeList" class="themes-sub">
+            <div class="menu-item" onclick="setTheme('liquid')">Liquid Glass</div>
+            <div class="menu-item" onclick="setTheme('dark')">Dark</div>
+            <div class="menu-item" onclick="setTheme('oled')">OLED</div>
+            <div class="menu-item" onclick="setTheme('light')">Light</div>
         </div>
-        <div class="menu-item" onclick="showLogs()">📜 View Logs</div>
-        <div class="menu-item" onclick="document.getElementById('adminPanel').style.display='block'">🔑 Admin Panel</div>
+        <div class="menu-item" onclick="document.getElementById('admin').style.display='block'">🔑 Admin Panel</div>
       </div>
     </div>
   </div>
   <div id="posts"></div>
 </div>
 
-<div id="logOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:35000; padding:20px; backdrop-filter: blur(10px);">
-  <div style="max-width:650px; margin:40px auto; background:var(--bg-sidebar); border-radius:24px; padding:30px; max-height:85vh; overflow-y:auto; border:1px solid var(--border);">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
-      <h2 style="margin:0;">Update History</h2>
-      <button onclick="document.getElementById('logOverlay').style.display='none'" class="btn-outline">Close</button>
-    </div>
-    <div id="logList"></div>
+<div id="admin" class="panel">
+  <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+    <h3 style="margin:0;">Admin</h3>
+    <span onclick="document.getElementById('admin').style.display='none'" style="cursor:pointer;">&times;</span>
   </div>
-</div>
-
-<div id="adminPanel" class="panel">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <h3 style="margin:0; color:var(--accent);">Admin Dashboard</h3>
-    <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.8rem;">&times;</button>
+  <div id="adminAuth">
+    <input type="password" id="pass" class="admin-input" placeholder="Password">
+    <button onclick="doAuth()" class="admin-btn">Login</button>
   </div>
-  <div id="loginSection">
-    <input type="password" id="adminPassword" class="admin-input" placeholder="Password">
-    <button id="loginBtn" class="admin-primary-btn">Authenticate</button>
-  </div>
-  <div id="adminContent" style="display:none;">
+  <div id="adminUI" style="display:none;">
     <div class="admin-tabs">
-      <div class="admin-tab active" id="tabPost" onclick="switchTab('post')">New Proxy</div>
-      <div class="admin-tab" id="tabLog" onclick="switchTab('log')">New Log</div>
-      <div class="admin-tab" id="tabBanner" onclick="switchTab('banner')">Banner</div>
-      <div class="admin-tab" id="tabReports" onclick="switchTab('reports')">Reports</div>
+        <div class="admin-tab active" onclick="switchTab('p')">Proxy</div>
+        <div class="admin-tab" onclick="switchTab('r')">Reports</div>
     </div>
-    <div id="panePost">
-      <input type="text" id="postAuthor" class="admin-input" placeholder="Author">
-      <textarea id="postText" class="admin-input" rows="3" placeholder="Content..."></textarea>
-      <div id="adminBlockerButtons" class="blocker-pills"></div>
-      <button id="publishBtn" class="admin-primary-btn">Publish</button>
+    <div id="tabP">
+        <input type="text" id="pAuthor" class="admin-input" placeholder="Author">
+        <textarea id="pText" class="admin-input" rows="3" placeholder="Link..."></textarea>
+        <div id="pillContainer" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; margin-bottom:10px;"></div>
+        <button onclick="publish()" class="admin-btn">Add Proxy</button>
     </div>
-    <div id="paneLog" style="display:none;">
-      <input type="text" id="logHeading" class="admin-input" placeholder="Title">
-      <textarea id="logBody" class="admin-input" rows="4"></textarea>
-      <button id="publishLogBtn" class="admin-primary-btn">Add Log</button>
-    </div>
-    <div id="paneBanner" style="display:none;">
-      <textarea id="bannerTextInput" class="admin-input" rows="3"></textarea>
-      <button id="updateBannerBtn" class="admin-primary-btn">Update Banner</button>
-    </div>
-    <div id="paneReports" style="display:none; max-height:300px; overflow-y:auto;">
-      <div id="adminReportList"></div>
+    <div id="tabR" style="display:none; max-height:250px; overflow-y:auto;">
+        <div id="reportList"></div>
     </div>
   </div>
 </div>
@@ -269,169 +147,123 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F');
 
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
-let selectedBlocker = localStorage.getItem('eli_last_blocker') || null;
-let isAdmin = false; 
+let activeBlocker = null;
+let isAdmin = false;
 
-// UI Utils
-function showNotice(msg, type='success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.style.background = type === 'success' ? '#a6e3a1' : '#f38ba8';
-  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
-}
+// EXPOSE TO WINDOW SO ONCLICK WORKS
+window.toggleSettings = () => document.getElementById('menu').classList.toggle('show');
+window.toggleThemes = () => document.getElementById('themeList').classList.toggle('show');
+window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eli_theme', t); };
 
-function linkify(text) {
-  const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-  return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-}
-
-// Feature: Copy All Links
-window.copyAllLinks = (text) => {
-    const urls = text.match(/(https?:\/\/[^\s]+)/gi);
-    if(urls) {
-        navigator.clipboard.writeText(urls.join('\n')).then(() => showNotice(`Copied ${urls.length} Links`));
-    } else { showNotice("No links found", "error"); }
+window.selectBlocker = (name) => {
+    activeBlocker = name;
+    document.getElementById('selectionScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    loadPosts();
 };
 
-// Feature: Reporting
-window.openReport = (id, author, content) => {
-    document.getElementById('reportModal').style.display = 'flex';
-    document.getElementById('sendReportBtn').onclick = async () => {
-        const msg = document.getElementById('reportInput').value;
-        if(!msg) return showNotice("Enter a reason", "error");
-        
-        const { error } = await supabase.from('reports').insert([{
-            post_id: id,
-            message: msg,
-            post_author: author,
-            post_content: content
-        }]);
+window.copyLinks = (text) => {
+    const urls = text.match(/(https?:\/\/[^\s]+)/gi);
+    if(urls) {
+        navigator.clipboard.writeText(urls.join('\n'));
+        showToast("Links Copied!");
+    }
+};
 
-        if(error) { showNotice("Failed to report", "error"); console.error(error); }
-        else {
-            showNotice("Reported!");
-            document.getElementById('reportModal').style.display = 'none';
-            document.getElementById('reportInput').value = '';
-        }
+window.openReport = (id, auth, cont) => {
+    document.getElementById('reportModal').style.display = 'flex';
+    document.getElementById('submitReport').onclick = async () => {
+        const msg = document.getElementById('reportText').value;
+        if(!msg) return;
+        const { error } = await supabase.from('reports').insert([{ 
+            post_id: id, message: msg, post_author: auth, post_content: cont 
+        }]);
+        if(error) { showToast("Failed to send", "#f38ba8"); console.log(error); }
+        else { showToast("Report Sent!"); document.getElementById('reportModal').style.display='none'; }
     };
 };
 
-async function loadReports() {
-    const { data, error } = await supabase.from('reports').select('*').order('created_at', { ascending: false });
-    const container = document.getElementById('adminReportList');
-    if(error) { container.innerHTML = "Error loading reports."; return; }
-    if(!data || data.length === 0) { container.innerHTML = "<p style='text-align:center; opacity:0.5;'>No reports found.</p>"; return; }
+window.switchTab = (tab) => {
+    document.getElementById('tabP').style.display = tab === 'p' ? 'block' : 'none';
+    document.getElementById('tabR').style.display = tab === 'r' ? 'block' : 'none';
+    if(tab === 'r') loadReports();
+};
+
+window.doAuth = () => {
+    if(document.getElementById('pass').value === 'EISisBetterForever') {
+        isAdmin = true;
+        document.getElementById('adminAuth').style.display = 'none';
+        document.getElementById('adminUI').style.display = 'block';
+        loadPosts();
+    }
+};
+
+window.publish = async () => {
+    const a = document.getElementById('pAuthor').value || 'Admin';
+    const c = document.getElementById('pText').value;
+    const targets = document.querySelectorAll('.pill.selected');
+    for(let t of targets) {
+        await supabase.from('posts').insert([{ blocker: t.dataset.val, author: a, content: c }]);
+    }
+    showToast("Added!"); loadPosts();
+};
+
+window.delReport = async (id) => {
+    await supabase.from('reports').delete().eq('id', id);
+    loadReports();
+};
+
+async function loadPosts() {
+    let q = supabase.from('posts').select('*').order('created_at', {ascending: false});
+    if(activeBlocker !== 'All') q = q.eq('blocker', activeBlocker);
+    const { data } = await q;
     
-    container.innerHTML = data.map(r => `
-        <div style="background:rgba(0,0,0,0.2); padding:12px; border-radius:12px; margin-bottom:10px; font-size:0.8rem;">
-            <div style="color:var(--red); font-weight:bold;">Report: ${r.message}</div>
-            <div style="opacity:0.6; margin-top:4px;">Author: ${r.post_author}</div>
-            <div style="font-size:0.7rem; opacity:0.4;">Content: ${r.post_content.substring(0,50)}...</div>
-            <button class="copy-btn" style="margin-top:8px; font-size:0.6rem;" onclick="clearReport('${r.id}')">Delete Report</button>
+    document.getElementById('posts').innerHTML = data.map(p => `
+        <div class="post-card">
+            <div class="post-author">${p.author}</div>
+            <div class="post-content">${p.content}</div>
+            <div style="margin-top:15px;">
+                <button class="copy-btn" onclick="copyLinks(\`${p.content}\`)">Copy</button>
+                <button class="report-btn" onclick="openReport('${p.id}', \`${p.author}\`, \`${p.content}\`)">Report</button>
+            </div>
         </div>
     `).join('');
 }
 
-window.clearReport = async (id) => {
-    await supabase.from('reports').delete().eq('id', id);
-    loadReports();
-    showNotice("Report Cleared");
-};
-
-// Core Functions
-window.selectBlocker = (name) => {
-  selectedBlocker = name;
-  localStorage.setItem('eli_last_blocker', name);
-  document.getElementById('selectionScreen').style.display = 'none';
-  document.getElementById('appContainer').style.display = 'flex';
-  document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
-  fetchPosts(); syncBanner();
-};
-
-window.goBackToSelection = () => {
-    localStorage.removeItem('eli_last_blocker');
-    document.getElementById('appContainer').style.display = 'none';
-    document.getElementById('selectionScreen').style.display = 'flex';
-};
-
-async function fetchPosts() {
-  let query = supabase.from('posts').select('*');
-  if (selectedBlocker && selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
-  const { data } = await query.order('created_at', { ascending: false });
-  if (!data) return;
-  const grouped = [];
-  data.forEach(item => {
-    const existing = grouped.find(g => g.content === item.content && g.author === item.author);
-    if (existing) { existing.ids.push(item.id); }
-    else { grouped.push({ ...item, ids: [item.id] }); }
-  });
-  document.getElementById('posts').innerHTML = grouped.map(p => `
-    <div class="post-card">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span class="post-author">${p.author}</span>
-        <span style="font-size:0.75rem; color:var(--text-muted); opacity:0.7;">${new Date(p.created_at).toLocaleDateString()}</span>
-      </div>
-      <div class="post-content">${linkify(p.content)}</div>
-      <div style="margin-top:15px; display:flex; justify-content:space-between;">
-        <div>
-            <button class="copy-btn" onclick="window.copyAllLinks(\`${p.content}\`)">Copy Link(s)</button>
-            <button class="report-btn" onclick="window.openReport('${p.ids[0]}', \`${p.author}\`, \`${p.content}\`)">Report</button>
+async function loadReports() {
+    const { data } = await supabase.from('reports').select('*').order('created_at', {ascending: false});
+    document.getElementById('reportList').innerHTML = data.map(r => `
+        <div style="background:rgba(0,0,0,0.2); padding:10px; border-radius:10px; margin-bottom:8px; font-size:0.7rem;">
+            <b style="color:var(--red);">Reason: ${r.message}</b><br>
+            Auth: ${r.post_author}<br>
+            <button onclick="delReport('${r.id}')" style="margin-top:5px; font-size:0.6rem;">Dismiss</button>
         </div>
-        ${isAdmin ? `
-            <div>
-                <button class="btn-outline" style="padding: 4px 10px; font-size: 0.75rem;" onclick="window.openEditProxy('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit</button>
-                <button class="btn-outline" style="padding: 4px 10px; font-size: 0.75rem; color:var(--red);" onclick="window.deleteProxy('${p.ids.join(',')}')">Delete</button>
-            </div>
-        ` : ''}
-      </div>
-    </div>`).join('');
+    `).join('');
 }
 
-// Admin Logic
-window.switchTab = (t) => {
-  ['panePost', 'paneLog', 'paneBanner', 'paneReports'].forEach(p => document.getElementById(p).style.display = 'none');
-  ['tabPost', 'tabLog', 'tabBanner', 'tabReports'].forEach(b => document.getElementById(b).classList.remove('active'));
-  document.getElementById('pane' + t.charAt(0).toUpperCase() + t.slice(1)).style.display = 'block';
-  document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.add('active');
-  if(t === 'reports') loadReports();
-};
+function showToast(m, bg = "#a6e3a1") {
+    const t = document.getElementById('toast');
+    t.textContent = m; t.style.background = bg; t.style.color = "#111";
+    t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-const loginAction = () => {
-  if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
-    isAdmin = true; 
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block'; 
-    showNotice("Admin Mode On"); fetchPosts();
-  } else showNotice("Denied", "error");
-};
-document.getElementById('loginBtn').onclick = loginAction;
-
-// Initialization
+// Start
+setTheme(localStorage.getItem('eli_theme') || 'dark');
 blockers.forEach(b => {
-  const card = document.createElement('div');
-  card.className = 'blocker-card'; card.textContent = b.replace(/_/g, ' ');
-  card.onclick = () => selectBlocker(b);
-  document.getElementById('gridContainer').appendChild(card);
-  const pill = document.createElement('div');
-  pill.className = 'admin-pill'; pill.textContent = b.replace(/_/g, ' ');
-  pill.onclick = () => pill.classList.toggle('selected');
-  pill.dataset.value = b;
-  document.getElementById('adminBlockerButtons').appendChild(pill);
+    const c = document.createElement('div');
+    c.className = 'blocker-card'; c.textContent = b.replace('_', ' ');
+    c.onclick = () => selectBlocker(b);
+    document.getElementById('grid').appendChild(c);
+
+    const p = document.createElement('div');
+    p.className = 'admin-tab pill'; p.textContent = b.split('_')[0];
+    p.dataset.val = b; p.onclick = () => p.classList.toggle('selected');
+    document.getElementById('pillContainer').appendChild(p);
 });
 
-if (selectedBlocker) selectBlocker(selectedBlocker);
-window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eli_theme', t); };
-setTheme(localStorage.getItem('eli_theme') || 'catppuccin');
-window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
-window.toggleThemeList = () => document.getElementById('themesSubList').classList.toggle('open');
-window.refreshNow = () => fetchPosts();
-window.closeEditPanel = () => document.getElementById('editPanel').classList.remove('open');
-
-document.getElementById('publishBtn').onclick = async () => {
-  const author = document.getElementById('postAuthor').value || 'Admin';
-  const content = document.getElementById('postText').value;
-  const pills = document.querySelectorAll('#adminPanel .admin-pill.selected');
-  for(let p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
-  showNotice("Published!"); fetchPosts();
+document.getElementById('search').oninput = (e) => {
+    const val = e.target.value.toLowerCase();
+    document.querySelectorAll('.post-card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(val) ? 'block' : 'none');
 };
 </script>
 </body>
