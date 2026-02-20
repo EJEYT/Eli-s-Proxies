@@ -30,6 +30,14 @@
     [data-theme="emerald"] { --bg-dark: #06120e; --bg-sidebar: #0a1a15; --bg-card: #122a22; --text-main: #ecfdf5; --text-muted: #6ee7b7; --accent: #10b981; --border: #065f46; }
     [data-theme="rose"] { --bg-dark: #1a1012; --bg-sidebar: #24181a; --bg-card: #3d2b2e; --text-main: #fff1f2; --text-muted: #fda4af; --accent: #f43f5e; --border: #9f1239; }
     
+    /* NEW THEMES */
+    [data-theme="ocean"] { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: #334155; --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #38bdf8; --border: #475569; }
+    [data-theme="midnight"] { --bg-dark: #020617; --bg-sidebar: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-muted: #64748b; --accent: #6366f1; --border: #334155; }
+    [data-theme="coffee"] { --bg-dark: #1c1917; --bg-sidebar: #292524; --bg-card: #44403c; --text-main: #fafaf9; --text-muted: #a8a29e; --accent: #d97706; --border: #57534e; }
+    [data-theme="nebula"] { --bg-dark: #09090b; --bg-sidebar: #18181b; --bg-card: #27272a; --text-main: #fafafa; --text-muted: #a1a1aa; --accent: #d946ef; --border: #3f3f46; }
+    [data-theme="amber"] { --bg-dark: #0c0a09; --bg-sidebar: #1c1917; --bg-card: #292524; --text-main: #f5f5f4; --text-muted: #a8a29e; --accent: #f59e0b; --border: #44403c; }
+    [data-theme="nord"] { --bg-dark: #2e3440; --bg-sidebar: #3b4252; --bg-card: #434c5e; --text-main: #eceff4; --text-muted: #d8dee9; --accent: #88c0d0; --border: #4c566a; }
+
     [data-theme="liquid"] { 
       --bg-dark: linear-gradient(-45deg, #0f172a, #1e293b, #082f49, #0f172a); 
       --bg-animate: gradientMove 15s ease infinite;
@@ -69,6 +77,7 @@
     .post-content { white-space: pre-wrap; font-size: 1.05rem; margin-top: 12px; word-break: break-all; line-height: 1.5; }
 
     .new-badge { background: var(--green); color: #111; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 900; animation: pulse 2s infinite; }
+    .hot-badge { font-size: 1.1rem; filter: drop-shadow(0 0 5px orange); }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
     .settings-dropdown { position: relative; } 
@@ -105,7 +114,8 @@
 
     .btn-outline { background:none; border:1px solid var(--border); color:var(--text-main); border-radius:25px; padding:8px 16px; cursor:pointer; font-weight:bold; font-size: 0.85rem; }
     .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
-    .copy-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--accent); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
+    .copy-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--accent); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: 0.2s; }
+    .copy-btn.copied { background: var(--green); color: #111; border-color: var(--green); }
     .report-btn { color: var(--red); border: 1px solid var(--red); background: transparent; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; margin-left: 8px; }
 
     .vote-container { display: flex; gap: 12px; margin-top: 15px; align-items: center; }
@@ -196,6 +206,12 @@
             <div class="theme-opt" onclick="setTheme('light')">Light</div>
             <div class="theme-opt" onclick="setTheme('emerald')" style="color:#10b981">Emerald</div>
             <div class="theme-opt" onclick="setTheme('rose')" style="color:#f43f5e">Rose</div>
+            <div class="theme-opt" onclick="setTheme('ocean')" style="color:#38bdf8">Ocean Blue</div>
+            <div class="theme-opt" onclick="setTheme('midnight')" style="color:#6366f1">Midnight</div>
+            <div class="theme-opt" onclick="setTheme('coffee')" style="color:#d97706">Coffee House</div>
+            <div class="theme-opt" onclick="setTheme('nebula')" style="color:#d946ef">Nebula</div>
+            <div class="theme-opt" onclick="setTheme('amber')" style="color:#f59e0b">Amber</div>
+            <div class="theme-opt" onclick="setTheme('nord')" style="color:#88c0d0">Nordic Frost</div>
         </div>
         <div class="menu-item" onclick="showLogs()">📜 View Logs</div>
         <div class="menu-item" onclick="openRequestModal()">📥 Request Proxy</div>
@@ -329,11 +345,20 @@ window.voteProxy = async (id, type) => {
     }
 };
 
-window.copyLinksFromPost = (text) => {
+window.copyLinksFromPost = (btn, text) => {
     const urlPattern = /(https?:\/\/[^\s]+)/gi;
     const matches = text.match(urlPattern);
     if (matches) {
-        navigator.clipboard.writeText(matches.join('\n')).then(() => showNotice(`Copied ${matches.length} links`));
+        navigator.clipboard.writeText(matches.join('\n')).then(() => {
+            const originalText = btn.textContent;
+            btn.textContent = "Copied!";
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('copied');
+            }, 2000);
+            showNotice(`Copied ${matches.length} link(s)`);
+        });
     } else showNotice("No links found", "error");
 }
 
@@ -441,12 +466,14 @@ async function fetchPosts(silent = true) {
   const now = new Date();
   document.getElementById('posts').innerHTML = grouped.map(p => {
     const isNew = (now - new Date(p.created_at)) < (24 * 60 * 60 * 1000);
+    const isHot = (p.likes || 0) >= 5;
     const userVote = localStorage.getItem(`voted_${p.ids[0]}`);
     return `
     <div class="post-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span class="post-author">
             ${p.author}
+            ${isHot ? `<span class="hot-badge" title="Hot Streak!">🔥</span>` : ''}
             ${isNew ? `<span class="new-badge">NEW</span>` : ''}
         </span>
         <span style="font-size:0.75rem; color:var(--text-muted); opacity:0.7;">${new Date(p.created_at).toLocaleDateString()}</span>
@@ -464,7 +491,7 @@ async function fetchPosts(silent = true) {
 
       <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
         <div>
-            <button class="copy-btn" onclick="window.copyLinksFromPost(\`${p.content}\`)">Copy Link(s)</button>
+            <button class="copy-btn" onclick="window.copyLinksFromPost(this, \`${p.content}\`)">Copy Link(s)</button>
             <button class="report-btn" onclick="window.openReportModal('${p.ids[0]}', \`${p.author}\`, \`${p.content}\`)">Report</button>
         </div>
         ${isAdmin ? `
@@ -540,26 +567,26 @@ window.switchTab = (t) => {
 };
 
 document.getElementById('publishBtn').onclick = async () => {
-  const author = document.getElementById('postAuthor').value || 'Admin';
-  const content = document.getElementById('postText').value;
-  const pills = document.querySelectorAll('#adminPanel .admin-pill.selected');
-  for(let p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content, likes: 0, dislikes: 0 }]);
-  showNotice("Proxy Added!"); fetchPosts();
+    const author = document.getElementById('postAuthor').value;
+    const content = document.getElementById('postText').value;
+    const selected = Array.from(document.querySelectorAll('.admin-pill.selected')).map(p => p.dataset.value);
+    if(!author || !content || selected.length === 0) return showNotice("Fill everything!", "error");
+    for(let b of selected) await supabase.from('posts').insert([{ author, content, blocker: b }]);
+    showNotice("Published!"); document.getElementById('postText').value = ""; fetchPosts();
 };
 
 document.getElementById('publishLogBtn').onclick = async () => {
-    await supabase.from('logs').insert([{ heading: document.getElementById('logHeading').value, body: document.getElementById('logBody').value }]);
-    showNotice("Log Added");
+    const heading = document.getElementById('logHeading').value;
+    const body = document.getElementById('logBody').value;
+    if(!heading || !body) return showNotice("Fill everything!", "error");
+    await supabase.from('logs').insert([{ heading, body }]);
+    showNotice("Log Added!"); document.getElementById('logHeading').value = ""; document.getElementById('logBody').value = "";
 };
 
 document.getElementById('updateBannerBtn').onclick = async () => {
-  await supabase.from('settings').update({ content: document.getElementById('bannerTextInput').value }).eq('id', 'announcement_banner');
-  showNotice("Banner Updated"); syncBanner();
-};
-
-document.getElementById('searchInput').oninput = (e) => {
-  const term = e.target.value.toLowerCase();
-  document.querySelectorAll('.post-card').forEach(card => card.style.display = card.innerText.toLowerCase().includes(term) ? 'block' : 'none');
+    const content = document.getElementById('bannerTextInput').value;
+    await supabase.from('settings').update({ content }).eq('id', 'announcement_banner');
+    showNotice("Banner Updated!"); syncBanner();
 };
 </script>
 </body>
