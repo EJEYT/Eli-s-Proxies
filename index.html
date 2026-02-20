@@ -283,6 +283,7 @@ window.openReportModal = (postId, author, content) => {
         if(!msg) return showNotice("Enter a reason", "error");
         
         const payload = {
+            content: "<@949801961962741770>", // Ping for the specified User ID
             embeds: [{
                 title: "🚨 New Proxy Report",
                 color: 15548997, 
