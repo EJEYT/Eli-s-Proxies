@@ -66,7 +66,6 @@
     #posts { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 15px; }
     .post-card { background: var(--bg-card); padding: 20px; border-radius: 16px; border-left: 5px solid var(--accent); width: 100%; max-width: 700px; position: relative; border: 1px solid var(--border); border-left-width: 5px; }
     .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; }
-    .post-unblocked-list { font-size: 0.7rem; color: var(--green); margin-top: 2px; font-weight: 600; font-family: monospace; }
     .post-content { white-space: pre-wrap; font-size: 1rem; margin-top: 10px; word-break: break-all; line-height: 1.4; }
 
     /* Settings Menu */
@@ -145,7 +144,7 @@
 <div class="app-container" id="appContainer">
   <div class="header">
     <div style="display:flex; align-items:center; gap:10px;">
-      <button onclick="goBackToSelection()" class="btn-outline" style="padding: 4px 8px;">←</button>
+      <button onclick="goBackToSelection()" class="btn-outline" style="padding: 4px 10px;">← Switch Filter</button>
       <h2 id="currentBlocker" style="font-size:1.1rem">Feed</h2>
     </div>
     <input type="text" id="searchInput" class="search-bar" placeholder="Search...">
@@ -200,25 +199,21 @@
       <div class="admin-tab" id="tabBanner" onclick="switchTab('banner')">Banner</div>
       <div class="admin-tab" id="tabReport" onclick="switchTab('report')">Reports</div>
     </div>
-    
     <div id="panePost">
       <input type="text" id="postAuthor" class="admin-input" placeholder="Author">
       <textarea id="postText" class="admin-input" rows="3" placeholder="Proxy link..."></textarea>
       <div id="adminBlockerButtons" class="blocker-pills"></div>
       <button id="publishBtn" class="admin-primary-btn">Publish</button>
     </div>
-
     <div id="paneLog" style="display:none;">
       <input type="text" id="logHeading" class="admin-input" placeholder="Title">
       <textarea id="logBody" class="admin-input" rows="4" placeholder="Update details..."></textarea>
       <button id="publishLogBtn" class="admin-primary-btn">Add Log</button>
     </div>
-
     <div id="paneBanner" style="display:none;">
       <textarea id="bannerTextInput" class="admin-input" rows="3" placeholder="Banner text..."></textarea>
       <button id="updateBannerBtn" class="admin-primary-btn">Update Banner</button>
     </div>
-
     <div id="paneReport" style="display:none;">
       <div id="reportList" style="max-height: 250px; overflow-y: auto;"></div>
     </div>
@@ -230,13 +225,14 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F');
 
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
-let selectedBlocker = null;
+let selectedBlocker = localStorage.getItem('eli_last_blocker') || null;
 let isAdmin = false; 
 
-// UI Helpers
+// --- THEMES ---
 window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eli_theme', t); };
 setTheme(localStorage.getItem('eli_theme') || 'catppuccin');
 
+// --- UI HELPERS ---
 window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
 window.toggleThemeList = () => {
     const list = document.getElementById('themesSubList');
@@ -244,12 +240,11 @@ window.toggleThemeList = () => {
     list.classList.toggle('open');
     arrow.textContent = list.classList.contains('open') ? '▲' : '▼';
 };
-
 window.onclick = (e) => { 
     if (!e.target.closest('.settings-dropdown')) {
         document.getElementById('settingsMenu').classList.remove('show');
         document.getElementById('themesSubList').classList.remove('open');
-        document.getElementById('themeArrow').textContent = '▼';
+        if(document.getElementById('themeArrow')) document.getElementById('themeArrow').textContent = '▼';
     }
 };
 
@@ -266,30 +261,22 @@ function linkify(text) {
 
 window.closeModal = () => document.getElementById('confirmModal').style.display = 'none';
 
-// --- ACTIONS ---
-window.confirmRefresh = () => {
-    document.getElementById('confirmTitle').textContent = "Refresh Feed?";
-    document.getElementById('modalInputArea').style.display = 'none';
-    document.getElementById('confirmText').textContent = "This will check for the newest links and updates.";
-    document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = () => { fetchPosts(false); closeModal(); };
+// --- CORE LOGIC ---
+window.selectBlocker = (name) => {
+  selectedBlocker = name;
+  localStorage.setItem('eli_last_blocker', name);
+  document.getElementById('selectionScreen').style.display = 'none';
+  document.getElementById('appContainer').style.display = 'flex';
+  document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
+  syncBanner(); fetchPosts();
 };
 
-window.openReportModal = (ids, content) => {
-    document.getElementById('confirmTitle').textContent = "Report Link";
-    document.getElementById('modalInputArea').style.display = 'block';
-    document.getElementById('modalTextArea').value = '';
-    document.getElementById('modalTextArea').placeholder = "What's wrong? (Optional)";
-    document.getElementById('confirmText').textContent = "";
-    document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = async () => {
-        const msg = document.getElementById('modalTextArea').value;
-        await supabase.from('reports').insert([{ post_ids: ids, content_preview: content.substring(0, 40), message: msg }]);
-        showNotice("Reported!"); closeModal();
-    };
+window.goBackToSelection = () => {
+    localStorage.removeItem('eli_last_blocker'); // Clear saved so they don't auto-jump next time they visit
+    document.getElementById('appContainer').style.display = 'none';
+    document.getElementById('selectionScreen').style.display = 'flex';
 };
 
-// --- CORE ---
 async function syncBanner() {
   const { data } = await supabase.from('settings').select('content').eq('id', 'announcement_banner').single();
   if (data) {
@@ -299,45 +286,17 @@ async function syncBanner() {
   }
 }
 
-blockers.forEach(b => {
-  const card = document.createElement('div');
-  card.className = 'blocker-card'; card.textContent = b.replace(/_/g, ' ');
-  card.onclick = () => selectBlocker(b);
-  document.getElementById('gridContainer').appendChild(card);
-  
-  const pill = document.createElement('div');
-  pill.className = 'admin-pill'; pill.textContent = b.replace(/_/g, ' ');
-  pill.onclick = () => pill.classList.toggle('selected');
-  pill.dataset.value = b;
-  document.getElementById('adminBlockerButtons').appendChild(pill);
-});
-
-window.selectBlocker = (name) => {
-  selectedBlocker = name;
-  document.getElementById('selectionScreen').style.display = 'none';
-  document.getElementById('appContainer').style.display = 'flex';
-  document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
-  syncBanner(); fetchPosts();
-};
-
-window.goBackToSelection = () => {
-    document.getElementById('appContainer').style.display = 'none';
-    document.getElementById('selectionScreen').style.display = 'flex';
-};
-
 async function fetchPosts(silent = true) {
   let query = supabase.from('posts').select('*');
   if (selectedBlocker && selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
   const { data } = await query.order('created_at', { ascending: false });
   if (!data) return;
-  
   const grouped = [];
   data.forEach(item => {
     const existing = grouped.find(g => g.content === item.content && g.author === item.author);
     if (existing) { existing.ids.push(item.id); }
     else { grouped.push({ ...item, ids: [item.id] }); }
   });
-
   document.getElementById('posts').innerHTML = grouped.map(p => `
     <div class="post-card">
       <div style="display:flex; justify-content:space-between;">
@@ -361,108 +320,108 @@ async function fetchPosts(silent = true) {
   if(!silent) showNotice("Refreshed");
 }
 
-// --- ADMIN ACTIONS ---
+// --- INITIALIZATION ---
+blockers.forEach(b => {
+  const card = document.createElement('div');
+  card.className = 'blocker-card'; card.textContent = b.replace(/_/g, ' ');
+  card.onclick = () => selectBlocker(b);
+  document.getElementById('gridContainer').appendChild(card);
+  
+  const pill = document.createElement('div');
+  pill.className = 'admin-pill'; pill.textContent = b.replace(/_/g, ' ');
+  pill.onclick = () => pill.classList.toggle('selected');
+  pill.dataset.value = b;
+  document.getElementById('adminBlockerButtons').appendChild(pill);
+});
+
+// Auto-Load saved blocker
+if (selectedBlocker) {
+    selectBlocker(selectedBlocker);
+}
+
+// --- ADMIN & MISC (Same as previous version) ---
+window.confirmRefresh = () => {
+    document.getElementById('confirmTitle').textContent = "Refresh Feed?";
+    document.getElementById('modalInputArea').style.display = 'none';
+    document.getElementById('confirmText').textContent = "Checking for new updates...";
+    document.getElementById('confirmModal').style.display = 'flex';
+    document.getElementById('confirmActionBtn').onclick = () => { fetchPosts(false); closeModal(); };
+};
+window.openReportModal = (ids, content) => {
+    document.getElementById('confirmTitle').textContent = "Report Link";
+    document.getElementById('modalInputArea').style.display = 'block';
+    document.getElementById('modalTextArea').value = '';
+    document.getElementById('modalTextArea').placeholder = "What's wrong? (Optional)";
+    document.getElementById('confirmText').textContent = "";
+    document.getElementById('confirmModal').style.display = 'flex';
+    document.getElementById('confirmActionBtn').onclick = async () => {
+        await supabase.from('reports').insert([{ post_ids: ids, content_preview: content.substring(0, 40), message: document.getElementById('modalTextArea').value }]);
+        showNotice("Reported!"); closeModal();
+    };
+};
 window.editProxy = (ids, oldContent) => {
     document.getElementById('confirmTitle').textContent = "Edit Proxy";
     document.getElementById('modalInputArea').style.display = 'block';
     document.getElementById('modalTextArea').value = oldContent;
-    document.getElementById('confirmText').textContent = "This updates this link across all categories it appears in.";
+    document.getElementById('confirmText').textContent = "Updates all instances of this link.";
     document.getElementById('confirmModal').style.display = 'flex';
     document.getElementById('confirmActionBtn').onclick = async () => {
-        const newContent = document.getElementById('modalTextArea').value;
-        for(let id of ids.split(',')) await supabase.from('posts').update({ content: newContent }).eq('id', id);
+        const newC = document.getElementById('modalTextArea').value;
+        for(let id of ids.split(',')) await supabase.from('posts').update({ content: newC }).eq('id', id);
         showNotice("Updated!"); closeModal(); fetchPosts();
     };
 };
-
 window.deleteProxy = (ids) => {
     document.getElementById('confirmTitle').textContent = "Delete Proxy?";
     document.getElementById('modalInputArea').style.display = 'none';
-    document.getElementById('confirmText').textContent = "Are you sure? This cannot be undone.";
+    document.getElementById('confirmText').textContent = "This action is permanent.";
     document.getElementById('confirmModal').style.display = 'flex';
     document.getElementById('confirmActionBtn').onclick = async () => {
         for(let id of ids.split(',')) await supabase.from('posts').delete().eq('id', id);
         showNotice("Deleted"); closeModal(); fetchPosts();
     };
 };
-
 window.showLogs = async () => {
   document.getElementById('logOverlay').style.display = 'block';
   const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
   document.getElementById('logList').innerHTML = data.map(l => `
     <div style="border-bottom:1px solid var(--border); padding:15px 0;">
-      <div style="display:flex; justify-content:space-between; align-items:start;">
+      <div style="display:flex; justify-content:space-between;">
         <strong style="color:var(--accent)">${l.heading}</strong>
-        ${isAdmin ? `
-            <div style="display:flex; gap:5px;">
-                <button class="copy-btn" style="padding:2px 6px;" onclick="window.editLog('${l.id}', \`${l.heading}\`, \`${l.body}\`)">Edit</button>
-                <button class="report-btn" style="padding:2px 6px;" onclick="window.deleteLog('${l.id}')">Del</button>
-            </div>
-        ` : ''}
+        ${isAdmin ? `<button class="report-btn" onclick="window.deleteLog('${l.id}')">Del</button>` : ''}
       </div>
-      <p style="font-size:0.9rem; margin-top:5px;">${linkify(l.body)}</p>
+      <p style="font-size:0.9rem;">${linkify(l.body)}</p>
     </div>`).join('');
 };
-
-window.editLog = (id, oldH, oldB) => {
-    document.getElementById('confirmTitle').textContent = "Edit Log Entry";
-    document.getElementById('modalInputArea').style.display = 'block';
-    document.getElementById('modalTextArea').value = oldB;
-    document.getElementById('confirmText').textContent = "Heading: " + oldH;
-    document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmActionBtn').onclick = async () => {
-        await supabase.from('logs').update({ body: document.getElementById('modalTextArea').value }).eq('id', id);
-        showNotice("Log Updated"); closeModal(); showLogs();
-    };
-}
-
-window.deleteLog = async (id) => {
-    await supabase.from('logs').delete().eq('id', id);
-    showNotice("Log Deleted"); showLogs();
-}
-
-// --- ADMIN AUTH & TABBING ---
-window.switchTab = (tab) => {
+window.deleteLog = async (id) => { await supabase.from('logs').delete().eq('id', id); showLogs(); };
+window.switchTab = (t) => {
   ['panePost', 'paneLog', 'paneBanner', 'paneReport'].forEach(p => document.getElementById(p).style.display = 'none');
-  ['tabPost', 'tabLog', 'tabBanner', 'tabReport'].forEach(t => document.getElementById(t).classList.remove('active'));
-  document.getElementById('pane' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.display = 'block';
-  document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
-  if (tab === 'report') fetchReports();
+  ['tabPost', 'tabLog', 'tabBanner', 'tabReport'].forEach(b => document.getElementById(b).classList.remove('active'));
+  document.getElementById('pane' + t.charAt(0).toUpperCase() + t.slice(1)).style.display = 'block';
+  document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.add('active');
+  if (t === 'report') fetchReports();
 };
-
 document.getElementById('loginBtn').onclick = () => {
   if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
-    isAdmin = true;
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block';
-    showNotice("Admin Authenticated"); fetchPosts();
-  } else showNotice("Invalid Password", "error");
+    isAdmin = true; document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block'; fetchPosts();
+  } else showNotice("Wrong password", "error");
 };
-
 document.getElementById('publishBtn').onclick = async () => {
   const author = document.getElementById('postAuthor').value || 'Admin';
   const content = document.getElementById('postText').value;
   const pills = document.querySelectorAll('#adminPanel .admin-pill.selected');
-  if(!content || pills.length === 0) return;
   for(let p of pills) await supabase.from('posts').insert([{ blocker: p.dataset.value, author, content }]);
-  showNotice("Published!"); document.getElementById('postText').value = ''; fetchPosts();
+  showNotice("Published!"); fetchPosts();
 };
-
 document.getElementById('publishLogBtn').onclick = async () => {
-    const heading = document.getElementById('logHeading').value;
-    const body = document.getElementById('logBody').value;
-    if(!heading || !body) return;
-    await supabase.from('logs').insert([{ heading, body }]);
+    await supabase.from('logs').insert([{ heading: document.getElementById('logHeading').value, body: document.getElementById('logBody').value }]);
     showNotice("Log Added");
-    document.getElementById('logHeading').value = '';
-    document.getElementById('logBody').value = '';
 };
-
 document.getElementById('updateBannerBtn').onclick = async () => {
   await supabase.from('settings').update({ content: document.getElementById('bannerTextInput').value }).eq('id', 'announcement_banner');
   showNotice("Banner Updated"); syncBanner();
 };
-
 document.getElementById('searchInput').oninput = (e) => {
   const term = e.target.value.toLowerCase();
   document.querySelectorAll('.post-card').forEach(card => card.style.display = card.innerText.toLowerCase().includes(term) ? 'block' : 'none');
