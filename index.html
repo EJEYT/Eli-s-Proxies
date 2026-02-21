@@ -3,316 +3,352 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eli's Proxies</title>
   
+  <title>Eli's Proxies</title>
+  <meta name="title" content="Eli's Proxies | Start your unblocking journey">
+  <meta name="description" content="The ultimate destination for unblocked links and proxy feeds.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://elis-proxies.com/"> 
+  <meta property="og:title" content="Eli's Proxies | Start your unblocking journey">
+  <meta property="og:description" content="Get the latest unblocked links for Linewize, Securly, GoGuardian, and more.">
+  <meta property="og:image" content="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
+
+  <link rel="icon" type="image/png" href="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
+
   <style>
-    /* --- ALL THEMES RESTORED --- */
+    /* Themes */
     :root { 
       --bg-dark: #1e1e2e; --bg-sidebar: #181825; --bg-card: #313244;
       --text-main: #cdd6f4; --text-muted: #a6adc8; --accent: #89b4fa;
-      --red: #f38ba8; --green: #a6e3a1; --border: #45475a; --glass-blur: 0px;
+      --red: #f38ba8; --green: #a6e3a1; --border: #45475a; --overlay: rgba(0,0,0,0.7);
+      --glass-blur: 0px; --bg-animate: none;
     }
-    [data-theme="dark"] { --bg-dark: #121212; --bg-sidebar: #1e1e1e; --bg-card: #242424; --text-main: #e0e0e0; --accent: #bb86fc; --border: #333; }
-    [data-theme="oled"] { --bg-dark: #000; --bg-sidebar: #000; --bg-card: #111; --text-main: #fff; --accent: #fff; --border: #222; }
-    [data-theme="cyberpunk"] { --bg-dark: #000b1e; --bg-sidebar: #00162d; --bg-card: #002244; --text-main: #00ffcc; --accent: #ff007f; --border: #00ffcc; }
-    [data-theme="emerald"] { --bg-dark: #06120e; --bg-sidebar: #0a1a15; --bg-card: #122a22; --text-main: #ecfdf5; --accent: #10b981; --border: #065f46; }
+    [data-theme="dark"] { --bg-dark: #121212; --bg-sidebar: #1e1e1e; --bg-card: #242424; --text-main: #e0e0e0; --text-muted: #909090; --accent: #bb86fc; --border: #333333; }
+    [data-theme="oled"] { --bg-dark: #000000; --bg-sidebar: #000000; --bg-card: #111111; --text-main: #ffffff; --text-muted: #888888; --accent: #ffffff; --border: #222222; }
+    [data-theme="light"] { --bg-dark: #eff1f5; --bg-sidebar: #e6e9ef; --bg-card: #ffffff; --text-main: #4c4f69; --text-muted: #6c6f85; --accent: #1e66f5; --border: #ccd0da; }
+    [data-theme="emerald"] { --bg-dark: #06120e; --bg-sidebar: #0a1a15; --bg-card: #122a22; --text-main: #ecfdf5; --text-muted: #6ee7b7; --accent: #10b981; --border: #065f46; }
+    [data-theme="rose"] { --bg-dark: #1a1012; --bg-sidebar: #24181a; --bg-card: #3d2b2e; --text-main: #fff1f2; --text-muted: #fda4af; --accent: #f43f5e; --border: #9f1239; }
+    
+    /* ADDED THEMES */
+    [data-theme="cyberpunk"] { --bg-dark: #000b1e; --bg-sidebar: #00162d; --bg-card: #002244; --text-main: #00ffcc; --text-muted: #fdee00; --accent: #ff007f; --border: #00ffcc; }
+    [data-theme="forest"] { --bg-dark: #0b120b; --bg-sidebar: #131d13; --bg-card: #1b2b1b; --text-main: #d4e4d4; --text-muted: #7da17d; --accent: #4caf50; --border: #2e442e; }
+    [data-theme="lava"] { --bg-dark: #0d0000; --bg-sidebar: #1a0000; --bg-card: #2d0000; --text-main: #ffd1d1; --text-muted: #ff6b6b; --accent: #ff4500; --border: #4d0000; }
+    [data-theme="dracula"] { --bg-dark: #282a36; --bg-sidebar: #1e1f29; --bg-card: #44475a; --text-main: #f8f8f2; --text-muted: #6272a4; --accent: #bd93f9; --border: #bd93f9; }
+    [data-theme="sakura"] { --bg-dark: #fff5f7; --bg-sidebar: #ffe0e9; --bg-card: #ffffff; --text-main: #d01d56; --text-muted: #f1a7bb; --accent: #ff8fa3; --border: #ffcad4; }
+    [data-theme="synthwave"] { --bg-dark: #241744; --bg-sidebar: #2d1b5a; --bg-card: #37246e; --text-main: #fede5d; --text-muted: #ff7edb; --accent: #2de2e6; --border: #72f1b8; }
+    [data-theme="ghost"] { --bg-dark: #f0f2f5; --bg-sidebar: #ffffff; --bg-card: #ffffff; --text-main: #2c3e50; --text-muted: #95a5a6; --accent: #34495e; --border: #dcdde1; }
+    [data-theme="gold"] { --bg-dark: #0a0a0a; --bg-sidebar: #141414; --bg-card: #1a1a1a; --text-main: #ffffff; --text-muted: #888888; --accent: #d4af37; --border: #333333; }
+    
+    /* PREVIOUS THEMES */
+    [data-theme="ocean"] { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: #334155; --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #38bdf8; --border: #475569; }
+    [data-theme="midnight"] { --bg-dark: #020617; --bg-sidebar: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-muted: #64748b; --accent: #6366f1; --border: #334155; }
+    [data-theme="coffee"] { --bg-dark: #1c1917; --bg-sidebar: #292524; --bg-card: #44403c; --text-main: #fafaf9; --text-muted: #a8a29e; --accent: #d97706; --border: #57534e; }
+    [data-theme="nebula"] { --bg-dark: #09090b; --bg-sidebar: #18181b; --bg-card: #27272a; --text-main: #fafafa; --text-muted: #a1a1aa; --accent: #d946ef; --border: #3f3f46; }
+    [data-theme="amber"] { --bg-dark: #0c0a09; --bg-sidebar: #1c1917; --bg-card: #292524; --text-main: #f5f5f4; --text-muted: #a8a29e; --accent: #f59e0b; --border: #44403c; }
+    [data-theme="nord"] { --bg-dark: #2e3440; --bg-sidebar: #3b4252; --bg-card: #434c5e; --text-main: #eceff4; --text-muted: #d8dee9; --accent: #88c0d0; --border: #4c566a; }
+
     [data-theme="liquid"] { 
       --bg-dark: linear-gradient(-45deg, #0f172a, #1e293b, #082f49, #0f172a); 
-      --bg-sidebar: rgba(255, 255, 255, 0.08); --bg-card: rgba(255, 255, 255, 0.05); 
+      --bg-animate: gradientMove 15s ease infinite;
+      --bg-sidebar: rgba(255, 255, 255, 0.08); 
+      --bg-card: rgba(255, 255, 255, 0.05); 
+      --text-main: #ffffff; --text-muted: rgba(255, 255, 255, 0.6); 
       --accent: #ffffff; --border: rgba(255, 255, 255, 0.2); --glass-blur: 16px;
     }
-    [data-theme="dracula"] { --bg-dark: #282a36; --bg-sidebar: #1e1f29; --bg-card: #44475a; --text-main: #f8f8f2; --accent: #bd93f9; --border: #bd93f9; }
-    [data-theme="synthwave"] { --bg-dark: #241744; --bg-sidebar: #2d1b5a; --bg-card: #37246e; --text-main: #fede5d; --accent: #2de2e6; --border: #72f1b8; }
-    [data-theme="gold"] { --bg-dark: #0a0a0a; --bg-sidebar: #141414; --bg-card: #1a1a1a; --text-main: #fff; --accent: #d4af37; --border: #333; }
 
-    * { box-sizing: border-box; transition: background 0.3s, color 0.3s; }
-    body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; }
+    @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-    /* Background Particles */
-    #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.6; }
+    * { box-sizing: border-box; transition: background 0.3s, color 0.3s, border 0.3s; }
+    *::-webkit-scrollbar { display: none; }
+    * { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Draggable Windows */
-    .draggable-window { position: fixed; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; z-index: 1000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(25px); display: none; min-width: 350px; }
-    .window-header { padding: 12px 20px; background: rgba(255,255,255,0.05); cursor: move; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); border-radius: 20px 20px 0 0; }
-    .close-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: var(--bg-dark); background-size: 400% 400%; animation: var(--bg-animate); color: var(--text-main); height: 100vh; overflow: hidden; position: relative; }
 
-    /* Selection Screen */
-    #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative; z-index: 1; padding: 20px; overflow-y: auto; }
-    .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; width: 100%; max-width: 900px; }
-    .blocker-card { background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 15px; cursor: pointer; text-align: center; font-weight: bold; transition: 0.3s; }
-    .blocker-card:hover { transform: translateY(-5px); border-color: var(--accent); background: rgba(255,255,255,0.1); }
+    /* Particles Background */
+    #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.5; }
 
-    /* App Layout */
-    .app-container { display: none; flex-direction: column; height: 100vh; position: relative; z-index: 1; }
-    .header { padding: 15px 25px; background: var(--bg-sidebar); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
-    .header-top { display: flex; justify-content: space-between; align-items: center; }
-    .search-bar { width: 100%; padding: 10px 20px; margin-top: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 25px; color: white; outline: none; }
+    #announcementBanner { background: var(--accent); color: #000; padding: 8px; text-align: center; font-weight: bold; font-size: 0.85rem; display: none; z-index: 100; position: relative; }
+    a { color: var(--accent) !important; text-decoration: none; }
 
-    /* Settings & Discord Nudge */
-    .settings-dropdown { position: relative; }
-    .gear-icon { font-size: 1.8rem; cursor: pointer; transition: 0.3s; }
+    #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold; z-index: 60000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    #toast.show { top: 20px; }
+
+    #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: transparent; overflow-y: auto; padding: 20px; position: relative; z-index: 1; }
+    .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; margin-top: 20px; }
+    .blocker-card { background: var(--bg-card); border: 1px solid var(--border); padding: 20px; border-radius: 18px; cursor: pointer; transition: 0.3s; font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .blocker-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); border-color: var(--accent); }
+    
+    .app-container { display: none; width: 100%; height: 100%; flex-direction: column; position: relative; z-index: 1; }
+    .header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; background: var(--bg-sidebar); z-index: 10; backdrop-filter: blur(var(--glass-blur)); position: relative; gap: 10px; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .header-bottom { display: flex; gap: 10px; width: 100%; align-items: center; }
+
+    .search-bar { flex: 1; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 30px; color: var(--text-main); outline: none; backdrop-filter: blur(var(--glass-blur)); }
+    .search-bar:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
+    
+    .filter-pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; }
+    .filter-pill { padding: 6px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; font-size: 0.75rem; cursor: pointer; white-space: nowrap; font-weight: bold; color: var(--text-muted); }
+    .filter-pill.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+    #posts { flex: 1; padding: 20px; padding-bottom: 100px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .post-card { background: var(--bg-card); padding: 25px; border-radius: 20px; width: 100%; max-width: 750px; position: relative; border: 1px solid var(--border); backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+    .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+    .post-content { white-space: pre-wrap; font-size: 1.05rem; margin-top: 12px; word-break: break-all; line-height: 1.5; }
+
+    .new-badge { background: var(--green); color: #111; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 900; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+    .settings-dropdown { position: relative; } 
+    .gear-icon { font-size: 1.8rem; cursor: pointer; color: var(--text-muted); padding: 5px; transition: 0.3s; display: block; }
     .gear-icon:hover { color: var(--accent); transform: rotate(45deg); }
     
-    #discordNudge { 
-      position: absolute; right: 50px; top: 5px; background: #5865F2; color: white; padding: 6px 12px; 
-      border-radius: 8px; font-size: 0.7rem; font-weight: bold; white-space: nowrap; 
-      display: none; pointer-events: none; z-index: 2000; 
-    }
-    #discordNudge::after { content: ''; position: absolute; right: -6px; top: 8px; border-left: 6px solid #5865F2; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+    /* Discord Nudge Tooltip */
+    #discordNudge { position: absolute; right: 50px; top: 0; background: #5865F2; color: white; padding: 8px 15px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; white-space: nowrap; display: none; opacity: 0; transition: opacity 0.5s; z-index: 1000; }
+    #discordNudge::after { content: ''; position: absolute; right: -8px; top: 12px; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 8px solid #5865F2; }
 
-    .settings-menu { display: none; position: absolute; right: 0; top: 45px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; width: 220px; padding: 10px; z-index: 100; }
+    .settings-menu { display: none; position: absolute; right: 0; top: 50px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; width: 240px; padding: 10px; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.4); backdrop-filter: blur(30px); max-height: 80vh; overflow-y: auto; }
     .settings-menu.show { display: block; }
-    .menu-item { padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: bold; }
-    .menu-item:hover { background: rgba(255,255,255,0.1); }
+    .menu-item { padding: 12px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: bold; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+    .menu-item:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
     
-    .discord-btn-highlight { border: 2px solid #5865F2; animation: pulseDiscord 2s infinite; }
-    @keyframes pulseDiscord { 0% { box-shadow: 0 0 0px #5865F2; } 50% { box-shadow: 0 0 10px #5865F2; } 100% { box-shadow: 0 0 0px #5865F2; } }
+    /* Join Discord Button Outline */
+    .discord-outline-btn { border: 2px solid #5865F2; margin-top: 5px; animation: glowDiscord 2s infinite; }
+    @keyframes glowDiscord { 0% { box-shadow: 0 0 5px #5865f2; } 50% { box-shadow: 0 0 15px #5865f2; } 100% { box-shadow: 0 0 5px #5865f2; } }
 
-    /* Feed */
-    #posts { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-    .post-card { background: var(--bg-card); padding: 20px; border-radius: 15px; width: 100%; max-width: 600px; border: 1px solid var(--border); }
+    /* Draggable Window Fixes */
+    .panel { display: none; position: fixed; bottom: 30px; right: 30px; width: 420px; max-width: calc(100% - 60px); background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; z-index: 15000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(40px); overflow: hidden; }
+    .panel-header { padding: 15px 20px; background: rgba(255,255,255,0.05); cursor: move; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+
+    .admin-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 10px; margin-bottom: 12px; outline: none; }
+    .admin-primary-btn { width: 100%; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; transition: 0.2s; }
     
-    /* Admin Tabs Restored */
-    .admin-tabs { display: flex; gap: 5px; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 10px; }
-    .admin-tab { flex: 1; padding: 8px; text-align: center; cursor: pointer; border-radius: 6px; font-size: 0.8rem; }
-    .admin-tab.active { background: var(--accent); color: #000; font-weight: bold; }
+    .vote-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; user-select: none; }
 
-    .admin-input { width: 100%; padding: 10px; margin-bottom: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 8px; }
-    .admin-btn { width: 100%; padding: 12px; background: var(--accent); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-    .confetti { position: fixed; width: 8px; height: 8px; z-index: 10000; pointer-events: none; }
+    .confetti-piece { position: fixed; width: 10px; height: 10px; z-index: 100000; pointer-events: none; }
   </style>
 </head>
 <body>
 
 <canvas id="particleCanvas"></canvas>
+<div id="toast"></div>
+<div id="announcementBanner"></div>
 
-<div id="adminPanel" class="draggable-window" style="top: 10%; right: 10%;">
-  <div class="window-header">
-    <span style="font-weight: bold;">🔑 Admin Dashboard</span>
-    <button class="close-btn" onclick="closeWindow('adminPanel')">&times;</button>
+<div id="requestModal" class="panel" style="bottom: auto; top: 20%; right: auto; left: 30%;">
+  <div class="panel-header">
+    <h3 style="margin:0; color:var(--accent); font-size: 1.1rem;">Request a Proxy</h3>
+    <button onclick="document.getElementById('requestModal').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">&times;</button>
   </div>
-  <div style="padding: 20px;">
+  <div style="padding: 25px;">
+    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Need a link for a specific blocker? Let us know!</p>
+    <textarea id="requestInput" class="admin-input" rows="4" placeholder="Blocker name or specific site request..."></textarea>
+    <div style="display:flex; gap:10px;">
+        <button id="sendRequestBtn" class="admin-primary-btn">Send Request</button>
+    </div>
+  </div>
+</div>
+
+<div id="adminPanel" class="panel">
+  <div class="panel-header">
+    <h3 style="margin:0; color:var(--accent); font-size: 1.1rem;">Admin Dashboard</h3>
+    <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">&times;</button>
+  </div>
+  <div style="padding: 25px;">
     <div id="loginSection">
-      <input type="password" id="adminPassword" class="admin-input" placeholder="Password">
-      <button class="admin-btn" onclick="loginAction()">Login</button>
+      <input type="password" id="adminPassword" class="admin-input" placeholder="Password" onkeydown="if(event.key === 'Enter') loginAction()">
+      <button id="loginBtn" class="admin-primary-btn" onclick="loginAction()">Authenticate</button>
     </div>
     <div id="adminContent" style="display:none;">
       <div class="admin-tabs">
-        <div class="admin-tab active" id="tabPost" onclick="switchTab('post')">Post</div>
-        <div class="admin-tab" id="tabLog" onclick="switchTab('log')">Log</div>
+        <div class="admin-tab active" id="tabPost" onclick="switchTab('post')">New Proxy</div>
+        <div class="admin-tab" id="tabLog" onclick="switchTab('log')">New Log</div>
         <div class="admin-tab" id="tabBanner" onclick="switchTab('banner')">Banner</div>
       </div>
       <div id="panePost">
-        <input type="text" id="postAuthor" class="admin-input" placeholder="Author">
-        <textarea id="postText" class="admin-input" placeholder="Proxy URL..."></textarea>
-        <button class="admin-btn" onclick="publishPost()">Publish</button>
-      </div>
-      <div id="paneLog" style="display:none;">
-        <input type="text" id="logTitle" class="admin-input" placeholder="Update Title">
-        <textarea id="logDesc" class="admin-input" placeholder="Details..."></textarea>
-        <button class="admin-btn" onclick="publishLog()">Add Log</button>
-      </div>
-      <div id="paneBanner" style="display:none;">
-        <textarea id="bannerInput" class="admin-input" placeholder="Announcement..."></textarea>
-        <button class="admin-btn" onclick="updateBanner()">Set Banner</button>
+        <input type="text" id="postAuthor" class="admin-input" placeholder="Author Name">
+        <textarea id="postText" class="admin-input" rows="3" placeholder="Proxy link / description..."></textarea>
+        <div id="adminBlockerButtons" class="blocker-pills" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 10px;"></div>
+        <button id="publishBtn" class="admin-primary-btn">Publish to Feed</button>
       </div>
     </div>
   </div>
-</div>
-
-<div id="logWindow" class="draggable-window" style="top: 15%; left: 15%; width: 450px;">
-  <div class="window-header">
-    <span style="font-weight: bold;">📜 Change Logs</span>
-    <button class="close-btn" onclick="closeWindow('logWindow')">&times;</button>
-  </div>
-  <div id="logList" style="padding: 20px; max-height: 400px; overflow-y: auto;"></div>
 </div>
 
 <div id="selectionScreen">
-  <h1>Eli's Proxies</h1>
-  <div class="blocker-grid" id="grid"></div>
-  <div class="blocker-card" style="margin-top: 20px; width: 100%; max-width: 300px;" onclick="selectBlocker('All')">View All</div>
+  <h1 style="color: var(--text-main); font-size: 2.5rem; margin-bottom: 8px; letter-spacing: -1px;">Eli's Proxies</h1>
+  <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1rem; font-weight: 500;">Choose a filter to begin</p>
+  <div class="blocker-grid" id="gridContainer"></div>
+  <div class="blocker-card" style="margin-top:25px; width:100%; max-width:320px; background: rgba(255,255,255,0.1); border-color: var(--accent); color: var(--accent);" onclick="selectBlocker('All')">View All Proxies</div>
 </div>
 
-<div class="app-container" id="app">
+<div class="app-container" id="appContainer">
   <div class="header">
     <div class="header-top">
-      <button onclick="location.reload()" style="background:none; border:1px solid var(--border); color:white; padding:5px 15px; border-radius:15px; cursor:pointer;">← Back</button>
-      <div class="settings-dropdown">
-        <div id="discordNudge">Join the Discord!</div>
-        <div class="gear-icon" onclick="toggleSettings()">⚙</div>
-        <div id="settingsMenu" class="settings-menu">
-          <div class="menu-item" onclick="openWindow('logWindow'); showLogs();">📜 Logs</div>
-          <div class="menu-item" onclick="toggleThemes()">🎨 Themes</div>
-          <div id="themeList" style="display:none; padding:5px; border-left: 2px solid var(--border); margin-bottom:10px;">
-              <div class="menu-item" onclick="setTheme('liquid')">Liquid Glass</div>
-              <div class="menu-item" onclick="setTheme('cyberpunk')">Cyberpunk</div>
-              <div class="menu-item" onclick="setTheme('gold')">Gold</div>
-              <div class="menu-item" onclick="setTheme('dracula')">Dracula</div>
-              <div class="menu-item" onclick="setTheme('dark')">Dark</div>
-          </div>
-          <div class="menu-item" onclick="openWindow('adminPanel')">🔑 Admin</div>
-          <a href="https://discord.gg/hns6EJVZ3k" target="_blank">
-            <div class="menu-item discord-btn-highlight">💬 Join Discord</div>
-          </a>
+        <div style="display:flex; align-items:center; gap:15px;">
+          <button onclick="goBackToSelection()" class="btn-outline" style="background:none; border:1px solid var(--border); color:var(--text-main); border-radius:25px; padding:8px 16px; cursor:pointer; font-weight:bold;">← Back</button>
+          <h2 id="currentBlocker" style="font-size:1.2rem; margin:0; font-weight: 800;">Feed</h2>
         </div>
-      </div>
+        <div class="settings-dropdown">
+          <div id="discordNudge">Join the Discord!</div>
+          <div class="gear-icon" onclick="toggleSettings()">⚙</div>
+          <div id="settingsMenu" class="settings-menu">
+            <div class="menu-item" onclick="refreshNow()">↻ Refresh Feed</div>
+            <div class="menu-item" onclick="toggleThemeList()">🎨 Themes <span id="themeArrow">▼</span></div>
+            <div id="themesSubList" class="themes-sub-list" style="display:none; flex-direction:column; padding-left:15px; border-left:2px solid var(--border);">
+                <div class="theme-opt" onclick="setTheme('liquid')">Liquid Glass ✨</div>
+                <div class="theme-opt" onclick="setTheme('cyberpunk')">Cyberpunk</div>
+                <div class="theme-opt" onclick="setTheme('gold')">Pure Gold</div>
+            </div>
+            <div class="menu-item" onclick="document.getElementById('adminPanel').style.display='block'">🔑 Admin Panel</div>
+            <a href="https://discord.gg/hns6EJVZ3k" target="_blank">
+              <div class="menu-item discord-outline-btn">💬 Join Discord</div>
+            </a>
+          </div>
+        </div>
     </div>
-    <input type="text" id="search" class="search-bar" placeholder="Search proxies...">
+    <div class="header-bottom">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search for proxies...">
+    </div>
   </div>
   <div id="posts"></div>
 </div>
 
 <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-  const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F');
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F');
 
-  // --- PARTICLE BACKGROUND ---
-  const canvas = document.getElementById('particleCanvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  window.onresize = resize; resize();
+// --- PARTICLE BACKGROUND ENGINE ---
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.onresize = resize; resize();
 
-  class Particle {
-    constructor() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 2 + 1;
-      this.speedX = Math.random() * 1 - 0.5;
-      this.speedY = Math.random() * 1 - 0.5;
-    }
-    update() {
-      this.x += this.speedX; this.y += this.speedY;
-      if (this.x > canvas.width) this.x = 0; if (this.x < 0) this.x = canvas.width;
-      if (this.y > canvas.height) this.y = 0; if (this.y < 0) this.y = canvas.height;
-    }
-    draw() {
-      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
-      ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-    }
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 1;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
   }
-  for(let i=0; i<70; i++) particles.push(new Particle());
-  function animate() {
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-    particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(animate);
+  update() {
+    this.x += this.speedX; this.y += this.speedY;
+    if (this.x > canvas.width) this.x = 0; if (this.x < 0) this.x = canvas.width;
+    if (this.y > canvas.height) this.y = 0; if (this.y < 0) this.y = canvas.height;
   }
-  animate();
+  draw() {
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+  }
+}
+for (let i = 0; i < 60; i++) particles.push(new Particle());
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
 
-  // --- DRAGGABLE ENGINE ---
-  window.openWindow = (id) => document.getElementById(id).style.display = 'block';
-  window.closeWindow = (id) => document.getElementById(id).style.display = 'none';
-
-  document.querySelectorAll(".draggable-window").forEach(win => {
-    let pos1=0, pos2=0, pos3=0, pos4=0;
-    const header = win.querySelector(".window-header");
-    header.onmousedown = (e) => {
+// --- DRAGGABLE WINDOW ENGINE ---
+function makeDraggable(el) {
+  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  const header = el.querySelector(".panel-header") || el;
+  header.onmousedown = (e) => {
+    if (e.target.tagName === 'BUTTON') return;
+    e.preventDefault();
+    pos3 = e.clientX; pos4 = e.clientY;
+    document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+    document.onmousemove = (e) => {
+      pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
       pos3 = e.clientX; pos4 = e.clientY;
-      document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
-      document.onmousemove = (e) => {
-        pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
-        pos3 = e.clientX; pos4 = e.clientY;
-        win.style.top = (win.offsetTop - pos2) + "px";
-        win.style.left = (win.offsetLeft - pos1) + "px";
-      };
+      el.style.top = (el.offsetTop - pos2) + "px";
+      el.style.left = (el.offsetLeft - pos1) + "px";
+      el.style.bottom = "auto"; el.style.right = "auto";
     };
-  });
-
-  // --- UI EXTRAS ---
-  window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
-  window.toggleThemes = () => {
-    const tl = document.getElementById('themeList');
-    tl.style.display = tl.style.display === 'none' ? 'block' : 'none';
   };
-  window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('theme', t); };
-  setTheme(localStorage.getItem('theme') || 'dark');
+}
+document.querySelectorAll(".panel").forEach(makeDraggable);
 
-  // Discord Nudge (2 min)
-  setInterval(() => {
+// --- CONFETTI SYSTEM ---
+window.triggerConfetti = () => {
+  for (let i = 0; i < 40; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.top = '-10px';
+    piece.style.backgroundColor = ['#89b4fa', '#f38ba8', '#a6e3a1', '#f9e2af'][Math.floor(Math.random()*4)];
+    document.body.appendChild(piece);
+    const anim = piece.animate([
+      { top: '-10px', opacity: 1 },
+      { top: '100vh', opacity: 0, transform: `rotate(${Math.random() * 360}deg)` }
+    ], { duration: Math.random() * 2000 + 1000, easing: 'cubic-bezier(0,1,1,1)' });
+    anim.onfinish = () => piece.remove();
+  }
+};
+
+// --- DISCORD NUDGE ---
+setInterval(() => {
     const nudge = document.getElementById('discordNudge');
     nudge.style.display = 'block';
-    setTimeout(() => nudge.style.display = 'none', 5000);
-  }, 120000);
+    setTimeout(() => nudge.style.opacity = '1', 10);
+    setTimeout(() => {
+        nudge.style.opacity = '0';
+        setTimeout(() => nudge.style.display = 'none', 500);
+    }, 6000);
+}, 120000); // 2 Minutes
 
-  // Confetti
-  window.triggerConfetti = () => {
-    for(let i=0; i<40; i++) {
-      const c = document.createElement('div');
-      c.className = 'confetti';
-      c.style.left = Math.random() * 100 + 'vw';
-      c.style.top = '-10px';
-      c.style.backgroundColor = ['#ff007f','#00ffcc','#89b4fa','#f9e2af'][Math.floor(Math.random()*4)];
-      document.body.appendChild(c);
-      c.animate([{top:'-10px'}, {top:'100vh', transform:`rotate(${Math.random()*360}deg)`}], {duration: 2000});
-      setTimeout(() => c.remove(), 2000);
-    }
-  };
+// --- ORIGINAL LOGIC INTEGRATION ---
+const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
+window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eli_theme', t); };
+setTheme(localStorage.getItem('eli_theme') || 'dark');
 
-  // --- APP LOGIC ---
-  const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Goguardian", "Fortiguard"];
-  let activeBlocker = null;
+window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
+window.toggleThemeList = () => {
+    const list = document.getElementById('themesSubList');
+    list.style.display = list.style.display === 'none' ? 'flex' : 'none';
+};
 
-  blockers.forEach(b => {
-    const div = document.createElement('div');
-    div.className = 'blocker-card';
-    div.textContent = b.replace('_', ' ');
-    div.onclick = () => selectBlocker(b);
-    document.getElementById('grid').appendChild(div);
-  });
+window.voteProxy = async (id, type) => {
+    if(type === 'like') triggerConfetti();
+    // Your existing database vote logic here...
+    const { data } = await supabase.from('posts').select(type + 's').eq('id', id).single();
+    await supabase.from('posts').update({ [type + 's']: (data[type + 's'] || 0) + 1 }).eq('id', id);
+    fetchPosts(true);
+};
 
-  window.selectBlocker = (b) => {
-    activeBlocker = b;
-    document.getElementById('selectionScreen').style.display = 'none';
-    document.getElementById('app').style.display = 'flex';
-    fetchPosts();
-  }
+// --- RENDER BLOCKERS ---
+blockers.forEach(b => {
+  const card = document.createElement('div');
+  card.className = 'blocker-card'; card.textContent = b.replace(/_/g, ' ');
+  card.onclick = () => selectBlocker(b);
+  document.getElementById('gridContainer').appendChild(card);
+});
 
-  window.fetchPosts = async () => {
-    let q = supabase.from('posts').select('*');
-    if(activeBlocker !== 'All') q = q.eq('blocker', activeBlocker);
-    const { data } = await q.order('created_at', {ascending: false});
-    document.getElementById('posts').innerHTML = data.map(p => `
-      <div class="post-card">
-        <div style="color:var(--accent); font-weight:bold;">${p.author}</div>
-        <div style="margin:10px 0;">${p.content}</div>
-        <button onclick="likePost('${p.id}')" style="background:none; border:1px solid var(--border); color:white; cursor:pointer; border-radius:10px; padding:5px 10px;">👍 ${p.likes || 0}</button>
+window.selectBlocker = (name) => {
+  document.getElementById('selectionScreen').style.display = 'none';
+  document.getElementById('appContainer').style.display = 'flex';
+  document.getElementById('currentBlocker').textContent = name;
+  fetchPosts();
+};
+
+window.goBackToSelection = () => {
+    document.getElementById('appContainer').style.display = 'none';
+    document.getElementById('selectionScreen').style.display = 'flex';
+};
+
+window.fetchPosts = async () => {
+  const { data } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+  document.getElementById('posts').innerHTML = data.map(p => `
+    <div class="post-card">
+      <div class="post-author">${p.author}</div>
+      <div class="post-content">${p.content}</div>
+      <div style="display:flex; gap:10px; margin-top:15px;">
+        <button class="vote-btn" onclick="voteProxy('${p.id}', 'like')">👍 ${p.likes || 0}</button>
       </div>
-    `).join('');
-  }
-
-  window.likePost = async (id) => {
-    triggerConfetti();
-    const { data } = await supabase.from('posts').select('likes').eq('id', id).single();
-    await supabase.from('posts').update({likes: (data.likes || 0) + 1}).eq('id', id);
-    fetchPosts();
-  }
-
-  // --- ADMIN RESTORED ---
-  window.switchTab = (t) => {
-    document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
-    document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');
-    ['panePost', 'paneLog', 'paneBanner'].forEach(p => document.getElementById(p).style.display = 'none');
-    document.getElementById('pane'+t.charAt(0).toUpperCase()+t.slice(1)).style.display = 'block';
-  }
-
-  window.loginAction = () => {
-    if(document.getElementById('adminPassword').value === 'EISisBetterForever') {
-      document.getElementById('loginSection').style.display = 'none';
-      document.getElementById('adminContent').style.display = 'block';
-    }
-  }
-
-  window.showLogs = async () => {
-    const { data } = await supabase.from('logs').select('*').order('created_at', {ascending: false});
-    document.getElementById('logList').innerHTML = data.map(l => `
-      <div style="margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:5px;">
-        <div style="color:var(--accent); font-weight:bold;">${l.heading}</div>
-        <div style="font-size:0.85rem;">${l.body}</div>
-      </div>
-    `).join('');
-  }
+    </div>
+  `).join('');
+};
 </script>
 </body>
 </html>
