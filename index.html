@@ -1,139 +1,643 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Eli's Proxies</title>
+  <meta name="title" content="Eli's Proxies | Start your unblocking journey">
+  <meta name="description" content="The ultimate destination for unblocked links and proxy feeds.">
 
-<title>Eli's Proxies</title>
-<meta name="title" content="Eli's Proxies | Start your unblocking journey">
-<meta name="description" content="The ultimate destination for unblocked links and proxy feeds.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://elis-proxies.com/"> 
+  <meta property="og:title" content="Eli's Proxies | Start your unblocking journey">
+  <meta property="og:description" content="Get the latest unblocked links for Linewize, Securly, GoGuardian, and more.">
+  <meta property="og:image" content="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
 
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://elis-proxies.com/"> 
-<meta property="og:title" content="Eli's Proxies | Start your unblocking journey">
-<meta property="og:description" content="Get the latest unblocked links for Linewize, Securly, GoGuardian, and more.">
-<meta property="og:image" content="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
+  <link rel="icon" type="image/png" href="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
 
-<link rel="icon" type="image/png" href="https://elis-proxies.odoo.com/web/image/website/1/logo/Eli%27s%20Proxies?unique=7b51271.png">
+  <style>
+    /* Themes */
+    :root { 
+      --bg-dark: #1e1e2e; --bg-sidebar: #181825; --bg-card: #313244;
+      --text-main: #cdd6f4; --text-muted: #a6adc8; --accent: #89b4fa;
+      --red: #f38ba8; --green: #a6e3a1; --border: #45475a; --overlay: rgba(0,0,0,0.7);
+      --glass-blur: 0px; --bg-animate: none;
+    }
+    [data-theme="dark"] { --bg-dark: #121212; --bg-sidebar: #1e1e1e; --bg-card: #242424; --text-main: #e0e0e0; --text-muted: #909090; --accent: #bb86fc; --border: #333333; }
+    [data-theme="oled"] { --bg-dark: #000000; --bg-sidebar: #000000; --bg-card: #111111; --text-main: #ffffff; --text-muted: #888888; --accent: #ffffff; --border: #222222; }
+    [data-theme="light"] { --bg-dark: #eff1f5; --bg-sidebar: #e6e9ef; --bg-card: #ffffff; --text-main: #4c4f69; --text-muted: #6c6f85; --accent: #1e66f5; --border: #ccd0da; }
+    [data-theme="emerald"] { --bg-dark: #06120e; --bg-sidebar: #0a1a15; --bg-card: #122a22; --text-main: #ecfdf5; --text-muted: #6ee7b7; --accent: #10b981; --border: #065f46; }
+    [data-theme="rose"] { --bg-dark: #1a1012; --bg-sidebar: #24181a; --bg-card: #3d2b2e; --text-main: #fff1f2; --text-muted: #fda4af; --accent: #f43f5e; --border: #9f1239; }
+    
+    [data-theme="cyberpunk"] { --bg-dark: #000b1e; --bg-sidebar: #00162d; --bg-card: #002244; --text-main: #00ffcc; --text-muted: #fdee00; --accent: #ff007f; --border: #00ffcc; }
+    [data-theme="forest"] { --bg-dark: #0b120b; --bg-sidebar: #131d13; --bg-card: #1b2b1b; --text-main: #d4e4d4; --text-muted: #7da17d; --accent: #4caf50; --border: #2e442e; }
+    [data-theme="lava"] { --bg-dark: #0d0000; --bg-sidebar: #1a0000; --bg-card: #2d0000; --text-main: #ffd1d1; --text-muted: #ff6b6b; --accent: #ff4500; --border: #4d0000; }
+    [data-theme="dracula"] { --bg-dark: #282a36; --bg-sidebar: #1e1f29; --bg-card: #44475a; --text-main: #f8f8f2; --text-muted: #6272a4; --accent: #bd93f9; --border: #bd93f9; }
+    [data-theme="sakura"] { --bg-dark: #fff5f7; --bg-sidebar: #ffe0e9; --bg-card: #ffffff; --text-main: #d01d56; --text-muted: #f1a7bb; --accent: #ff8fa3; --border: #ffcad4; }
+    [data-theme="synthwave"] { --bg-dark: #241744; --bg-sidebar: #2d1b5a; --bg-card: #37246e; --text-main: #fede5d; --text-muted: #ff7edb; --accent: #2de2e6; --border: #72f1b8; }
+    [data-theme="ghost"] { --bg-dark: #f0f2f5; --bg-sidebar: #ffffff; --bg-card: #ffffff; --text-main: #2c3e50; --text-muted: #95a5a6; --accent: #34495e; --border: #dcdde1; }
+    [data-theme="gold"] { --bg-dark: #0a0a0a; --bg-sidebar: #141414; --bg-card: #1a1a1a; --text-main: #ffffff; --text-muted: #888888; --accent: #d4af37; --border: #333333; }
+    
+    [data-theme="ocean"] { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: #334155; --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #38bdf8; --border: #475569; }
+    [data-theme="midnight"] { --bg-dark: #020617; --bg-sidebar: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-muted: #64748b; --accent: #6366f1; --border: #334155; }
+    [data-theme="coffee"] { --bg-dark: #1c1917; --bg-sidebar: #292524; --bg-card: #44403c; --text-main: #fafaf9; --text-muted: #a8a29e; --accent: #d97706; --border: #57534e; }
+    [data-theme="nebula"] { --bg-dark: #09090b; --bg-sidebar: #18181b; --bg-card: #27272a; --text-main: #fafafa; --text-muted: #a1a1aa; --accent: #d946ef; --border: #3f3f46; }
+    [data-theme="amber"] { --bg-dark: #0c0a09; --bg-sidebar: #1c1917; --bg-card: #292524; --text-main: #f5f5f4; --text-muted: #a8a29e; --accent: #f59e0b; --border: #44403c; }
+    [data-theme="nord"] { --bg-dark: #2e3440; --bg-sidebar: #3b4252; --bg-card: #434c5e; --text-main: #eceff4; --text-muted: #d8dee9; --accent: #88c0d0; --border: #4c566a; }
 
-<style>
+    [data-theme="liquid"] { 
+      --bg-dark: linear-gradient(-45deg, #0f172a, #1e293b, #082f49, #0f172a); 
+      --bg-animate: gradientMove 15s ease infinite;
+      --bg-sidebar: rgba(255, 255, 255, 0.08); 
+      --bg-card: rgba(255, 255, 255, 0.05); 
+      --text-main: #ffffff; --text-muted: rgba(255, 255, 255, 0.6); 
+      --accent: #ffffff; --border: rgba(255, 255, 255, 0.2); --glass-blur: 16px;
+    }
 
-/* PARTICLE LAYER */
-#themeParticles{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-}
-body > *:not(#themeParticles){
-  position:relative;
-  z-index:1;
-}
+    @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-/* ========== YOUR ORIGINAL CSS (UNCHANGED) ========== */
-/* (kept exactly the same — trimmed here for length explanation purposes in this message) */
-/* In your actual file, ALL your original CSS stays here exactly as you provided it */
-/* --------------------------------------------------- */
+    * { box-sizing: border-box; transition: background 0.3s, color 0.3s, border 0.3s; }
+    *::-webkit-scrollbar { display: none; }
+    * { -ms-overflow-style: none; scrollbar-width: none; }
 
-</style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: var(--bg-dark); background-size: 400% 400%; animation: var(--bg-animate); color: var(--text-main); height: 100vh; overflow: hidden; position: relative; }
+
+    /* Floating Particles CSS */
+    #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none; }
+
+    #announcementBanner { background: var(--accent); color: #000; padding: 8px; text-align: center; font-weight: bold; font-size: 0.85rem; display: none; z-index: 100; position: relative; }
+    a { color: var(--accent) !important; text-decoration: none; }
+
+    #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold; z-index: 60000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    #toast.show { top: 20px; }
+
+    #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: transparent; overflow-y: auto; padding: 20px; position: relative; z-index: 2; }
+    .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; margin-top: 20px; }
+    .blocker-card { background: var(--bg-card); border: 1px solid var(--border); padding: 20px; border-radius: 18px; cursor: pointer; transition: 0.3s; font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .blocker-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); border-color: var(--accent); }
+    
+    .app-container { display: none; width: 100%; height: 100%; flex-direction: column; position: relative; z-index: 2; }
+    .header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; background: var(--bg-sidebar); z-index: 10; backdrop-filter: blur(var(--glass-blur)); position: relative; gap: 10px; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .header-bottom { display: flex; gap: 10px; width: 100%; align-items: center; }
+
+    .search-bar { flex: 1; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 30px; color: var(--text-main); outline: none; backdrop-filter: blur(var(--glass-blur)); }
+    .search-bar:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
+    
+    .filter-pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; }
+    .filter-pill { padding: 6px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; font-size: 0.75rem; cursor: pointer; white-space: nowrap; font-weight: bold; color: var(--text-muted); }
+    .filter-pill.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+    #posts { flex: 1; padding: 20px; padding-bottom: 100px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .post-card { background: var(--bg-card); padding: 25px; border-radius: 20px; width: 100%; max-width: 750px; position: relative; border: 1px solid var(--border); backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+    .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+    .post-content { white-space: pre-wrap; font-size: 1.05rem; margin-top: 12px; word-break: break-all; line-height: 1.5; }
+
+    .new-badge { background: var(--green); color: #111; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 900; animation: pulse 2s infinite; }
+    .hot-badge { font-size: 1.1rem; filter: drop-shadow(0 0 5px orange); }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+    .settings-dropdown { position: relative; } 
+    .gear-icon { font-size: 1.8rem; cursor: pointer; color: var(--text-muted); padding: 5px; transition: 0.3s; display: block; }
+    .gear-icon:hover { color: var(--accent); transform: rotate(45deg); }
+    
+    .settings-menu { display: none; position: absolute; right: 0; top: 50px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; width: 240px; padding: 10px; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.4); backdrop-filter: blur(30px); max-height: 80vh; overflow-y: auto; }
+    .settings-menu.show { display: block; }
+    .menu-item { padding: 12px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: bold; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+    .menu-item:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
+    
+    .themes-sub-list { display: none; flex-direction: column; padding-left: 15px; margin-top: 5px; border-left: 2px solid var(--border); }
+    .themes-sub-list.open { display: flex; }
+    .theme-opt { padding: 8px 12px; font-size: 0.8rem; cursor: pointer; border-radius: 6px; }
+    .theme-opt:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
+
+    .panel { display: none; position: fixed; bottom: 30px; right: 30px; width: 420px; max-width: calc(100% - 60px); background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 24px; z-index: 15000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(40px); }
+    
+    #editPanel { position: fixed; left: -450px; top: 0; width: 420px; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid var(--border); z-index: 30000; padding: 40px 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 20px 0 60px rgba(0,0,0,0.6); backdrop-filter: blur(40px); }
+    #editPanel.open { left: 0; }
+
+    .admin-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 10px; margin-bottom: 12px; outline: none; }
+    .admin-input:focus { border-color: var(--accent); }
+    .admin-primary-btn { width: 100%; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; transition: 0.2s; }
+    .admin-primary-btn:hover { opacity: 0.9; transform: scale(0.98); }
+    
+    .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 12px; }
+    .admin-tab { flex: 1; padding: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-size: 0.75rem; color: var(--text-muted); }
+    .admin-tab.active { background: var(--bg-card); color: var(--accent); font-weight: bold; }
+    
+    .blocker-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+    .admin-pill { padding: 6px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: var(--text-muted); font-size: 0.7rem; cursor: pointer; text-align: center; }
+    .admin-pill.selected { background: var(--accent); color: #000; border-color: var(--accent); }
+
+    .btn-outline { background:none; border:1px solid var(--border); color:var(--text-main); border-radius:25px; padding:8px 16px; cursor:pointer; font-weight:bold; font-size: 0.85rem; }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+    .copy-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--accent); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: 0.2s; }
+    .copy-btn.copied { background: var(--green); color: #111; border-color: var(--green); }
+    .report-btn { color: var(--red); border: 1px solid var(--red); background: transparent; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; margin-left: 8px; }
+
+    .vote-container { display: flex; gap: 12px; margin-top: 15px; align-items: center; }
+    .vote-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; user-select: none; }
+    .vote-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+    .vote-btn.active-like { border-color: var(--green); color: var(--green); background: rgba(166, 227, 161, 0.1); }
+    .vote-btn.active-dislike { border-color: var(--red); color: var(--red); background: rgba(243, 139, 168, 0.1); }
+
+    .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:50000; backdrop-filter: blur(8px); align-items:center; justify-content:center; }
+    .modal-content { background: var(--bg-card); padding: 30px; border-radius: 24px; width: 90%; max-width: 400px; border: 1px solid var(--border); }
+  </style>
 </head>
 <body>
 
-<canvas id="themeParticles"></canvas>
-
-<!-- =========================
-     EVERYTHING BELOW IS YOUR
-     ORIGINAL HTML (UNCHANGED)
-     ========================= -->
-
-<!--
-IMPORTANT:
-For readability here in ChatGPT, I am not collapsing your 1,000+ lines again,
-but you should keep EVERYTHING exactly as you originally posted it,
-starting from:
+<div id="particles-js"></div>
 
 <div id="toast"></div>
 <div id="announcementBanner"></div>
-...
-all the way through your entire Supabase script
-...
-and ending before </body>
 
-NOTHING should be removed or modified.
--->
+<div id="reportModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 style="margin-top:0; color:var(--red);">Report Proxy</h3>
+    <textarea id="reportInput" class="admin-input" rows="4" placeholder="Why are you reporting this?"></textarea>
+    <div style="display:flex; gap:10px;">
+        <button id="sendReportBtn" class="admin-primary-btn" style="background:var(--red); color:white;">Send Report</button>
+        <button onclick="document.getElementById('reportModal').style.display='none'" class="admin-primary-btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main);">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="requestModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 style="margin-top:0; color:var(--accent);">Request a Proxy</h3>
+    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Need a link for a specific blocker? Let us know!</p>
+    <textarea id="requestInput" class="admin-input" rows="4" placeholder="Blocker name or specific site request..."></textarea>
+    <div style="display:flex; gap:10px;">
+        <button id="sendRequestBtn" class="admin-primary-btn">Send Request</button>
+        <button onclick="document.getElementById('requestModal').style.display='none'" class="admin-primary-btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main);">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="editPanel">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+    <h3 id="editTitle" style="margin:0; color:var(--accent); font-size: 1.4rem;">Edit Item</h3>
+    <button onclick="closeEditPanel()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:2rem;">&times;</button>
+  </div>
+  
+  <div id="editPostFields">
+    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Author</label>
+    <input type="text" id="editAuthor" class="admin-input">
+    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Content</label>
+    <textarea id="editContent" class="admin-input" rows="6"></textarea>
+    <button id="saveEditBtn" class="admin-primary-btn">Apply Changes</button>
+  </div>
+</div>
+
+<div id="selectionScreen">
+  <h1 style="color: var(--text-main); font-size: 2.5rem; margin-bottom: 8px; letter-spacing: -1px;">Eli's Proxies</h1>
+  <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1rem; font-weight: 500;">Choose a filter to begin</p>
+  <div class="blocker-grid" id="gridContainer"></div>
+  <div class="blocker-card" style="margin-top:25px; width:100%; max-width:320px; background: rgba(255,255,255,0.1); border-color: var(--accent); color: var(--accent);" onclick="selectBlocker('All')">View All Proxies</div>
+</div>
+
+<div class="app-container" id="appContainer">
+  <div class="header">
+    <div class="header-top">
+        <div style="display:flex; align-items:center; gap:15px;">
+          <button onclick="goBackToSelection()" class="btn-outline">← Back</button>
+          <h2 id="currentBlocker" style="font-size:1.2rem; margin:0; font-weight: 800;">Feed</h2>
+        </div>
+        <div class="settings-dropdown">
+          <div class="gear-icon" onclick="toggleSettings()">⚙</div>
+          <div id="settingsMenu" class="settings-menu">
+            <div class="menu-item" onclick="refreshNow()">↻ Refresh Feed</div>
+            <div class="menu-item" onclick="toggleThemeList()">🎨 Themes <span id="themeArrow">▼</span></div>
+            <div id="themesSubList" class="themes-sub-list">
+                <div class="theme-opt" onclick="setTheme('liquid')" style="color:#0ea5e9; font-weight: bold;">Liquid Glass ✨</div>
+                <div class="theme-opt" onclick="setTheme('cyberpunk')" style="color:#ff007f">Cyberpunk</div>
+                <div class="theme-opt" onclick="setTheme('synthwave')" style="color:#ff7edb">Synthwave</div>
+                <div class="theme-opt" onclick="setTheme('lava')" style="color:#ff4500">Lava Flow</div>
+                <div class="theme-opt" onclick="setTheme('gold')" style="color:#d4af37">Pure Gold</div>
+                <div class="theme-opt" onclick="setTheme('sakura')" style="color:#ff8fa3">Sakura</div>
+                <div class="theme-opt" onclick="setTheme('dracula')" style="color:#bd93f9">Dracula</div>
+                <div class="theme-opt" onclick="setTheme('forest')" style="color:#4caf50">Forest</div>
+                <div class="theme-opt" onclick="setTheme('catppuccin')">Original</div>
+                <div class="theme-opt" onclick="setTheme('dark')">Dark</div>
+                <div class="theme-opt" onclick="setTheme('oled')">OLED</div>
+                <div class="theme-opt" onclick="setTheme('light')">Light</div>
+                <div class="theme-opt" onclick="setTheme('ocean')">Ocean Blue</div>
+                <div class="theme-opt" onclick="setTheme('midnight')">Midnight</div>
+                <div class="theme-opt" onclick="setTheme('coffee')">Coffee House</div>
+                <div class="theme-opt" onclick="setTheme('nebula')">Nebula</div>
+                <div class="theme-opt" onclick="setTheme('amber')">Amber</div>
+                <div class="theme-opt" onclick="setTheme('nord')">Nordic Frost</div>
+                <div class="theme-opt" onclick="setTheme('ghost')">Ghostly</div>
+            </div>
+            <div class="menu-item" onclick="showLogs()">📜 View Logs</div>
+            <div class="menu-item" onclick="openRequestModal()">📥 Request Proxy</div>
+            <div class="menu-item" onclick="document.getElementById('adminPanel').style.display='block'">🔑 Admin Panel</div>
+            <a href="https://discord.gg/hns6EJVZ3k" target="_blank">
+              <div class="menu-item">💬 Join Discord</div>
+            </a>
+          </div>
+        </div>
+    </div>
+    <div class="header-bottom">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search for proxies...">
+        <div class="filter-pills">
+            <div class="filter-pill active" onclick="setSort('new')" id="sort-new">Newest</div>
+            <div class="filter-pill" onclick="setSort('likes')" id="sort-likes">Most Liked</div>
+            <div class="filter-pill" onclick="setSort('links')" id="sort-links">Most Links</div>
+        </div>
+    </div>
+  </div>
+  <div id="posts"></div>
+</div>
+
+<div id="logOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:35000; padding:20px; backdrop-filter: blur(10px);">
+  <div style="max-width:650px; margin:40px auto; background:var(--bg-sidebar); border-radius:24px; padding:30px; max-height:85vh; overflow-y:auto; border:1px solid var(--border); box-shadow: 0 30px 60px rgba(0,0,0,0.5);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+      <h2 style="margin:0; font-weight: 800;">Update History</h2>
+      <button onclick="document.getElementById('logOverlay').style.display='none'" class="btn-outline">Close</button>
+    </div>
+    <div id="logList"></div>
+  </div>
+</div>
+
+<div id="adminPanel" class="panel">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h3 style="margin:0; color:var(--accent); font-size: 1.2rem; font-weight: 800;">Admin Dashboard</h3>
+    <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.8rem;">&times;</button>
+  </div>
+  <div id="loginSection">
+    <input type="password" id="adminPassword" class="admin-input" placeholder="Password" onkeydown="if(event.key === 'Enter') loginAction()">
+    <button id="loginBtn" class="admin-primary-btn" onclick="loginAction()">Authenticate</button>
+  </div>
+  <div id="adminContent" style="display:none;">
+    <div class="admin-tabs">
+      <div class="admin-tab active" id="tabPost" onclick="switchTab('post')">New Proxy</div>
+      <div class="admin-tab" id="tabLog" onclick="switchTab('log')">New Log</div>
+      <div class="admin-tab" id="tabBanner" onclick="switchTab('banner')">Banner</div>
+    </div>
+    <div id="panePost">
+      <input type="text" id="postAuthor" class="admin-input" placeholder="Author Name">
+      <textarea id="postText" class="admin-input" rows="3" placeholder="Proxy link / description..."></textarea>
+      <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 5px;">Select Blocker(s):</p>
+      <div id="adminBlockerButtons" class="blocker-pills"></div>
+      <button id="publishBtn" class="admin-primary-btn">Publish to Feed</button>
+    </div>
+    <div id="paneLog" style="display:none;">
+      <input type="text" id="logHeading" class="admin-input" placeholder="Update Title">
+      <textarea id="logBody" class="admin-input" rows="4" placeholder="Log details..."></textarea>
+      <button id="publishLogBtn" class="admin-primary-btn">Add Log Entry</button>
+    </div>
+    <div id="paneBanner" style="display:none;">
+      <textarea id="bannerTextInput" class="admin-input" rows="3" placeholder="Global announcement text..."></textarea>
+      <button id="updateBannerBtn" class="admin-primary-btn">Update Banner</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <script type="module">
-/* ========== YOUR ORIGINAL SCRIPT (UNCHANGED) ========== */
-/* Keep your entire Supabase + site logic exactly as it was */
-</script>
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F');
 
-<!-- PARTICLE SCRIPT -->
-<script>
-const canvas = document.getElementById("themeParticles");
-const ctx = canvas.getContext("2d");
+const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
+let selectedBlocker = localStorage.getItem('eli_last_blocker') || null;
+let isAdmin = false; 
+let currentSort = 'new';
+let adminSelectedBlockers = [];
 
-let particles = [];
-let particleCount = 80;
+const REPORT_WEBHOOK = 'https://discord.com/api/webhooks/1474238339811905662/pPriqbRbPjky3JzVqKl8AXDHZCMrS0uZmOMlxrmy-q0-mfLKJ-eABDhYc8Fi9jpGpL-r';
+const REQUEST_WEBHOOK = 'https://discord.com/api/webhooks/1474498106195181811/Gdd0aDSE8htLTf9cHAd6eEUR30fgnm3YI-rUgdRODWZXhdz_r-vLaMO75mH2xRre-OhZ';
 
-function resizeCanvas(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+// --- PARTICLES INIT ---
+particlesJS("particles-js", {
+  "particles": {
+    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+    "color": { "value": "#ffffff" },
+    "shape": { "type": "circle" },
+    "opacity": { "value": 0.2, "random": true },
+    "size": { "value": 3, "random": true },
+    "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.1, "width": 1 },
+    "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+  },
+  "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": false }, "onclick": { "enable": false }, "resize": true } },
+  "retina_detect": true
+});
+
+// --- THEMES ---
+window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eli_theme', t); };
+setTheme(localStorage.getItem('eli_theme') || 'catppuccin');
+
+// --- UI ---
+window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
+window.toggleThemeList = () => {
+    const list = document.getElementById('themesSubList');
+    const arrow = document.getElementById('themeArrow');
+    list.classList.toggle('open');
+    arrow.textContent = list.classList.contains('open') ? '▲' : '▼';
+};
+window.closeEditPanel = () => document.getElementById('editPanel').classList.remove('open');
+window.onclick = (e) => { 
+    if (!e.target.closest('.settings-dropdown')) {
+        document.getElementById('settingsMenu').classList.remove('show');
+        document.getElementById('themesSubList').classList.remove('open');
+    }
+};
+
+window.setSort = (type) => {
+    currentSort = type;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    document.getElementById(`sort-${type}`).classList.add('active');
+    fetchPosts(true);
+};
+
+function showNotice(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.background = type === 'success' ? '#a6e3a1' : '#f38ba8';
+  t.style.color = '#111';
+  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
 }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
 
-function getAccent(){
-  return getComputedStyle(document.documentElement)
-         .getPropertyValue('--accent')
-         .trim() || "#ffffff";
+function linkify(text) {
+  const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%?=~_|])/ig;
+  return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
-function createParticles(){
-  particles = [];
-  for(let i=0;i<particleCount;i++){
-    particles.push({
-      x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height,
-      size: Math.random()*2+0.5,
-      speedX: (Math.random()-0.5)*0.4,
-      speedY: (Math.random()-0.5)*0.4,
-      opacity: Math.random()*0.5+0.2
-    });
+// --- ADMIN ---
+window.loginAction = () => {
+    const pw = document.getElementById('adminPassword').value;
+    if (pw === "EISisBetterForever") {
+        isAdmin = true;
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        initAdminBlockers();
+        showNotice("Authenticated");
+    } else {
+        showNotice("Invalid Password", "error");
+    }
+};
+
+function initAdminBlockers() {
+    const container = document.getElementById('adminBlockerButtons');
+    container.innerHTML = blockers.map(b => `<div class="admin-pill" onclick="toggleAdminBlockerSelection('${b}', this)">${b.replace(/_/g, ' ')}</div>`).join('');
+}
+
+window.toggleAdminBlockerSelection = (name, el) => {
+    if (adminSelectedBlockers.includes(name)) {
+        adminSelectedBlockers = adminSelectedBlockers.filter(b => b !== name);
+        el.classList.remove('selected');
+    } else {
+        adminSelectedBlockers.push(name);
+        el.classList.add('selected');
+    }
+}
+
+window.switchTab = (tab) => {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+    document.getElementById('panePost').style.display = tab === 'post' ? 'block' : 'none';
+    document.getElementById('paneLog').style.display = tab === 'log' ? 'block' : 'none';
+    document.getElementById('paneBanner').style.display = tab === 'banner' ? 'block' : 'none';
+};
+
+// --- FEATURES ---
+
+window.voteProxy = async (id, type) => {
+    const storageKey = `voted_${id}`;
+    if(localStorage.getItem(storageKey)) {
+        showNotice("Already voted on this!", "error");
+        return;
+    }
+
+    const column = type === 'like' ? 'likes' : 'dislikes';
+    const { data: current, error: getErr } = await supabase.from('posts').select(column).eq('id', id).single();
+    if(getErr) return showNotice("Vote failed", "error");
+
+    const newVal = (current[column] || 0) + 1;
+    const { error: setErr } = await supabase.from('posts').update({ [column]: newVal }).eq('id', id);
+
+    if(!setErr) {
+        localStorage.setItem(storageKey, type);
+        showNotice(`Voted ${type}!`);
+        fetchPosts(true); 
+    } else showNotice("Update Denied", "error");
+};
+
+window.copyLinksFromPost = (btn, text) => {
+    const urlPattern = /(https?:\/\/[^\s]+)/gi;
+    const matches = text.match(urlPattern);
+    if (matches) {
+        navigator.clipboard.writeText(matches.join('\n')).then(() => {
+            const originalText = btn.textContent;
+            btn.textContent = "Copied!";
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('copied');
+            }, 2000);
+            showNotice(`Copied ${matches.length} link(s)`);
+        });
+    } else showNotice("No links found", "error");
+}
+
+window.openRequestModal = () => {
+    document.getElementById('requestModal').style.display = 'flex';
+    document.getElementById('sendRequestBtn').onclick = async () => {
+        const msg = document.getElementById('requestInput').value;
+        if(!msg) return showNotice("Please enter a request", "error");
+        const payload = { content: "<@949801961962741770>", embeds: [{ title: "📬 New Proxy Request", color: 8991994, description: msg, timestamp: new Date().toISOString() }] };
+        try {
+            const resp = await fetch(REQUEST_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            if (resp.ok) {
+                document.getElementById('requestModal').style.display = 'none';
+                document.getElementById('requestInput').value = '';
+                showNotice("Request sent!");
+            } else throw new Error();
+        } catch (e) { showNotice("Error sending request", "error"); }
+    };
+}
+
+window.openReportModal = (postId, author, content) => {
+    document.getElementById('reportModal').style.display = 'flex';
+    document.getElementById('sendReportBtn').onclick = async () => {
+        const msg = document.getElementById('reportInput').value;
+        if(!msg) return showNotice("Enter a reason", "error");
+        const payload = { content: "<@949801961962741770>", embeds: [{ title: "🚨 New Proxy Report", color: 15548997, fields: [{ name: "Reason", value: msg }, { name: "Proxy Author", value: author, inline: true }, { name: "Post ID", value: postId, inline: true }, { name: "Content", value: content }], timestamp: new Date().toISOString() }] };
+        try {
+            const resp = await fetch(REPORT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            if (resp.ok) {
+                document.getElementById('reportModal').style.display = 'none';
+                document.getElementById('reportInput').value = '';
+                showNotice("Report Sent to Discord");
+            } else throw new Error();
+        } catch (e) { showNotice("Discord Error", "error"); }
+    };
+}
+
+// --- CORE ---
+window.selectBlocker = (name) => {
+  selectedBlocker = name;
+  localStorage.setItem('eli_last_blocker', name);
+  document.getElementById('selectionScreen').style.display = 'none';
+  document.getElementById('appContainer').style.display = 'flex';
+  document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
+  syncBanner(); fetchPosts();
+};
+
+window.goBackToSelection = () => {
+    localStorage.removeItem('eli_last_blocker');
+    document.getElementById('appContainer').style.display = 'none';
+    document.getElementById('selectionScreen').style.display = 'flex';
+};
+
+window.refreshNow = () => {
+    document.getElementById('settingsMenu').classList.remove('show');
+    fetchPosts(false);
+}
+
+async function syncBanner() {
+  const { data } = await supabase.from('settings').select('content').eq('id', 'announcement_banner').single();
+  if (data && data.content.trim() !== "") {
+    const banner = document.getElementById('announcementBanner');
+    banner.textContent = data.content;
+    banner.style.display = 'block';
   }
 }
-createParticles();
 
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  const accent = getAccent();
+async function fetchPosts(silent = true) {
+  let query = supabase.from('posts').select('*');
+  if (selectedBlocker && selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
+  
+  const { data } = await query;
+  if (!data) return;
 
-  particles.forEach(p=>{
-    p.x += p.speedX;
-    p.y += p.speedY;
-
-    if(p.x<0) p.x=canvas.width;
-    if(p.x>canvas.width) p.x=0;
-    if(p.y<0) p.y=canvas.height;
-    if(p.y>canvas.height) p.y=0;
-
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-    ctx.fillStyle = accent;
-    ctx.globalAlpha = p.opacity;
-    ctx.fill();
-    ctx.globalAlpha = 1;
+  const grouped = [];
+  data.forEach(item => {
+    const existing = grouped.find(g => g.content === item.content && g.author === item.author);
+    if (existing) { existing.ids.push(item.id); }
+    else { grouped.push({ ...item, ids: [item.id] }); }
   });
 
-  requestAnimationFrame(animate);
+  if (currentSort === 'likes') {
+    grouped.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+  } else if (currentSort === 'links') {
+    grouped.sort((a, b) => {
+        const countA = (a.content.match(/https?:\/\//gi) || []).length;
+        const countB = (b.content.match(/https?:\/\//gi) || []).length;
+        return countB - countA;
+    });
+  } else {
+    grouped.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  }
+
+  const now = new Date();
+  document.getElementById('posts').innerHTML = grouped.map(p => {
+    const isNew = (now - new Date(p.created_at)) < 86400000;
+    const linkCount = (p.content.match(/https?:\/\//gi) || []).length;
+    return `
+      <div class="post-card">
+        <div style="display:flex; justify-content:space-between;">
+           <div class="post-author">
+             ${p.author} ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+             ${(p.likes > 5) ? '<span class="hot-badge">🔥</span>' : ''}
+           </div>
+           <div style="font-size:0.7rem; color:var(--text-muted);">${new Date(p.created_at).toLocaleDateString()}</div>
+        </div>
+        <div class="post-content">${linkify(p.content)}</div>
+        <div style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+           <button class="copy-btn" onclick="copyLinksFromPost(this, \`${p.content}\`)">Copy ${linkCount} Links</button>
+           <button class="report-btn" onclick="openReportModal('${p.ids[0]}', '${p.author}', '${p.content.replace(/'/g, "\\'")}')">Report</button>
+           ${isAdmin ? `<button class="report-btn" style="color:var(--accent); border-color:var(--accent);" onclick="openEdit('${p.ids[0]}', '${p.author}', '${p.content.replace(/'/g, "\\'")}')">Edit</button>` : ''}
+           ${isAdmin ? `<button class="report-btn" onclick="deletePost('${p.ids[0]}')">Delete</button>` : ''}
+        </div>
+        <div class="vote-container">
+            <div class="vote-btn ${localStorage.getItem(`voted_${p.ids[0]}`) === 'like' ? 'active-like' : ''}" onclick="voteProxy('${p.ids[0]}', 'like')">👍 <span>${p.likes || 0}</span></div>
+            <div class="vote-btn ${localStorage.getItem(`voted_${p.ids[0]}`) === 'dislike' ? 'active-dislike' : ''}" onclick="voteProxy('${p.ids[0]}', 'dislike')">👎 <span>${p.dislikes || 0}</span></div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
-animate();
 
-/* Rebuild particles when theme changes */
-const observer = new MutationObserver(()=>{
-  createParticles();
-});
-observer.observe(document.documentElement,{attributes:true});
+window.publishBtn.onclick = async () => {
+    const author = document.getElementById('postAuthor').value;
+    const content = document.getElementById('postText').value;
+    if (!author || !content || adminSelectedBlockers.length === 0) return showNotice("Fill all fields and select at least one blocker", "error");
+
+    const rows = adminSelectedBlockers.map(b => ({ author, content, blocker: b, likes: 0, dislikes: 0 }));
+    const { error } = await supabase.from('posts').insert(rows);
+    if (!error) {
+        showNotice("Published Successfully");
+        document.getElementById('postText').value = "";
+        fetchPosts();
+    } else showNotice("Error publishing", "error");
+};
+
+window.publishLogBtn.onclick = async () => {
+    const heading = document.getElementById('logHeading').value;
+    const body = document.getElementById('logBody').value;
+    if (!heading || !body) return showNotice("Fill all fields", "error");
+    const { error } = await supabase.from('logs').insert([{ heading, body }]);
+    if (!error) {
+        showNotice("Log Added");
+        document.getElementById('logHeading').value = "";
+        document.getElementById('logBody').value = "";
+    }
+};
+
+window.updateBannerBtn.onclick = async () => {
+    const content = document.getElementById('bannerTextInput').value;
+    const { error } = await supabase.from('settings').update({ content }).eq('id', 'announcement_banner');
+    if (!error) {
+        showNotice("Banner Updated");
+        syncBanner();
+    }
+};
+
+window.showLogs = async () => {
+    document.getElementById('logOverlay').style.display = 'block';
+    const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
+    document.getElementById('logList').innerHTML = data.map(l => `
+        <div style="margin-bottom:25px; border-bottom:1px solid var(--border); padding-bottom:15px;">
+            <div style="color:var(--accent); font-weight:800; margin-bottom:5px;">${l.heading}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">${new Date(l.created_at).toLocaleString()}</div>
+            <div style="font-size:0.95rem; white-space:pre-wrap;">${l.body}</div>
+        </div>
+    `).join('');
+};
+
+window.openEdit = (id, author, content) => {
+    document.getElementById('editAuthor').value = author;
+    document.getElementById('editContent').value = content;
+    document.getElementById('editPanel').classList.add('open');
+    document.getElementById('saveEditBtn').onclick = async () => {
+        const { error } = await supabase.from('posts').update({ 
+            author: document.getElementById('editAuthor').value, 
+            content: document.getElementById('editContent').value 
+        }).eq('id', id);
+        if(!error) {
+            showNotice("Updated!");
+            closeEditPanel();
+            fetchPosts();
+        }
+    };
+};
+
+window.deletePost = async (id) => {
+    if(!confirm("Delete this proxy?")) return;
+    const { error } = await supabase.from('posts').delete().eq('id', id);
+    if(!error) {
+        showNotice("Deleted");
+        fetchPosts();
+    }
+};
+
+const grid = document.getElementById('gridContainer');
+grid.innerHTML = blockers.map(b => `<div class="blocker-card" onclick="selectBlocker('${b}')">${b.replace(/_/g, ' ')}</div>`).join('');
+
+if (selectedBlocker) selectBlocker(selectedBlocker);
 </script>
-
 </body>
 </html>
