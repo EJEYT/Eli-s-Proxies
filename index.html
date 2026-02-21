@@ -30,7 +30,6 @@
     [data-theme="emerald"] { --bg-dark: #06120e; --bg-sidebar: #0a1a15; --bg-card: #122a22; --text-main: #ecfdf5; --text-muted: #6ee7b7; --accent: #10b981; --border: #065f46; }
     [data-theme="rose"] { --bg-dark: #1a1012; --bg-sidebar: #24181a; --bg-card: #3d2b2e; --text-main: #fff1f2; --text-muted: #fda4af; --accent: #f43f5e; --border: #9f1239; }
     
-    /* ADDED THEMES */
     [data-theme="cyberpunk"] { --bg-dark: #000b1e; --bg-sidebar: #00162d; --bg-card: #002244; --text-main: #00ffcc; --text-muted: #fdee00; --accent: #ff007f; --border: #00ffcc; }
     [data-theme="forest"] { --bg-dark: #0b120b; --bg-sidebar: #131d13; --bg-card: #1b2b1b; --text-main: #d4e4d4; --text-muted: #7da17d; --accent: #4caf50; --border: #2e442e; }
     [data-theme="lava"] { --bg-dark: #0d0000; --bg-sidebar: #1a0000; --bg-card: #2d0000; --text-main: #ffd1d1; --text-muted: #ff6b6b; --accent: #ff4500; --border: #4d0000; }
@@ -40,14 +39,6 @@
     [data-theme="ghost"] { --bg-dark: #f0f2f5; --bg-sidebar: #ffffff; --bg-card: #ffffff; --text-main: #2c3e50; --text-muted: #95a5a6; --accent: #34495e; --border: #dcdde1; }
     [data-theme="gold"] { --bg-dark: #0a0a0a; --bg-sidebar: #141414; --bg-card: #1a1a1a; --text-main: #ffffff; --text-muted: #888888; --accent: #d4af37; --border: #333333; }
     
-    /* PREVIOUS THEMES */
-    [data-theme="ocean"] { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: #334155; --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #38bdf8; --border: #475569; }
-    [data-theme="midnight"] { --bg-dark: #020617; --bg-sidebar: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-muted: #64748b; --accent: #6366f1; --border: #333335; }
-    [data-theme="coffee"] { --bg-dark: #1c1917; --bg-sidebar: #292524; --bg-card: #44403c; --text-main: #fafaf9; --text-muted: #a8a29e; --accent: #d97706; --border: #57534e; }
-    [data-theme="nebula"] { --bg-dark: #09090b; --bg-sidebar: #18181b; --bg-card: #27272a; --text-main: #fafafa; --text-muted: #a1a1aa; --accent: #d946ef; --border: #3f3f46; }
-    [data-theme="amber"] { --bg-dark: #0c0a09; --bg-sidebar: #1c1917; --bg-card: #292524; --text-main: #f5f5f4; --text-muted: #a8a29e; --accent: #f59e0b; --border: #44403c; }
-    [data-theme="nord"] { --bg-dark: #2e3440; --bg-sidebar: #3b4252; --bg-card: #434c5e; --text-main: #eceff4; --text-muted: #d8dee9; --accent: #88c0d0; --border: #4c566a; }
-
     [data-theme="liquid"] { 
       --bg-dark: linear-gradient(-45deg, #0f172a, #1e293b, #082f49, #0f172a); 
       --bg-animate: gradientMove 15s ease infinite;
@@ -65,21 +56,21 @@
 
     body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: var(--bg-dark); background-size: 400% 400%; animation: var(--bg-animate); color: var(--text-main); height: 100vh; overflow: hidden; position: relative; }
 
-    /* Particles Canvas */
-    #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.6; }
+    /* Particles Background */
+    #particleCanvas { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; opacity: 0.5; }
 
-    #announcementBanner { background: var(--accent); color: #000; padding: 8px; text-align: center; font-weight: bold; font-size: 0.85rem; display: none; z-index: 100; }
+    #announcementBanner { background: var(--accent); color: #000; padding: 8px; text-align: center; font-weight: bold; font-size: 0.85rem; display: none; z-index: 100; position: relative; }
     a { color: var(--accent) !important; text-decoration: none; }
 
     #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold; z-index: 60000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     #toast.show { top: 20px; }
 
-    #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: transparent; overflow-y: auto; padding: 20px; position: relative; z-index: 1; }
+    #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: transparent; overflow-y: auto; padding: 20px; position: relative; z-index:1; }
     .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; margin-top: 20px; }
     .blocker-card { background: var(--bg-card); border: 1px solid var(--border); padding: 20px; border-radius: 18px; cursor: pointer; transition: 0.3s; font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px; backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     .blocker-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); border-color: var(--accent); }
     
-    .app-container { display: none; width: 100%; height: 100%; flex-direction: column; z-index: 1; position: relative; }
+    .app-container { display: none; width: 100%; height: 100%; flex-direction: column; position: relative; z-index:1; }
     .header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; background: var(--bg-sidebar); z-index: 10; backdrop-filter: blur(var(--glass-blur)); position: relative; gap: 10px; }
     .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
     .header-bottom { display: flex; gap: 10px; width: 100%; align-items: center; }
@@ -114,9 +105,10 @@
     .theme-opt { padding: 8px 12px; font-size: 0.8rem; cursor: pointer; border-radius: 6px; }
     .theme-opt:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
 
-    /* Draggable Window Support */
-    .panel { display: none; position: fixed; bottom: 30px; right: 30px; width: 420px; max-width: calc(100% - 60px); background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 24px; z-index: 15000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(40px); cursor: default; }
-    .drag-header { cursor: move; padding: 10px; margin: -25px -25px 15px -25px; background: rgba(255,255,255,0.05); border-radius: 24px 24px 0 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; user-select: none; }
+    /* Draggable Support */
+    .drag-handle { cursor: move; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 20px 20px 0 0; border-bottom: 1px solid var(--border); margin: -25px -25px 15px -25px; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+
+    .panel { display: none; position: fixed; bottom: 30px; right: 30px; width: 420px; max-width: calc(100% - 60px); background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 24px; z-index: 15000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(40px); }
     
     #editPanel { position: fixed; left: -450px; top: 0; width: 420px; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid var(--border); z-index: 30000; padding: 40px 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 20px 0 60px rgba(0,0,0,0.6); backdrop-filter: blur(40px); }
     #editPanel.open { left: 0; }
@@ -136,10 +128,15 @@
 
     .btn-outline { background:none; border:1px solid var(--border); color:var(--text-main); border-radius:25px; padding:8px 16px; cursor:pointer; font-weight:bold; font-size: 0.85rem; }
     .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+    .copy-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--accent); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: 0.2s; }
+    .copy-btn.copied { background: var(--green); color: #111; border-color: var(--green); }
+    .report-btn { color: var(--red); border: 1px solid var(--red); background: transparent; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; margin-left: 8px; }
 
     .vote-container { display: flex; gap: 12px; margin-top: 15px; align-items: center; }
     .vote-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; user-select: none; }
     .vote-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+    .vote-btn.active-like { border-color: var(--green); color: var(--green); background: rgba(166, 227, 161, 0.1); }
+    .vote-btn.active-dislike { border-color: var(--red); color: var(--red); background: rgba(243, 139, 168, 0.1); }
 
     .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:50000; backdrop-filter: blur(8px); align-items:center; justify-content:center; }
     .modal-content { background: var(--bg-card); padding: 30px; border-radius: 24px; width: 90%; max-width: 400px; border: 1px solid var(--border); position: relative; }
@@ -152,8 +149,8 @@
 <div id="announcementBanner"></div>
 
 <div id="reportModal" class="modal-overlay">
-  <div class="modal-content" id="reportModalContent">
-    <div class="drag-header" data-target="reportModalContent">
+  <div class="modal-content" id="reportWin">
+    <div class="drag-handle" data-target="reportWin">
       <h3 style="margin:0; color:var(--red); font-size: 1rem;">Report Proxy</h3>
     </div>
     <textarea id="reportInput" class="admin-input" rows="4" placeholder="Why are you reporting this?"></textarea>
@@ -165,8 +162,8 @@
 </div>
 
 <div id="requestModal" class="modal-overlay">
-  <div class="modal-content" id="requestModalContent">
-    <div class="drag-header" data-target="requestModalContent">
+  <div class="modal-content" id="requestWin">
+    <div class="drag-handle" data-target="requestWin">
       <h3 style="margin:0; color:var(--accent); font-size: 1rem;">Request a Proxy</h3>
     </div>
     <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Need a link for a specific blocker? Let us know!</p>
@@ -254,9 +251,9 @@
 </div>
 
 <div id="adminPanel" class="panel">
-  <div class="drag-header" data-target="adminPanel">
-    <h3 style="margin:0; color:var(--accent); font-size: 1rem; font-weight: 800;">Admin Dashboard</h3>
-    <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.4rem;">&times;</button>
+  <div class="drag-handle" data-target="adminPanel">
+    <h3 style="margin:0; color:var(--accent); font-size: 1.2rem; font-weight: 800;">Admin Dashboard</h3>
+    <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.8rem;">&times;</button>
   </div>
   <div id="loginSection">
     <input type="password" id="adminPassword" class="admin-input" placeholder="Password" onkeydown="if(event.key === 'Enter') loginAction()">
@@ -286,134 +283,160 @@ let selectedBlocker = localStorage.getItem('eli_last_blocker') || null;
 let isAdmin = false; 
 let currentSort = 'new'; 
 
+const REPORT_WEBHOOK = 'https://discord.com/api/webhooks/1474238339811905662/pPriqbRbPjky3JzVqKl8AXDHZCMrS0uZmOMlxrmy-q0-mfLKJ-eABDhYc8Fi9jpGpL-r';
+const REQUEST_WEBHOOK = 'https://discord.com/api/webhooks/1474498106195181811/Gdd0aDSE8htLTf9cHAd6eEUR30fgnm3YI-rUgdRODWZXhdz_r-vLaMO75mH2xRre-OhZ';
+
 // --- DRAGGABLE ENGINE ---
-function initDraggable() {
-  const handles = document.querySelectorAll('.drag-header');
+function makeDraggable() {
+  const handles = document.querySelectorAll('.drag-handle');
   handles.forEach(handle => {
     const targetId = handle.getAttribute('data-target');
     const target = document.getElementById(targetId);
     let isDragging = false;
-    let offsetX, offsetY;
+    let startX, startY, initialX, initialY;
 
     handle.addEventListener('mousedown', (e) => {
       isDragging = true;
-      offsetX = e.clientX - target.offsetLeft;
-      offsetY = e.clientY - target.offsetTop;
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = target.getBoundingClientRect();
+      initialX = rect.left;
+      initialY = rect.top;
       target.style.zIndex = 100000;
     });
 
     document.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
-      target.style.left = `${e.clientX - offsetX}px`;
-      target.style.top = `${e.clientY - offsetY}px`;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      target.style.left = `${initialX + dx}px`;
+      target.style.top = `${initialY + dy}px`;
       target.style.bottom = 'auto';
       target.style.right = 'auto';
     });
 
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-    });
+    document.addEventListener('mouseup', () => { isDragging = false; });
   });
 }
-initDraggable();
+makeDraggable();
 
-// --- PARTICLE BACKGROUND ---
+// --- PARTICLE ENGINE ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize); resize();
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-class Particle {
-  constructor() {
-    this.init();
-  }
+class P {
+  constructor() { this.init(); }
   init() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.8;
+    this.vy = (Math.random() - 0.5) * 0.8;
     this.size = Math.random() * 2 + 1;
-    this.speedX = Math.random() * 1 - 0.5;
-    this.speedY = Math.random() * 1 - 0.5;
-    this.opacity = Math.random() * 0.5 + 0.2;
   }
   update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x > canvas.width) this.x = 0;
-    if (this.x < 0) this.x = canvas.width;
-    if (this.y > canvas.height) this.y = 0;
-    if (this.y < 0) this.y = canvas.height;
+    this.x += this.vx; this.y += this.vy;
+    if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
   }
   draw() {
-    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-    ctx.fillStyle = accent;
-    ctx.globalAlpha = this.opacity;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+    ctx.globalAlpha = 0.4;
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
   }
 }
-
-for (let i = 0; i < 60; i++) {
-  particles.push(new Particle());
+for(let i=0; i<60; i++) particles.push(new P());
+function loop() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(loop);
 }
+loop();
 
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => {
-    p.update();
-    p.draw();
-  });
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-// --- THEMES ---
+// --- LOGIC RESTORATION ---
 window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eli_theme', t); };
 setTheme(localStorage.getItem('eli_theme') || 'catppuccin');
 
-// --- UI ---
-window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
-window.toggleThemeList = () => {
-    const list = document.getElementById('themesSubList');
-    const arrow = document.getElementById('themeArrow');
-    list.classList.toggle('open');
-    arrow.textContent = list.classList.contains('open') ? '▲' : '▼';
-};
-window.closeEditPanel = () => document.getElementById('editPanel').classList.remove('open');
-window.onclick = (e) => { 
-    if (!e.target.closest('.settings-dropdown')) {
-        document.getElementById('settingsMenu').classList.remove('show');
-        const themesList = document.getElementById('themesSubList');
-        if (themesList) themesList.classList.remove('open');
-    }
-};
-
-window.setSort = (type) => {
-    currentSort = type;
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-    document.getElementById(`sort-${type}`).classList.add('active');
-    fetchPosts(true);
-};
-
-// ... Rest of your original Supabase and UI functions (fetchPosts, selectBlocker, etc.) go here as per your provided code ...
-
-function showNotice(msg, type='success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.style.background = type === 'success' ? '#a6e3a1' : '#f38ba8';
-  t.style.color = '#111';
-  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
+function linkify(text) {
+  const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%?=~_|])/ig;
+  return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
-// Ensure the rest of the original script remains intact
+window.copyLinksFromPost = (btn, text) => {
+    const urlPattern = /(https?:\/\/[^\s]+)/gi;
+    const matches = text.match(urlPattern);
+    if (matches) {
+        navigator.clipboard.writeText(matches.join('\n')).then(() => {
+            const old = btn.textContent;
+            btn.textContent = "Copied!"; btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = old; btn.classList.remove('copied'); }, 2000);
+            showNotice(`Copied ${matches.length} link(s)`);
+        });
+    } else showNotice("No links found", "error");
+}
+
+window.voteProxy = async (id, type) => {
+    const storageKey = `voted_${id}`;
+    if(localStorage.getItem(storageKey)) return showNotice("Already voted!", "error");
+    const col = type === 'like' ? 'likes' : 'dislikes';
+    const { data: cur } = await supabase.from('posts').select(col).eq('id', id).single();
+    const { error } = await supabase.from('posts').update({ [col]: (cur[col] || 0) + 1 }).eq('id', id);
+    if(!error) { localStorage.setItem(storageKey, type); showNotice(`Voted ${type}!`); fetchPosts(true); }
+};
+
+window.openReportModal = (id, author, content) => {
+    document.getElementById('reportModal').style.display='flex';
+    document.getElementById('sendReportBtn').onclick = async () => {
+        const msg = document.getElementById('reportInput').value;
+        if(!msg) return showNotice("Reason required", "error");
+        const payload = { embeds: [{ title: "🚨 Report", color: 15548997, fields: [{ name: "Reason", value: msg }, { name: "Author", value: author }, { name: "Content", value: content }] }] };
+        await fetch(REPORT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        document.getElementById('reportModal').style.display='none';
+        showNotice("Report Sent");
+    };
+};
+
+window.openRequestModal = () => {
+    document.getElementById('requestModal').style.display='flex';
+    document.getElementById('sendRequestBtn').onclick = async () => {
+        const msg = document.getElementById('requestInput').value;
+        const payload = { embeds: [{ title: "📬 Request", color: 8991994, description: msg }] };
+        await fetch(REQUEST_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        document.getElementById('requestModal').style.display='none';
+        showNotice("Request Sent");
+    };
+};
+
+// --- CORE FEED ---
+async function fetchPosts(silent = true) {
+  let query = supabase.from('posts').select('*');
+  if (selectedBlocker && selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
+  const { data } = await query;
+  if (!data) return;
+
+  const now = new Date();
+  document.getElementById('posts').innerHTML = data.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(p => {
+    const isNew = (now - new Date(p.created_at)) < (24*3600*1000);
+    const vote = localStorage.getItem(`voted_${p.id}`);
+    return `
+      <div class="post-card">
+        <div class="post-author">${p.author} ${isNew ? '<span class="new-badge">NEW</span>':''}</div>
+        <div class="post-content">${linkify(p.content)}</div>
+        <div class="vote-container">
+           <button class="vote-btn ${vote==='like'?'active-like':''}" onclick="voteProxy('${p.id}','like')">👍 ${p.likes||0}</button>
+           <button class="vote-btn ${vote==='dislike'?'active-dislike':''}" onclick="voteProxy('${p.id}','dislike')">👎 ${p.dislikes||0}</button>
+           <button class="copy-btn" onclick="copyLinksFromPost(this, \`${p.content}\`)">🔗 Copy Links</button>
+           <button class="report-btn" onclick="openReportModal('${p.id}', '${p.author}', \`${p.content}\`)">🚩 Report</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 window.selectBlocker = (name) => {
-  selectedBlocker = name;
-  localStorage.setItem('eli_last_blocker', name);
+  selectedBlocker = name; localStorage.setItem('eli_last_blocker', name);
   document.getElementById('selectionScreen').style.display = 'none';
   document.getElementById('appContainer').style.display = 'flex';
   document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
@@ -426,12 +449,15 @@ window.goBackToSelection = () => {
     document.getElementById('selectionScreen').style.display = 'flex';
 };
 
-window.refreshNow = () => {
-    document.getElementById('settingsMenu').classList.remove('show');
-    fetchPosts(false);
+window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
+window.toggleThemeList = () => document.getElementById('themesSubList').classList.toggle('open');
+function showNotice(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.background = type === 'success' ? '#a6e3a1' : '#f38ba8';
+  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// Initial Grid Load
+// Initial Build
 const grid = document.getElementById('gridContainer');
 blockers.forEach(b => {
   const card = document.createElement('div');
@@ -441,23 +467,7 @@ blockers.forEach(b => {
   grid.appendChild(card);
 });
 
-async function fetchPosts() {
-  let query = supabase.from('posts').select('*');
-  if (selectedBlocker && selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
-  const { data } = await query;
-  if (!data) return;
-  
-  // Logic to render posts... (Same as your original code)
-  document.getElementById('posts').innerHTML = data.map(p => `
-    <div class="post-card">
-      <div class="post-author">${p.author}</div>
-      <div class="post-content">${p.content}</div>
-    </div>
-  `).join('');
-}
-
 if (selectedBlocker) selectBlocker(selectedBlocker);
-
 </script>
 </body>
 </html>
