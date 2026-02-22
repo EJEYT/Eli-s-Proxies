@@ -87,7 +87,6 @@
     .particle-layer span:nth-child(3n+2) { background: var(--text-muted); }
     .particle-layer span:nth-child(3n+3) { background: var(--border); }
 
-    /* Give each particle its own left + top so they cover the whole screen */
     .particle-layer span:nth-child(1)  { left: 5%;  top: 5%;  animation-duration: 18s; animation-delay: -5s; }
     .particle-layer span:nth-child(2)  { left: 15%; top: 15%; animation-duration: 22s; animation-delay: -12s; }
     .particle-layer span:nth-child(3)  { left: 25%; top: 25%; animation-duration: 19s; animation-delay: -8s; }
@@ -132,7 +131,6 @@
     .particle-layer span:nth-child(39) { left: 27%; top: 70%; animation-duration: 22s; animation-delay: -5s; }
     .particle-layer span:nth-child(40) { left: 57%; top: 20%; animation-duration: 19s; animation-delay: -11s; }
 
-    /* Wander around their own origin */
     @keyframes floatParticle {
       0%   { transform: translate(0, 0); }
       20%  { transform: translate(20px, -30px); }
@@ -144,6 +142,11 @@
 
     #announcementBanner { background: var(--accent); color: #000; padding: 8px; text-align: center; font-weight: bold; font-size: 0.85rem; display: none; z-index: 100; }
     a { color: var(--accent) !important; text-decoration: none; }
+
+    /* underline only links inside posts */
+    .post-content a {
+      text-decoration: underline;
+    }
 
     #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold; z-index: 60000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     #toast.show { top: 20px; }
@@ -190,6 +193,15 @@
 
     .panel { display: none; position: fixed; bottom: 30px; right: 30px; width: 420px; max-width: calc(100% - 60px); background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 24px; z-index: 15000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(40px); }
     
+    /* Draggable admin panel tweaks */
+    #adminPanel {
+      cursor: default;
+    }
+    #adminPanelHeader {
+      cursor: move;
+      user-select: none;
+    }
+
     #editPanel { position: fixed; left: -450px; top: 0; width: 420px; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid var(--border); z-index: 30000; padding: 40px 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 20px 0 60px rgba(0,0,0,0.6); backdrop-filter: blur(40px); }
     #editPanel.open { left: 0; }
 
@@ -220,9 +232,19 @@
 
     .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:50000; backdrop-filter: blur(8px); align-items:center; justify-content:center; }
     .modal-content { background: var(--bg-card); padding: 30px; border-radius: 24px; width: 90%; max-width: 400px; border: 1px solid var(--border); }
+
+    /* Confetti canvas on top */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 70000;
+    }
   </style>
 </head>
 <body>
+
+<canvas id="confettiCanvas"></canvas>
 
 <div class="particle-layer">
   <span></span><span></span><span></span><span></span><span></span>
@@ -273,6 +295,14 @@
     <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Content</label>
     <textarea id="editContent" class="admin-input" rows="6"></textarea>
     <button id="saveEditBtn" class="admin-primary-btn">Apply Changes</button>
+  </div>
+
+  <div id="editLogFields" style="display:none;">
+    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Title</label>
+    <input type="text" id="editLogTitle" class="admin-input">
+    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Body</label>
+    <textarea id="editLogBody" class="admin-input" rows="6"></textarea>
+    <button id="saveLogEditBtn" class="admin-primary-btn">Apply Changes</button>
   </div>
 </div>
 
@@ -348,7 +378,7 @@
 </div>
 
 <div id="adminPanel" class="panel">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+  <div id="adminPanelHeader" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
     <h3 style="margin:0; color:var(--accent); font-size: 1.2rem; font-weight: 800;">Admin Dashboard</h3>
     <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.8rem;">&times;</button>
   </div>
@@ -380,6 +410,18 @@
   </div>
 </div>
 
+<!-- In-site confirm modal -->
+<div id="confirmModal" class="modal-overlay">
+  <div class="modal-content" style="max-width:380px;">
+    <h3 id="confirmTitle" style="margin-top:0; color:var(--accent);">Confirm</h3>
+    <p id="confirmMessage" style="font-size:0.9rem; color:var(--text-muted); margin-bottom:20px;"></p>
+    <div style="display:flex; gap:10px; justify-content:flex-end;">
+      <button id="confirmCancelBtn" class="admin-primary-btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main); width:auto; padding-inline:18px;">Cancel</button>
+      <button id="confirmOkBtn" class="admin-primary-btn" style="background:var(--red); color:#fff; width:auto; padding-inline:18px;">Delete</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_publishable_u2yOKUXvz3qjRMOZt55-3Q_FGBN6b-F');
@@ -387,16 +429,36 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_last_blocker') || null;
 let isAdmin = false; 
-let currentSort = 'new'; // 'new', 'likes', 'links'
+let currentSort = 'new';
 
 const REPORT_WEBHOOK = 'https://discord.com/api/webhooks/1474238339811905662/pPriqbRbPjky3JzVqKl8AXDHZCMrS0uZmOMlxrmy-q0-mfLKJ-eABDhYc8Fi9jpGpL-r';
 const REQUEST_WEBHOOK = 'https://discord.com/api/webhooks/1474498106195181811/Gdd0aDSE8htLTf9cHAd6eEUR30fgnm3YI-rUgdRODWZXhdz_r-vLaMO75mH2xRre-OhZ';
 
-// --- THEMES ---
+let editingLogId = null;
+let confirmAction = null;
+
+// Confirm modal logic
+function openConfirm(title, message, onConfirm) {
+  confirmAction = onConfirm;
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMessage').textContent = message;
+  document.getElementById('confirmModal').style.display = 'flex';
+}
+function closeConfirm() {
+  document.getElementById('confirmModal').style.display = 'none';
+  confirmAction = null;
+}
+document.getElementById('confirmCancelBtn').onclick = closeConfirm;
+document.getElementById('confirmOkBtn').onclick = async () => {
+  if (confirmAction) await confirmAction();
+  closeConfirm();
+};
+
+// THEME
 window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eli_theme', t); };
 setTheme(localStorage.getItem('eli_theme') || 'catppuccin');
 
-// --- UI ---
+// SETTINGS UI
 window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
 window.toggleThemeList = () => {
     const list = document.getElementById('themesSubList');
@@ -404,7 +466,10 @@ window.toggleThemeList = () => {
     list.classList.toggle('open');
     arrow.textContent = list.classList.contains('open') ? '▲' : '▼';
 };
-window.closeEditPanel = () => document.getElementById('editPanel').classList.remove('open');
+window.closeEditPanel = () => {
+  document.getElementById('editPanel').classList.remove('open');
+  editingLogId = null;
+};
 window.onclick = (e) => { 
     if (!e.target.closest('.settings-dropdown')) {
         document.getElementById('settingsMenu').classList.remove('show');
@@ -412,6 +477,7 @@ window.onclick = (e) => {
     }
 };
 
+// SORTING
 window.setSort = (type) => {
     currentSort = type;
     document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
@@ -419,6 +485,7 @@ window.setSort = (type) => {
     fetchPosts(true);
 };
 
+// TOAST
 function showNotice(msg, type='success') {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.background = type === 'success' ? '#a6e3a1' : '#f38ba8';
@@ -426,13 +493,72 @@ function showNotice(msg, type='success') {
   t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// LINKIFY
 function linkify(text) {
   const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%?=~_|])/ig;
   return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
-// --- FEATURES ---
+// CONFETTI
+const confettiCanvas = document.getElementById('confettiCanvas');
+const ctx = confettiCanvas.getContext('2d');
+let confettiPieces = [];
+function resizeConfetti() {
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+resizeConfetti();
+window.addEventListener('resize', resizeConfetti);
 
+function spawnConfetti() {
+  const colors = ['#f38ba8', '#a6e3a1', '#89b4fa', '#f9e2af', '#b4befe'];
+  confettiPieces = [];
+  for (let i = 0; i < 150; i++) {
+    confettiPieces.push({
+      x: Math.random() * confettiCanvas.width,
+      y: Math.random() * -confettiCanvas.height,
+      size: 4 + Math.random() * 4,
+      speedY: 2 + Math.random() * 3,
+      speedX: -2 + Math.random() * 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: -0.1 + Math.random() * 0.2
+    });
+  }
+  animateConfetti();
+}
+
+let confettiAnimating = false;
+function animateConfetti() {
+  if (confettiAnimating) return;
+  confettiAnimating = true;
+  let frames = 0;
+  function frame() {
+    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    confettiPieces.forEach(p => {
+      p.y += p.speedY;
+      p.x += p.speedX;
+      p.rotation += p.rotationSpeed;
+      if (p.y > confettiCanvas.height) p.y = -10;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+      ctx.restore();
+    });
+    frames++;
+    if (frames < 120) {
+      requestAnimationFrame(frame);
+    } else {
+      confettiAnimating = false;
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+// VOTING WITH CONFETTI
 window.voteProxy = async (id, type) => {
     const storageKey = `voted_${id}`;
     if(localStorage.getItem(storageKey)) {
@@ -441,14 +567,14 @@ window.voteProxy = async (id, type) => {
     }
 
     const column = type === 'like' ? 'likes' : 'dislikes';
-    const { data: current, error: getErr } = await supabase.from('posts').select(column).eq('id', id).single();
-    if(getErr) return showNotice("Vote failed", "error");
+    const { data: current } = await supabase.from('posts').select(column).eq('id', id).single();
 
-    const newVal = (current[column] || 0) + 1;
+    const newVal = (current?.[column] || 0) + 1;
     const { error: setErr } = await supabase.from('posts').update({ [column]: newVal }).eq('id', id);
 
     if(!setErr) {
         localStorage.setItem(storageKey, type);
+        if (type === 'like') spawnConfetti();
         showNotice(`Voted ${type}!`);
         fetchPosts(true); 
     } else showNotice("Update Denied", "error");
@@ -477,14 +603,12 @@ window.openRequestModal = () => {
         const msg = document.getElementById('requestInput').value;
         if(!msg) return showNotice("Please enter a request", "error");
         const payload = { content: "<@949801961962741770>", embeds: [{ title: "📬 New Proxy Request", color: 8991994, description: msg, timestamp: new Date().toISOString() }] };
-        try {
-            const resp = await fetch(REQUEST_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            if (resp.ok) {
-                document.getElementById('requestModal').style.display = 'none';
-                document.getElementById('requestInput').value = '';
-                showNotice("Request sent!");
-            } else throw new Error();
-        } catch (e) { showNotice("Error sending request", "error"); }
+        const resp = await fetch(REQUEST_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        if (resp.ok) {
+            document.getElementById('requestModal').style.display = 'none';
+            document.getElementById('requestInput').value = '';
+            showNotice("Request sent!");
+        } else showNotice("Error sending request", "error");
     };
 }
 
@@ -494,18 +618,16 @@ window.openReportModal = (postId, author, content) => {
         const msg = document.getElementById('reportInput').value;
         if(!msg) return showNotice("Enter a reason", "error");
         const payload = { content: "<@949801961962741770>", embeds: [{ title: "🚨 New Proxy Report", color: 15548997, fields: [{ name: "Reason", value: msg }, { name: "Proxy Author", value: author, inline: true }, { name: "Post ID", value: postId, inline: true }, { name: "Content", value: content }], timestamp: new Date().toISOString() }] };
-        try {
-            const resp = await fetch(REPORT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            if (resp.ok) {
-                document.getElementById('reportModal').style.display = 'none';
-                document.getElementById('reportInput').value = '';
-                showNotice("Report Sent to Discord");
-            } else throw new Error();
-        } catch (e) { showNotice("Discord Error", "error"); }
+        const resp = await fetch(REPORT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        if (resp.ok) {
+            document.getElementById('reportModal').style.display = 'none';
+            document.getElementById('reportInput').value = '';
+            showNotice("Report Sent to Discord");
+        } else showNotice("Discord Error", "error");
     };
 }
 
-// --- CORE ---
+// CORE
 window.selectBlocker = (name) => {
   selectedBlocker = name;
   localStorage.setItem('eli_last_blocker', name);
@@ -610,6 +732,7 @@ async function fetchPosts(silent = true) {
 window.openEditProxy = (ids, author, content) => {
     document.getElementById('editTitle').textContent = "Edit Proxy";
     document.getElementById('editPostFields').style.display = 'block';
+    document.getElementById('editLogFields').style.display = 'none';
     document.getElementById('editAuthor').value = author;
     document.getElementById('editContent').value = content;
     document.getElementById('editPanel').classList.add('open');
@@ -620,9 +743,17 @@ window.openEditProxy = (ids, author, content) => {
 };
 
 window.deleteProxy = async (ids) => {
-    if(!confirm("Delete permanently?")) return;
-    for(let id of ids.split(',')) await supabase.from('posts').delete().eq('id', id);
-    showNotice("Deleted"); fetchPosts();
+  openConfirm(
+    "Delete Proxy",
+    "Are you sure you want to permanently delete this proxy (and all duplicates)?",
+    async () => {
+      for (let id of ids.split(',')) {
+        await supabase.from('posts').delete().eq('id', id);
+      }
+      showNotice("Deleted");
+      fetchPosts();
+    }
+  );
 };
 
 window.loginAction = () => {
@@ -634,6 +765,7 @@ window.loginAction = () => {
   } else showNotice("Wrong Pass", "error");
 };
 
+// Blocker cards and admin pills
 blockers.forEach(b => {
   const card = document.createElement('div');
   card.className = 'blocker-card'; card.textContent = b.replace(/_/g, ' ');
@@ -648,6 +780,7 @@ blockers.forEach(b => {
 
 if (selectedBlocker) selectBlocker(selectedBlocker);
 
+// LOGS with admin edit/delete
 window.showLogs = async () => {
   document.getElementById('logOverlay').style.display = 'block';
   const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
@@ -655,11 +788,50 @@ window.showLogs = async () => {
     <div style="border-bottom:1px solid var(--border); padding:20px 0;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <strong style="color:var(--accent); font-size:1.1rem;">${l.heading}</strong>
+        ${isAdmin ? `
+        <div>
+          <button class="btn-outline" style="padding:4px 10px; font-size:0.7rem; margin-right:5px;" onclick="window.openEditLog('${l.id}', \`${l.heading}\`, \`${l.body}\`)">Edit</button>
+          <button class="btn-outline" style="padding:4px 10px; font-size:0.7rem; color:var(--red); border-color:var(--red);" onclick="window.deleteLog('${l.id}')">Delete</button>
+        </div>` : ''}
       </div>
       <p style="font-size:0.95rem; margin-top:10px;">${linkify(l.body)}</p>
     </div>`).join('');
 };
 
+window.openEditLog = (id, heading, body) => {
+  editingLogId = id;
+  document.getElementById('editTitle').textContent = "Edit Log";
+  document.getElementById('editPostFields').style.display = 'none';
+  document.getElementById('editLogFields').style.display = 'block';
+  document.getElementById('editLogTitle').value = heading;
+  document.getElementById('editLogBody').value = body;
+  document.getElementById('editPanel').classList.add('open');
+};
+
+document.getElementById('saveLogEditBtn').onclick = async () => {
+  if (!editingLogId) return;
+  await supabase.from('logs').update({
+    heading: document.getElementById('editLogTitle').value,
+    body: document.getElementById('editLogBody').value
+  }).eq('id', editingLogId);
+  showNotice("Log Updated!");
+  closeEditPanel();
+  showLogs();
+};
+
+window.deleteLog = async (id) => {
+  openConfirm(
+    "Delete Log",
+    "Are you sure you want to permanently delete this log entry?",
+    async () => {
+      await supabase.from('logs').delete().eq('id', id);
+      showNotice("Log Deleted");
+      showLogs();
+    }
+  );
+};
+
+// Tab switching
 window.switchTab = (t) => {
   ['panePost', 'paneLog', 'paneBanner'].forEach(p => document.getElementById(p).style.display = 'none');
   ['tabPost', 'tabLog', 'tabBanner'].forEach(b => document.getElementById(b).classList.remove('active'));
@@ -667,6 +839,7 @@ window.switchTab = (t) => {
   document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.add('active');
 };
 
+// Admin actions
 document.getElementById('publishBtn').onclick = async () => {
     const author = document.getElementById('postAuthor').value;
     const content = document.getElementById('postText').value;
@@ -698,6 +871,41 @@ document.getElementById('searchInput').oninput = (e) => {
         c.style.display = text.includes(term) ? 'block' : 'none';
     });
 };
+
+// Draggable admin panel
+(function makeAdminPanelDraggable() {
+  const panel = document.getElementById('adminPanel');
+  const header = document.getElementById('adminPanelHeader');
+  let isDown = false, offsetX = 0, offsetY = 0;
+
+  header.addEventListener('mousedown', (e) => {
+    isDown = true;
+    const rect = panel.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    panel.style.position = 'fixed';
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    let x = e.clientX - offsetX;
+    let y = e.clientY - offsetY;
+    const maxX = window.innerWidth - panel.offsetWidth;
+    const maxY = window.innerHeight - panel.offsetHeight;
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x > maxX) x = maxX;
+    if (y > maxY) y = maxY;
+    panel.style.left = x + 'px';
+    panel.style.top = y + 'px';
+    panel.style.bottom = 'auto';
+    panel.style.right = 'auto';
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDown = false;
+  });
+})();
 </script>
 </body>
 </html>
