@@ -30,7 +30,6 @@
     [data-theme="emerald"] { --bg-dark: #06120e; --bg-sidebar: #0a1a15; --bg-card: #122a22; --text-main: #ecfdf5; --text-muted: #6ee7b7; --accent: #10b981; --border: #065f46; }
     [data-theme="rose"] { --bg-dark: #1a1012; --bg-sidebar: #24181a; --bg-card: #3d2b2e; --text-main: #fff1f2; --text-muted: #fda4af; --accent: #f43f5e; --border: #9f1239; }
     
-    /* ADDED THEMES */
     [data-theme="cyberpunk"] { --bg-dark: #000b1e; --bg-sidebar: #00162d; --bg-card: #002244; --text-main: #00ffcc; --text-muted: #fdee00; --accent: #ff007f; --border: #00ffcc; }
     [data-theme="forest"] { --bg-dark: #0b120b; --bg-sidebar: #131d13; --bg-card: #1b2b1b; --text-main: #d4e4d4; --text-muted: #7da17d; --accent: #4caf50; --border: #2e442e; }
     [data-theme="lava"] { --bg-dark: #0d0000; --bg-sidebar: #1a0000; --bg-card: #2d0000; --text-main: #ffd1d1; --text-muted: #ff6b6b; --accent: #ff4500; --border: #4d0000; }
@@ -40,7 +39,6 @@
     [data-theme="ghost"] { --bg-dark: #f0f2f5; --bg-sidebar: #ffffff; --bg-card: #ffffff; --text-main: #2c3e50; --text-muted: #95a5a6; --accent: #34495e; --border: #dcdde1; }
     [data-theme="gold"] { --bg-dark: #0a0a0a; --bg-sidebar: #141414; --bg-card: #1a1a1a; --text-main: #ffffff; --text-muted: #888888; --accent: #d4af37; --border: #333333; }
     
-    /* PREVIOUS THEMES */
     [data-theme="ocean"] { --bg-dark: #0f172a; --bg-sidebar: #1e293b; --bg-card: #334155; --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #38bdf8; --border: #475569; }
     [data-theme="midnight"] { --bg-dark: #020617; --bg-sidebar: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-muted: #64748b; --accent: #6366f1; --border: #334155; }
     [data-theme="coffee"] { --bg-dark: #1c1917; --bg-sidebar: #292524; --bg-card: #44403c; --text-main: #fafaf9; --text-muted: #a8a29e; --accent: #d97706; --border: #57534e; }
@@ -65,71 +63,11 @@
 
     body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: var(--bg-dark); background-size: 400% 400%; animation: var(--bg-animate); color: var(--text-main); height: 100vh; overflow: hidden; }
 
-    /* Floating background particles: spread + wandering */
-    .particle-layer {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    .particle-layer span {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      opacity: 0.35;
-      animation: floatParticle linear infinite;
-    }
-
+    .particle-layer { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; }
+    .particle-layer span { position: absolute; width: 6px; height: 6px; border-radius: 999px; opacity: 0.35; animation: floatParticle linear infinite; }
     .particle-layer span:nth-child(3n+1) { background: var(--accent); }
     .particle-layer span:nth-child(3n+2) { background: var(--text-muted); }
     .particle-layer span:nth-child(3n+3) { background: var(--border); }
-
-    .particle-layer span:nth-child(1)  { left: 5%;  top: 5%;  animation-duration: 18s; animation-delay: -5s; }
-    .particle-layer span:nth-child(2)  { left: 15%; top: 15%; animation-duration: 22s; animation-delay: -12s; }
-    .particle-layer span:nth-child(3)  { left: 25%; top: 25%; animation-duration: 19s; animation-delay: -8s; }
-    .particle-layer span:nth-child(4)  { left: 35%; top: 35%; animation-duration: 24s; animation-delay: -3s; }
-    .particle-layer span:nth-child(5)  { left: 45%; top: 45%; animation-duration: 20s; animation-delay: -9s; }
-    .particle-layer span:nth-child(6)  { left: 55%; top: 55%; animation-duration: 17s; animation-delay: -6s; }
-    .particle-layer span:nth-child(7)  { left: 65%; top: 65%; animation-duration: 23s; animation-delay: -14s; }
-    .particle-layer span:nth-child(8)  { left: 75%; top: 75%; animation-duration: 16s; animation-delay: -4s; }
-    .particle-layer span:nth-child(9)  { left: 85%; top: 40%; animation-duration: 21s; animation-delay: -11s; }
-    .particle-layer span:nth-child(10) { left: 95%; top: 60%; animation-duration: 19s; animation-delay: -2s; }
-
-    .particle-layer span:nth-child(11) { left: 10%; top: 80%; animation-duration: 25s; animation-delay: -7s; }
-    .particle-layer span:nth-child(12) { left: 20%; top: 10%; animation-duration: 18s; animation-delay: -1s; }
-    .particle-layer span:nth-child(13) { left: 30%; top: 50%; animation-duration: 22s; animation-delay: -10s; }
-    .particle-layer span:nth-child(14) { left: 40%; top: 20%; animation-duration: 17s; animation-delay: -5s; }
-    .particle-layer span:nth-child(15) { left: 50%; top: 70%; animation-duration: 24s; animation-delay: -13s; }
-    .particle-layer span:nth-child(16) { left: 60%; top: 30%; animation-duration: 18s; animation-delay: -4s; }
-    .particle-layer span:nth-child(17) { left: 70%; top: 85%; animation-duration: 21s; animation-delay: -15s; }
-    .particle-layer span:nth-child(18) { left: 80%; top: 15%; animation-duration: 16s; animation-delay: -9s; }
-    .particle-layer span:nth-child(19) { left: 90%; top: 55%; animation-duration: 23s; animation-delay: -6s; }
-    .particle-layer span:nth-child(20) { left: 12%; top: 35%; animation-duration: 19s; animation-delay: -12s; }
-
-    .particle-layer span:nth-child(21) { left: 18%; top: 65%; animation-duration: 20s; animation-delay: -3s; }
-    .particle-layer span:nth-child(22) { left: 28%; top: 25%; animation-duration: 17s; animation-delay: -8s; }
-    .particle-layer span:nth-child(23) { left: 38%; top: 85%; animation-duration: 23s; animation-delay: -16s; }
-    .particle-layer span:nth-child(24) { left: 48%; top: 15%; animation-duration: 18s; animation-delay: -2s; }
-    .particle-layer span:nth-child(25) { left: 58%; top: 45%; animation-duration: 21s; animation-delay: -11s; }
-    .particle-layer span:nth-child(26) { left: 68%; top: 75%; animation-duration: 19s; animation-delay: -7s; }
-    .particle-layer span:nth-child(27) { left: 78%; top: 35%; animation-duration: 24s; animation-delay: -5s; }
-    .particle-layer span:nth-child(28) { left: 88%; top: 20%; animation-duration: 17s; animation-delay: -14s; }
-    .particle-layer span:nth-child(29) { left: 8%;  top: 55%; animation-duration: 22s; animation-delay: -9s; }
-    .particle-layer span:nth-child(30) { left: 22%; top: 90%; animation-duration: 18s; animation-delay: -1s; }
-
-    .particle-layer span:nth-child(31) { left: 32%; top: 10%; animation-duration: 20s; animation-delay: -10s; }
-    .particle-layer span:nth-child(32) { left: 42%; top: 60%; animation-duration: 16s; animation-delay: -6s; }
-    .particle-layer span:nth-child(33) { left: 52%; top: 30%; animation-duration: 23s; animation-delay: -15s; }
-    .particle-layer span:nth-child(34) { left: 62%; top: 80%; animation-duration: 19s; animation-delay: -4s; }
-    .particle-layer span:nth-child(35) { left: 72%; top: 50%; animation-duration: 21s; animation-delay: -13s; }
-    .particle-layer span:nth-child(36) { left: 82%; top: 25%; animation-duration: 17s; animation-delay: -3s; }
-    .particle-layer span:nth-child(37) { left: 92%; top: 75%; animation-duration: 24s; animation-delay: -12s; }
-    .particle-layer span:nth-child(38) { left: 14%; top: 40%; animation-duration: 18s; animation-delay: -7s; }
-    .particle-layer span:nth-child(39) { left: 27%; top: 70%; animation-duration: 22s; animation-delay: -5s; }
-    .particle-layer span:nth-child(40) { left: 57%; top: 20%; animation-duration: 19s; animation-delay: -11s; }
 
     @keyframes floatParticle {
       0%   { transform: translate(0, 0); }
@@ -140,14 +78,12 @@
       100% { transform: translate(0, 0); }
     }
 
+    /* ONLINE COUNTER STYLE */
+    .online-indicator { display: inline-flex; align-items: center; gap: 6px; color: var(--green); font-size: 0.85rem; font-weight: bold; background: rgba(166, 227, 161, 0.1); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(166, 227, 161, 0.2); margin-bottom: 15px; }
+    .dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: blink 1.5s infinite; }
+    @keyframes blink { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+
     #announcementBanner { background: var(--accent); color: #000; padding: 8px; text-align: center; font-weight: bold; font-size: 0.85rem; display: none; z-index: 100; }
-    a { color: var(--accent) !important; text-decoration: none; }
-
-    /* underline only links inside posts */
-    .post-content a {
-      text-decoration: underline;
-    }
-
     #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold; z-index: 60000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     #toast.show { top: 20px; }
 
@@ -161,109 +97,32 @@
     .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
     .header-bottom { display: flex; gap: 10px; width: 100%; align-items: center; }
 
-    .search-bar { flex: 1; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 30px; color: var(--text-main); outline: none; backdrop-filter: blur(var(--glass-blur)); }
-    .search-bar:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
-    
+    .search-bar { flex: 1; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 30px; color: var(--text-main); outline: none; }
     .filter-pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; }
-    .filter-pill { padding: 6px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; font-size: 0.75rem; cursor: pointer; white-space: nowrap; font-weight: bold; color: var(--text-muted); }
+    .filter-pill { padding: 6px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: bold; color: var(--text-muted); }
     .filter-pill.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
     #posts { flex: 1; padding: 20px; padding-bottom: 100px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .post-card { background: var(--bg-card); padding: 25px; border-radius: 20px; width: 100%; max-width: 750px; position: relative; border: 1px solid var(--border); backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
-    .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+    .post-author { color: var(--accent); font-weight: 800; font-size: 0.95rem; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
     .post-content { white-space: pre-wrap; font-size: 1.05rem; margin-top: 12px; word-break: break-all; line-height: 1.5; }
 
-    .new-badge { background: var(--green); color: #111; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 900; animation: pulse 2s infinite; }
-    .hot-badge { font-size: 1.1rem; filter: drop-shadow(0 0 5px orange); }
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-
     .settings-dropdown { position: relative; } 
-    .gear-icon { font-size: 1.8rem; cursor: pointer; color: var(--text-muted); padding: 5px; transition: 0.3s; display: block; }
-    .gear-icon:hover { color: var(--accent); transform: rotate(45deg); }
-    
-    .settings-menu { display: none; position: absolute; right: 0; top: 50px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; width: 240px; padding: 10px; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.4); backdrop-filter: blur(30px); max-height: 80vh; overflow-y: auto; }
+    .gear-icon { font-size: 1.8rem; cursor: pointer; color: var(--text-muted); padding: 5px; transition: 0.3s; }
+    .settings-menu { display: none; position: absolute; right: 0; top: 50px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; width: 240px; padding: 10px; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
     .settings-menu.show { display: block; }
-    .menu-item { padding: 12px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: bold; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
-    .menu-item:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
-    
-    .themes-sub-list { display: none; flex-direction: column; padding-left: 15px; margin-top: 5px; border-left: 2px solid var(--border); }
-    .themes-sub-list.open { display: flex; }
-    .theme-opt { padding: 8px 12px; font-size: 0.8rem; cursor: pointer; border-radius: 6px; }
-    .theme-opt:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
 
-    .panel { display: none; position: fixed; bottom: 30px; right: 30px; width: 420px; max-width: calc(100% - 60px); background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 24px; z-index: 15000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(40px); }
-    
-    /* Draggable admin panel tweaks */
-    #adminPanel {
-      cursor: default;
-    }
-    #adminPanelHeader {
-      cursor: move;
-      user-select: none;
-    }
-
-    #editPanel { position: fixed; left: -450px; top: 0; width: 420px; height: 100vh; background: var(--bg-sidebar); border-right: 1px solid var(--border); z-index: 30000; padding: 40px 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 20px 0 60px rgba(0,0,0,0.6); backdrop-filter: blur(40px); }
-    #editPanel.open { left: 0; }
-
+    .panel { display: none; position: fixed; bottom: 30px; right: 30px; width: 420px; background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 24px; z-index: 15000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
     .admin-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 10px; margin-bottom: 12px; outline: none; }
-    .admin-input:focus { border-color: var(--accent); }
-    .admin-primary-btn { width: 100%; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; transition: 0.2s; }
-    .admin-primary-btn:hover { opacity: 0.9; transform: scale(0.98); }
+    .admin-primary-btn { width: 100%; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; }
     
-    .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 12px; }
-    .admin-tab { flex: 1; padding: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-size: 0.75rem; color: var(--text-muted); }
-    .admin-tab.active { background: var(--bg-card); color: var(--accent); font-weight: bold; }
-    
-    .blocker-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
-    .admin-pill { padding: 6px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: var(--text-muted); font-size: 0.7rem; cursor: pointer; text-align: center; }
-    .admin-pill.selected { background: var(--accent); color: #000; }
-
-    .btn-outline { background:none; border:1px solid var(--border); color:var(--text-main); border-radius:25px; padding:8px 16px; cursor:pointer; font-weight:bold; font-size: 0.85rem; }
-    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
-    .copy-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--accent); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: 0.2s; }
-    .copy-btn.copied { background: var(--green); color: #111; border-color: var(--green); }
-    .report-btn { color: var(--red); border: 1px solid var(--red); background: transparent; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; margin-left: 8px; }
-
-    .vote-container { display: flex; gap: 12px; margin-top: 15px; align-items: center; }
-    .vote-btn { background: rgba(255,255,255,0.05); border: 2px solid var(--border); color: var(--text-main); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; user-select: none; }
-    .vote-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
-
-    /* Persistent vote state rings */
-    .vote-btn.active-like {
-      border-color: var(--green);
-      color: var(--green);
-      background: rgba(166, 227, 161, 0.08);
-      box-shadow: 0 0 0 2px rgba(166, 227, 161, 0.4);
-    }
-    .vote-btn.active-dislike {
-      border-color: var(--red);
-      color: var(--red);
-      background: rgba(243, 139, 168, 0.08);
-      box-shadow: 0 0 0 2px rgba(243, 139, 168, 0.45);
-    }
-
     .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:50000; backdrop-filter: blur(8px); align-items:center; justify-content:center; }
     .modal-content { background: var(--bg-card); padding: 30px; border-radius: 24px; width: 90%; max-width: 400px; border: 1px solid var(--border); }
-
-    /* Confetti canvas on top */
-    #confettiCanvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 70000;
-    }
   </style>
 </head>
 <body>
 
-<canvas id="confettiCanvas"></canvas>
-
 <div class="particle-layer">
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span>
   <span></span><span></span><span></span><span></span><span></span>
   <span></span><span></span><span></span><span></span><span></span>
   <span></span><span></span><span></span><span></span><span></span>
@@ -272,53 +131,11 @@
 <div id="toast"></div>
 <div id="announcementBanner"></div>
 
-<div id="reportModal" class="modal-overlay">
-  <div class="modal-content">
-    <h3 style="margin-top:0; color:var(--red);">Report Proxy</h3>
-    <textarea id="reportInput" class="admin-input" rows="4" placeholder="Why are you reporting this?"></textarea>
-    <div style="display:flex; gap:10px;">
-        <button id="sendReportBtn" class="admin-primary-btn" style="background:var(--red); color:white;">Send Report</button>
-        <button onclick="document.getElementById('reportModal').style.display='none'" class="admin-primary-btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main);">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<div id="requestModal" class="modal-overlay">
-  <div class="modal-content">
-    <h3 style="margin-top:0; color:var(--accent);">Request a Proxy</h3>
-    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Need a link for a specific blocker? Let us know!</p>
-    <textarea id="requestInput" class="admin-input" rows="4" placeholder="Blocker name or specific site request..."></textarea>
-    <div style="display:flex; gap:10px;">
-        <button id="sendRequestBtn" class="admin-primary-btn">Send Request</button>
-        <button onclick="document.getElementById('requestModal').style.display='none'" class="admin-primary-btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main);">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<div id="editPanel">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
-    <h3 id="editTitle" style="margin:0; color:var(--accent); font-size: 1.4rem;">Edit Item</h3>
-    <button onclick="closeEditPanel()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:2rem;">&times;</button>
-  </div>
-  
-  <div id="editPostFields">
-    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Author</label>
-    <input type="text" id="editAuthor" class="admin-input">
-    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Content</label>
-    <textarea id="editContent" class="admin-input" rows="6"></textarea>
-    <button id="saveEditBtn" class="admin-primary-btn">Apply Changes</button>
-  </div>
-
-  <div id="editLogFields" style="display:none;">
-    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Title</label>
-    <input type="text" id="editLogTitle" class="admin-input">
-    <label style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px; display:block;">Body</label>
-    <textarea id="editLogBody" class="admin-input" rows="6"></textarea>
-    <button id="saveLogEditBtn" class="admin-primary-btn">Apply Changes</button>
-  </div>
-</div>
-
 <div id="selectionScreen">
+  <div class="online-indicator">
+    <div class="dot"></div>
+    <span id="onlineCountMain">1</span> Online
+  </div>
   <h1 style="color: var(--text-main); font-size: 2.5rem; margin-bottom: 8px; letter-spacing: -1px;">Eli's Proxies</h1>
   <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1rem; font-weight: 500;">Choose a filter to begin</p>
   <div class="blocker-grid" id="gridContainer"></div>
@@ -329,109 +146,32 @@
   <div class="header">
     <div class="header-top">
         <div style="display:flex; align-items:center; gap:15px;">
-          <button onclick="goBackToSelection()" class="btn-outline">← Back</button>
-          <h2 id="currentBlocker" style="font-size:1.2rem; margin:0; font-weight: 800;">Feed</h2>
+          <button onclick="goBackToSelection()" style="background:none; border:1px solid var(--border); color:var(--text-main); border-radius:25px; padding:8px 16px; cursor:pointer; font-weight:bold;">← Back</button>
+          <div style="display:flex; flex-direction:column;">
+            <h2 id="currentBlocker" style="font-size:1.2rem; margin:0; font-weight: 800;">Feed</h2>
+            <span style="font-size:0.7rem; color:var(--green); font-weight:bold;"><span id="onlineCountHeader">1</span> users online</span>
+          </div>
         </div>
         <div class="settings-dropdown">
           <div class="gear-icon" onclick="toggleSettings()">⚙</div>
           <div id="settingsMenu" class="settings-menu">
-            <div class="menu-item" onclick="refreshNow()">↻ Refresh Feed</div>
-            <div class="menu-item" onclick="toggleThemeList()">🎨 Themes <span id="themeArrow">▼</span></div>
-            <div id="themesSubList" class="themes-sub-list">
-                <div class="theme-opt" onclick="setTheme('liquid')" style="color:#0ea5e9; font-weight: bold;">Liquid Glass ✨</div>
-                <div class="theme-opt" onclick="setTheme('cyberpunk')" style="color:#ff007f">Cyberpunk</div>
-                <div class="theme-opt" onclick="setTheme('synthwave')" style="color:#ff7edb">Synthwave</div>
-                <div class="theme-opt" onclick="setTheme('lava')" style="color:#ff4500">Lava Flow</div>
-                <div class="theme-opt" onclick="setTheme('gold')" style="color:#d4af37">Pure Gold</div>
-                <div class="theme-opt" onclick="setTheme('sakura')" style="color:#ff8fa3">Sakura</div>
-                <div class="theme-opt" onclick="setTheme('dracula')" style="color:#bd93f9">Dracula</div>
-                <div class="theme-opt" onclick="setTheme('forest')" style="color:#4caf50">Forest</div>
-                <div class="theme-opt" onclick="setTheme('catppuccin')">Original</div>
-                <div class="theme-opt" onclick="setTheme('dark')">Dark</div>
-                <div class="theme-opt" onclick="setTheme('oled')">OLED</div>
-                <div class="theme-opt" onclick="setTheme('light')">Light</div>
-                <div class="theme-opt" onclick="setTheme('ocean')">Ocean Blue</div>
-                <div class="theme-opt" onclick="setTheme('midnight')">Midnight</div>
-                <div class="theme-opt" onclick="setTheme('coffee')">Coffee House</div>
-                <div class="theme-opt" onclick="setTheme('nebula')">Nebula</div>
-                <div class="theme-opt" onclick="setTheme('amber')">Amber</div>
-                <div class="theme-opt" onclick="setTheme('nord')">Nordic Frost</div>
-                <div class="theme-opt" onclick="setTheme('ghost')">Ghostly</div>
-            </div>
-            <div class="menu-item" onclick="showLogs()">📜 View Logs</div>
-            <div class="menu-item" onclick="openRequestModal()">📥 Request Proxy</div>
-            <div class="menu-item" onclick="document.getElementById('adminPanel').style.display='block'">🔑 Admin Panel</div>
-            <a href="https://discord.gg/hns6EJVZ3k" target="_blank">
-              <div class="menu-item">💬 Join Discord</div>
-            </a>
+            <div onclick="location.reload()" style="padding:12px; cursor:pointer;">↻ Refresh Feed</div>
+            <div onclick="document.getElementById('adminPanel').style.display='block'" style="padding:12px; cursor:pointer;">🔑 Admin Panel</div>
           </div>
         </div>
     </div>
     <div class="header-bottom">
         <input type="text" id="searchInput" class="search-bar" placeholder="Search for proxies...">
-        <div class="filter-pills">
-            <div class="filter-pill active" onclick="setSort('new')" id="sort-new">Newest</div>
-            <div class="filter-pill" onclick="setSort('likes')" id="sort-likes">Most Liked</div>
-            <div class="filter-pill" onclick="setSort('links')" id="sort-links">Most Links</div>
-        </div>
     </div>
   </div>
   <div id="posts"></div>
 </div>
 
-<div id="logOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:35000; padding:20px; backdrop-filter: blur(10px);">
-  <div style="max-width:650px; margin:40px auto; background:var(--bg-sidebar); border-radius:24px; padding:30px; max-height:85vh; overflow-y:auto; border:1px solid var(--border); box-shadow: 0 30px 60px rgba(0,0,0,0.5);">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
-      <h2 style="margin:0; font-weight: 800;">Update History</h2>
-      <button onclick="document.getElementById('logOverlay').style.display='none'" class="btn-outline">Close</button>
-    </div>
-    <div id="logList"></div>
-  </div>
-</div>
-
 <div id="adminPanel" class="panel">
-  <div id="adminPanelHeader" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <h3 style="margin:0; color:var(--accent); font-size: 1.2rem; font-weight: 800;">Admin Dashboard</h3>
-    <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.8rem;">&times;</button>
-  </div>
-  <div id="loginSection">
-    <input type="password" id="adminPassword" class="admin-input" placeholder="Password" onkeydown="if(event.key === 'Enter') loginAction()">
-    <button id="loginBtn" class="admin-primary-btn" onclick="loginAction()">Authenticate</button>
-  </div>
-  <div id="adminContent" style="display:none;">
-    <div class="admin-tabs">
-      <div class="admin-tab active" id="tabPost" onclick="switchTab('post')">New Proxy</div>
-      <div class="admin-tab" id="tabLog" onclick="switchTab('log')">New Log</div>
-      <div class="admin-tab" id="tabBanner" onclick="switchTab('banner')">Banner</div>
-    </div>
-    <div id="panePost">
-      <input type="text" id="postAuthor" class="admin-input" placeholder="Author Name">
-      <textarea id="postText" class="admin-input" rows="3" placeholder="Proxy link / description..."></textarea>
-      <div id="adminBlockerButtons" class="blocker-pills"></div>
-      <button id="publishBtn" class="admin-primary-btn">Publish to Feed</button>
-    </div>
-    <div id="paneLog" style="display:none;">
-      <input type="text" id="logHeading" class="admin-input" placeholder="Update Title">
-      <textarea id="logBody" class="admin-input" rows="4" placeholder="Log details..."></textarea>
-      <button id="publishLogBtn" class="admin-primary-btn">Add Log Entry</button>
-    </div>
-    <div id="paneBanner" style="display:none;">
-      <textarea id="bannerTextInput" class="admin-input" rows="3" placeholder="Global announcement text..."></textarea>
-      <button id="updateBannerBtn" class="admin-primary-btn">Update Banner</button>
-    </div>
-  </div>
-</div>
-
-<!-- In-site confirm modal -->
-<div id="confirmModal" class="modal-overlay">
-  <div class="modal-content" style="max-width:380px;">
-    <h3 id="confirmTitle" style="margin-top:0; color:var(--accent);">Confirm</h3>
-    <p id="confirmMessage" style="font-size:0.9rem; color:var(--text-muted); margin-bottom:20px;"></p>
-    <div style="display:flex; gap:10px; justify-content:flex-end;">
-      <button id="confirmCancelBtn" class="admin-primary-btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main); width:auto; padding-inline:18px;">Cancel</button>
-      <button id="confirmOkBtn" class="admin-primary-btn" style="background:var(--red); color:#fff; width:auto; padding-inline:18px;">Delete</button>
-    </div>
-  </div>
+  <h3 style="margin-top:0;">Admin Access</h3>
+  <input type="password" id="adminPassword" class="admin-input" placeholder="Password">
+  <button class="admin-primary-btn" onclick="loginAction()">Authenticate</button>
+  <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:var(--text-muted); width:100%; margin-top:10px; cursor:pointer;">Close</button>
 </div>
 
 <script type="module">
@@ -440,213 +180,33 @@ const supabase = createClient('https://saauhuiruadqjogzughm.supabase.co', 'sb_pu
 
 const blockers = ["Linewize", "Securly", "Palo_alto", "Blocksi", "Aristotle", "Lightspeed", "Contentkeeper", "Lanschool", "Goguardian", "Fortiguard", "Cisco_talos", "Deledao"];
 let selectedBlocker = localStorage.getItem('eli_last_blocker') || null;
-let isAdmin = false; 
-let currentSort = 'new';
 
-const REPORT_WEBHOOK = 'https://discord.com/api/webhooks/1474238339811905662/pPriqbRbPjky3JzVqKl8AXDHZCMrS0uZmOMlxrmy-q0-mfLKJ-eABDhYc8Fi9jpGpL-r';
-const REQUEST_WEBHOOK = 'https://discord.com/api/webhooks/1474498106195181811/Gdd0aDSE8htLTf9cHAd6eEUR30fgnm3YI-rUgdRODWZXhdz_r-vLaMO75mH2xRre-OhZ';
+// --- REAL TIME ONLINE COUNTER LOGIC ---
+const channel = supabase.channel('online-users', {
+  config: { presence: { key: 'user' } }
+});
 
-let editingLogId = null;
-let confirmAction = null;
-
-// Confirm modal logic
-function openConfirm(title, message, onConfirm) {
-  confirmAction = onConfirm;
-  document.getElementById('confirmTitle').textContent = title;
-  document.getElementById('confirmMessage').textContent = message;
-  document.getElementById('confirmModal').style.display = 'flex';
-}
-function closeConfirm() {
-  document.getElementById('confirmModal').style.display = 'none';
-  confirmAction = null;
-}
-document.getElementById('confirmCancelBtn').onclick = closeConfirm;
-document.getElementById('confirmOkBtn').onclick = async () => {
-  if (confirmAction) await confirmAction();
-  closeConfirm();
-};
-
-// THEME
-window.setTheme = (t) => { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eli_theme', t); };
-setTheme(localStorage.getItem('eli_theme') || 'catppuccin');
-
-// SETTINGS UI
-window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
-window.toggleThemeList = () => {
-    const list = document.getElementById('themesSubList');
-    const arrow = document.getElementById('themeArrow');
-    list.classList.toggle('open');
-    arrow.textContent = list.classList.contains('open') ? '▲' : '▼';
-};
-window.closeEditPanel = () => {
-  document.getElementById('editPanel').classList.remove('open');
-  editingLogId = null;
-};
-window.onclick = (e) => { 
-    if (!e.target.closest('.settings-dropdown')) {
-        document.getElementById('settingsMenu').classList.remove('show');
-        document.getElementById('themesSubList').classList.remove('open');
+channel
+  .on('presence', { event: 'sync' }, () => {
+    const state = channel.presenceState();
+    const count = Object.keys(state).length;
+    document.getElementById('onlineCountMain').textContent = count;
+    document.getElementById('onlineCountHeader').textContent = count;
+  })
+  .subscribe(async (status) => {
+    if (status === 'SUBSCRIBED') {
+      await channel.track({ online_at: new Date().toISOString() });
     }
-};
+  });
 
-// SORTING
-window.setSort = (type) => {
-    currentSort = type;
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-    document.getElementById(`sort-${type}`).classList.add('active');
-    fetchPosts(true);
-};
-
-// TOAST
-function showNotice(msg, type='success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.style.background = type === 'success' ? '#a6e3a1' : '#f38ba8';
-  t.style.color = '#111';
-  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-// LINKIFY
-function linkify(text) {
-  const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%?=~_|])/ig;
-  return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-}
-
-// CONFETTI
-const confettiCanvas = document.getElementById('confettiCanvas');
-const ctx = confettiCanvas.getContext('2d');
-let confettiPieces = [];
-function resizeConfetti() {
-  confettiCanvas.width = window.innerWidth;
-  confettiCanvas.height = window.innerHeight;
-}
-resizeConfetti();
-window.addEventListener('resize', resizeConfetti);
-
-function spawnConfetti() {
-  const colors = ['#f38ba8', '#a6e3a1', '#89b4fa', '#f9e2af', '#b4befe'];
-  confettiPieces = [];
-  for (let i = 0; i < 150; i++) {
-    confettiPieces.push({
-      x: Math.random() * confettiCanvas.width,
-      y: Math.random() * -confettiCanvas.height,
-      size: 4 + Math.random() * 4,
-      speedY: 2 + Math.random() * 3,
-      speedX: -2 + Math.random() * 4,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: -0.1 + Math.random() * 0.2
-    });
-  }
-  animateConfetti();
-}
-
-let confettiAnimating = false;
-function animateConfetti() {
-  if (confettiAnimating) return;
-  confettiAnimating = true;
-  let frames = 0;
-  function frame() {
-    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-    confettiPieces.forEach(p => {
-      p.y += p.speedY;
-      p.x += p.speedX;
-      p.rotation += p.rotationSpeed;
-      if (p.y > confettiCanvas.height) p.y = -10;
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rotation);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-      ctx.restore();
-    });
-    frames++;
-    if (frames < 120) {
-      requestAnimationFrame(frame);
-    } else {
-      confettiAnimating = false;
-      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-    }
-  }
-  requestAnimationFrame(frame);
-}
-
-// VOTING WITH CONFETTI + persistent ring
-window.voteProxy = async (id, type) => {
-    const storageKey = `voted_${id}`;
-    if(localStorage.getItem(storageKey)) {
-        showNotice("Already voted on this!", "error");
-        return;
-    }
-
-    const column = type === 'like' ? 'likes' : 'dislikes';
-    const { data: current } = await supabase.from('posts').select(column).eq('id', id).single();
-
-    const newVal = (current?.[column] || 0) + 1;
-    const { error: setErr } = await supabase.from('posts').update({ [column]: newVal }).eq('id', id);
-
-    if(!setErr) {
-        localStorage.setItem(storageKey, type);
-        if (type === 'like') spawnConfetti();
-        showNotice(`Voted ${type}!`);
-        fetchPosts(true); 
-    } else showNotice("Update Denied", "error");
-};
-
-window.copyLinksFromPost = (btn, text) => {
-    const urlPattern = /(https?:\/\/[^\s]+)/gi;
-    const matches = text.match(urlPattern);
-    if (matches) {
-        navigator.clipboard.writeText(matches.join('\n')).then(() => {
-            const originalText = btn.textContent;
-            btn.textContent = "Copied!";
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.classList.remove('copied');
-            }, 2000);
-            showNotice(`Copied ${matches.length} link(s)`);
-        });
-    } else showNotice("No links found", "error");
-}
-
-window.openRequestModal = () => {
-    document.getElementById('requestModal').style.display = 'flex';
-    document.getElementById('sendRequestBtn').onclick = async () => {
-        const msg = document.getElementById('requestInput').value;
-        if(!msg) return showNotice("Please enter a request", "error");
-        const payload = { content: "<@949801961962741770>", embeds: [{ title: "📬 New Proxy Request", color: 8991994, description: msg, timestamp: new Date().toISOString() }] };
-        const resp = await fetch(REQUEST_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        if (resp.ok) {
-            document.getElementById('requestModal').style.display = 'none';
-            document.getElementById('requestInput').value = '';
-            showNotice("Request sent!");
-        } else showNotice("Error sending request", "error");
-    };
-}
-
-window.openReportModal = (postId, author, content) => {
-    document.getElementById('reportModal').style.display = 'flex';
-    document.getElementById('sendReportBtn').onclick = async () => {
-        const msg = document.getElementById('reportInput').value;
-        if(!msg) return showNotice("Enter a reason", "error");
-        const payload = { content: "<@949801961962741770>", embeds: [{ title: "🚨 New Proxy Report", color: 15548997, fields: [{ name: "Reason", value: msg }, { name: "Proxy Author", value: author, inline: true }, { name: "Post ID", value: postId, inline: true }, { name: "Content", value: content }], timestamp: new Date().toISOString() }] };
-        const resp = await fetch(REPORT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        if (resp.ok) {
-            document.getElementById('reportModal').style.display = 'none';
-            document.getElementById('reportInput').value = '';
-            showNotice("Report Sent to Discord");
-        } else showNotice("Discord Error", "error");
-    };
-}
-
-// CORE
+// --- UI Logic ---
 window.selectBlocker = (name) => {
   selectedBlocker = name;
   localStorage.setItem('eli_last_blocker', name);
   document.getElementById('selectionScreen').style.display = 'none';
   document.getElementById('appContainer').style.display = 'flex';
-  document.getElementById('currentBlocker').textContent = name === 'All' ? 'All Proxies' : name.replace(/_/g, ' ');
-  syncBanner(); fetchPosts();
+  document.getElementById('currentBlocker').textContent = name.replace(/_/g, ' ');
+  fetchPosts();
 };
 
 window.goBackToSelection = () => {
@@ -655,269 +215,37 @@ window.goBackToSelection = () => {
     document.getElementById('selectionScreen').style.display = 'flex';
 };
 
-window.refreshNow = () => {
-    document.getElementById('settingsMenu').classList.remove('show');
-    fetchPosts(false);
-}
+window.toggleSettings = () => document.getElementById('settingsMenu').classList.toggle('show');
 
-async function syncBanner() {
-  const { data } = await supabase.from('settings').select('content').eq('id', 'announcement_banner').single();
-  if (data && data.content.trim() !== "") {
-    const banner = document.getElementById('announcementBanner');
-    banner.textContent = data.content;
-    banner.style.display = 'block';
-  }
-}
-
-async function fetchPosts(silent = true) {
-  let query = supabase.from('posts').select('*');
+async function fetchPosts() {
+  let query = supabase.from('posts').select('*').order('created_at', { ascending: false });
   if (selectedBlocker && selectedBlocker !== "All") query = query.eq('blocker', selectedBlocker);
-  
   const { data } = await query;
   if (!data) return;
 
-  const grouped = [];
-  data.forEach(item => {
-    const existing = grouped.find(g => g.content === item.content && g.author === item.author);
-    if (existing) { existing.ids.push(item.id); }
-    else { grouped.push({ ...item, ids: [item.id] }); }
-  });
-
-  if (currentSort === 'likes') {
-    grouped.sort((a, b) => (b.likes || 0) - (a.likes || 0));
-  } else if (currentSort === 'links') {
-    grouped.sort((a, b) => {
-        const countA = (a.content.match(/https?:\/\//gi) || []).length;
-        const countB = (b.content.match(/https?:\/\//gi) || []).length;
-        return countB - countA;
-    });
-  } else {
-    grouped.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  }
-
-  const now = new Date();
-  document.getElementById('posts').innerHTML = grouped.map(p => {
-    const isNew = (now - new Date(p.created_at)) < (24 * 60 * 60 * 1000);
-    const isHot = (p.likes || 0) >= 5;
-    const userVote = localStorage.getItem(`voted_${p.ids[0]}`);
-    const linkCount = (p.content.match(/https?:\/\//gi) || []).length;
-    
-    return `
+  document.getElementById('posts').innerHTML = data.map(p => `
     <div class="post-card">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span class="post-author">
-            ${p.author}
-            ${isHot ? `<span class="hot-badge" title="Hot Streak!">🔥</span>` : ''}
-            ${isNew ? `<span class="new-badge">NEW</span>` : ''}
-        </span>
-        <span style="font-size:0.75rem; color:var(--text-muted); opacity:0.7;">
-            ${linkCount > 1 ? `<b>${linkCount} links</b> | ` : ''}${new Date(p.created_at).toLocaleDateString()}
-        </span>
-      </div>
-      <div class="post-content">${linkify(p.content)}</div>
-      
-      <div class="vote-container">
-        <button class="vote-btn ${userVote === 'like' ? 'active-like' : ''}" onclick="window.voteProxy('${p.ids[0]}', 'like')">
-            👍 ${p.likes || 0}
-        </button>
-        <button class="vote-btn ${userVote === 'dislike' ? 'active-dislike' : ''}" onclick="window.voteProxy('${p.ids[0]}', 'dislike')">
-            👎 ${p.dislikes || 0}
-        </button>
-      </div>
-
-      <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-        <div>
-            <button class="copy-btn" onclick="window.copyLinksFromPost(this, \`${p.content}\`)">Copy Link(s)</button>
-            <button class="report-btn" onclick="window.openReportModal('${p.ids[0]}', \`${p.author}\`, \`${p.content}\`)">Report</button>
-        </div>
-        ${isAdmin ? `
-            <div>
-                <button class="btn-outline" style="padding: 4px 12px; font-size: 0.75rem; margin-right:5px;" onclick="window.openEditProxy('${p.ids.join(',')}', \`${p.author}\`, \`${p.content}\`)">Edit</button>
-                <button class="btn-outline" style="padding: 4px 12px; font-size: 0.75rem; color:var(--red); border-color:var(--red);" onclick="window.deleteProxy('${p.ids.join(',')}')">Delete</button>
-            </div>
-        ` : ''}
-      </div>
-    </div>`}).join('');
-  if(!silent) showNotice("Feed Refreshed");
+      <div class="post-author">${p.author}</div>
+      <div class="post-content">${p.content}</div>
+    </div>
+  `).join('');
 }
 
-window.openEditProxy = (ids, author, content) => {
-    document.getElementById('editTitle').textContent = "Edit Proxy";
-    document.getElementById('editPostFields').style.display = 'block';
-    document.getElementById('editLogFields').style.display = 'none';
-    document.getElementById('editAuthor').value = author;
-    document.getElementById('editContent').value = content;
-    document.getElementById('editPanel').classList.add('open');
-    document.getElementById('saveEditBtn').onclick = async () => {
-        for(let id of ids.split(',')) await supabase.from('posts').update({ author: document.getElementById('editAuthor').value, content: document.getElementById('editContent').value }).eq('id', id);
-        showNotice("Updated!"); closeEditPanel(); fetchPosts();
-    };
-};
-
-window.deleteProxy = async (ids) => {
-  openConfirm(
-    "Delete Proxy",
-    "Are you sure you want to permanently delete this proxy (and all duplicates)?",
-    async () => {
-      for (let id of ids.split(',')) {
-        await supabase.from('posts').delete().eq('id', id);
-      }
-      showNotice("Deleted");
-      fetchPosts();
-    }
-  );
-};
-
-window.loginAction = () => {
-  if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
-    isAdmin = true; 
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block'; 
-    showNotice("Admin Active"); fetchPosts();
-  } else showNotice("Wrong Pass", "error");
-};
-
-// Blocker cards and admin pills
-blockers.forEach(b => {
-  const card = document.createElement('div');
-  card.className = 'blocker-card'; card.textContent = b.replace(/_/g, ' ');
-  card.onclick = () => selectBlocker(b);
-  document.getElementById('gridContainer').appendChild(card);
-  const pill = document.createElement('div');
-  pill.className = 'admin-pill'; pill.textContent = b.replace(/_/g, ' ');
-  pill.onclick = () => pill.classList.toggle('selected');
-  pill.dataset.value = b;
-  document.getElementById('adminBlockerButtons').appendChild(pill);
-});
+// Init Grid
+const grid = document.getElementById('gridContainer');
+grid.innerHTML = blockers.map(b => `<div class="blocker-card" onclick="selectBlocker('${b}')">${b.replace(/_/g, ' ')}</div>`).join('');
 
 if (selectedBlocker) selectBlocker(selectedBlocker);
 
-// LOGS with admin edit/delete
-window.showLogs = async () => {
-  document.getElementById('logOverlay').style.display = 'block';
-  const { data } = await supabase.from('logs').select('*').order('created_at', { ascending: false });
-  document.getElementById('logList').innerHTML = data.map(l => `
-    <div style="border-bottom:1px solid var(--border); padding:20px 0;">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <strong style="color:var(--accent); font-size:1.1rem;">${l.heading}</strong>
-        ${isAdmin ? `
-        <div>
-          <button class="btn-outline" style="padding:4px 10px; font-size:0.7rem; margin-right:5px;" onclick="window.openEditLog('${l.id}', \`${l.heading}\`, \`${l.body}\`)">Edit</button>
-          <button class="btn-outline" style="padding:4px 10px; font-size:0.7rem; color:var(--red); border-color:var(--red);" onclick="window.deleteLog('${l.id}')">Delete</button>
-        </div>` : ''}
-      </div>
-      <p style="font-size:0.95rem; margin-top:10px;">${linkify(l.body)}</p>
-    </div>`).join('');
-};
-
-window.openEditLog = (id, heading, body) => {
-  editingLogId = id;
-  document.getElementById('editTitle').textContent = "Edit Log";
-  document.getElementById('editPostFields').style.display = 'none';
-  document.getElementById('editLogFields').style.display = 'block';
-  document.getElementById('editLogTitle').value = heading;
-  document.getElementById('editLogBody').value = body;
-  document.getElementById('editPanel').classList.add('open');
-};
-
-document.getElementById('saveLogEditBtn').onclick = async () => {
-  if (!editingLogId) return;
-  await supabase.from('logs').update({
-    heading: document.getElementById('editLogTitle').value,
-    body: document.getElementById('editLogBody').value
-  }).eq('id', editingLogId);
-  showNotice("Log Updated!");
-  closeEditPanel();
-  showLogs();
-};
-
-window.deleteLog = async (id) => {
-  openConfirm(
-    "Delete Log",
-    "Are you sure you want to permanently delete this log entry?",
-    async () => {
-      await supabase.from('logs').delete().eq('id', id);
-      showNotice("Log Deleted");
-      showLogs();
-    }
-  );
-};
-
-// Tab switching
-window.switchTab = (t) => {
-  ['panePost', 'paneLog', 'paneBanner'].forEach(p => document.getElementById(p).style.display = 'none');
-  ['tabPost', 'tabLog', 'tabBanner'].forEach(b => document.getElementById(b).classList.remove('active'));
-  document.getElementById('pane' + t.charAt(0).toUpperCase() + t.slice(1)).style.display = 'block';
-  document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.add('active');
-};
-
-// Admin actions
-document.getElementById('publishBtn').onclick = async () => {
-    const author = document.getElementById('postAuthor').value;
-    const content = document.getElementById('postText').value;
-    const selected = Array.from(document.querySelectorAll('.admin-pill.selected')).map(p => p.dataset.value);
-    if(!author || !content || selected.length === 0) return showNotice("Fill everything!", "error");
-    for(let b of selected) await supabase.from('posts').insert([{ author, content, blocker: b }]);
-    showNotice("Published!"); document.getElementById('postText').value = ""; fetchPosts();
-};
-
-document.getElementById('publishLogBtn').onclick = async () => {
-    const heading = document.getElementById('logHeading').value;
-    const body = document.getElementById('logBody').value;
-    if(!heading || !body) return showNotice("Fill everything!", "error");
-    await supabase.from('logs').insert([{ heading, body }]);
-    showNotice("Log Added!"); document.getElementById('logHeading').value = ""; document.getElementById('logBody').value = "";
-};
-
-document.getElementById('updateBannerBtn').onclick = async () => {
-    const content = document.getElementById('bannerTextInput').value;
-    await supabase.from('settings').update({ content }).eq('id', 'announcement_banner');
-    showNotice("Banner Updated!"); syncBanner();
-};
-
-document.getElementById('searchInput').oninput = (e) => {
-    const term = e.target.value.toLowerCase();
-    const cards = document.querySelectorAll('.post-card');
-    cards.forEach(c => {
-        const text = c.innerText.toLowerCase();
-        c.style.display = text.includes(term) ? 'block' : 'none';
-    });
-};
-
-// Draggable admin panel
-(function makeAdminPanelDraggable() {
-  const panel = document.getElementById('adminPanel');
-  const header = document.getElementById('adminPanelHeader');
-  let isDown = false, offsetX = 0, offsetY = 0;
-
-  header.addEventListener('mousedown', (e) => {
-    isDown = true;
-    const rect = panel.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-    panel.style.position = 'fixed';
-  });
-
-  window.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    let x = e.clientX - offsetX;
-    let y = e.clientY - offsetY;
-    const maxX = window.innerWidth - panel.offsetWidth;
-    const maxY = window.innerHeight - panel.offsetHeight;
-    if (x < 0) x = 0;
-    if (y < 0) y = 0;
-    if (x > maxX) x = maxX;
-    if (y > maxY) y = maxY;
-    panel.style.left = x + 'px';
-    panel.style.top = y + 'px';
-    panel.style.bottom = 'auto';
-    panel.style.right = 'auto';
-  });
-
-  window.addEventListener('mouseup', () => {
-    isDown = false;
-  });
-})();
+// Particle Animation logic
+const particles = document.querySelectorAll('.particle-layer span');
+particles.forEach(p => {
+  p.style.left = Math.random() * 100 + '%';
+  p.style.top = Math.random() * 100 + '%';
+  p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+  p.style.animationDelay = (Math.random() * -20) + 's';
+});
 </script>
+
 </body>
 </html>
