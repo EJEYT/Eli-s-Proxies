@@ -148,8 +148,23 @@
       text-decoration: underline;
     }
 
-    #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border-radius: 12px; color: #11111b; font-weight: bold; z-index: 60000; transition: top 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    #toast.show { top: 20px; }
+   #toast { 
+    position: fixed; 
+    top: -100px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    padding: 12px 25px; 
+    border-radius: 12px; 
+    color: #11111b; 
+    font-weight: bold; 
+    z-index: 60000; 
+    transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+}
+
+#toast.show { 
+    top: 20px; 
+}
 
     #selectionScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: transparent; overflow-y: auto; padding: 20px; position: relative; }
     .blocker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 1000px; margin-top: 20px; }
@@ -395,9 +410,9 @@
     <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size:1.8rem;">&times;</button>
   </div>
   <div id="loginSection">
-    <input type="password" id="adminPassword" class="admin-input" placeholder="Password" onkeydown="if(event.key === 'Enter') loginAction()">
-    <button id="loginBtn" class="admin-primary-btn" onclick="loginAction()">Authenticate</button>
-  </div>
+  <input type="text" id="adminPassword" class="admin-input" placeholder="Enter Key (Name: Key)" onkeydown="if(event.key === 'Enter') loginAction()">
+  <button id="loginBtn" class="admin-primary-btn" onclick="loginAction()">Authenticate</button>
+</div>
   <div id="adminContent" style="display:none;">
     <div class="admin-tabs">
       <div class="admin-tab active" id="tabPost" onclick="switchTab('post')">New Proxy</div>
@@ -768,13 +783,31 @@ window.deleteProxy = async (ids) => {
   );
 };
 
-window.loginAction = () => {
-  if (document.getElementById('adminPassword').value === 'EISisBetterForever') {
-    isAdmin = true; 
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block'; 
-    showNotice("Admin Active"); fetchPosts();
-  } else showNotice("Wrong Pass", "error");
+// Define your keys at the top of your script
+const ADMIN_KEYS = [
+    "Eli: xas8f76dhdxDDAasds7",
+    "Isaiah: asfd7asd62dfhhfGs2"
+];
+
+window.loginAction = function() {
+    const enteredValue = document.getElementById('adminPassword').value.trim();
+    
+    // Find the key in the array
+    const match = ADMIN_KEYS.find(k => k === enteredValue);
+
+    if (match) {
+        // Extract the name (everything before the colon)
+        const adminName = match.split(':')[0]; 
+        
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        
+        // Personalized Welcome Popup
+        showToast(`Welcome, ${adminName}`, "var(--accent)");
+    } else {
+        // Error Popup
+        showToast("Invalid Key - Access Denied", "var(--red)");
+    }
 };
 
 // Blocker cards and admin pills
@@ -808,6 +841,17 @@ window.showLogs = async () => {
       </div>
       <p style="font-size:0.95rem; margin-top:10px;">${linkify(l.body)}</p>
     </div>`).join('');
+};
+
+window.showToast = function(msg, color) {
+    const toast = document.getElementById('toast');
+    toast.innerText = msg;
+    toast.style.background = color;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
 };
 
 window.openEditLog = (id, heading, body) => {
