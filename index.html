@@ -784,31 +784,34 @@ window.deleteProxy = async (ids) => {
 };
 
 // Define your keys at the top of your script
-const ADMIN_KEYS = [
-  "Eli:aK7mX2pL9qR4nW6tJ",
-  "Isaiah:Tz5Wr8kN3bQ1mJ6xP",
-  "Shell:dH9sY4vF7cR2nK8wM"
-];
+const ADMIN_KEYS = {
+  "aK7mX2pL9qR4nW6tJ": "Eli",
+  "Tz5Wr8kN3bQ1mJ6xP": "Isaiah",
+  "dH9sY4vF7cR2nK8wM": "Shell"
+};
 
-window.loginAction = function() {
-    const enteredValue = document.getElementById('adminPassword').value.trim();
-    
-    // Find the key in the array
-    const match = ADMIN_KEYS.find(k => k === enteredValue);
+window.loginAction = function () {
+  const enteredValue = document
+    .getElementById('adminPassword')
+    .value
+    .trim();
 
-    if (match) {
-        // Extract the name (everything before the colon)
-        const adminName = match.split(':')[0]; 
-        
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('adminContent').style.display = 'block';
-        
-        // Personalized Welcome Popup
-        showToast(`Welcome, ${adminName}`, "var(--accent)");
-    } else {
-        // Error Popup
-        showToast("Invalid Key - Access Denied", "var(--red)");
-    }
+  if (!enteredValue) {
+    showNotice("Enter a key", "error");
+    return;
+  }
+
+  const adminName = ADMIN_KEYS[enteredValue];
+
+  if (!adminName) {
+    showNotice("Invalid key", "error");
+    return;
+  }
+
+  document.getElementById('loginSection').style.display = 'none';
+  document.getElementById('adminContent').style.display = 'block';
+
+  showNotice(`Welcome, ${adminName}`);
 };
 
 // Blocker cards and admin pills
