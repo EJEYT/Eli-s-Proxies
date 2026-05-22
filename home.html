@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- PASTE THIS AS THE VERY FIRST THING INSIDE <head> IN YOUR home.html -->
+<script>
+  if (sessionStorage.getItem('ep_auth') !== 'granted') {
+    window.location.replace('index.html');
+  }
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
