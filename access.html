@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eli's Proxies — Access</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: #1a1d2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 3rem 2.5rem;
+    width: 420px;
+    max-width: 95vw;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #c8cff5;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: #6e7aab;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.3px;
+  }
+
+  .input-wrap {
+    position: relative;
+    margin-bottom: 1.2rem;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(180,190,255,0.15);
+    border-radius: 12px;
+    color: #c8cff5;
+    font-size: 1rem;
+    padding: 0.9rem 1.2rem;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  input[type="text"]::placeholder {
+    color: #4a5280;
+    letter-spacing: 0.5px;
+  }
+
+  input[type="text"]:focus {
+    border-color: rgba(180,190,255,0.45);
+    background: rgba(255,255,255,0.07);
+  }
+
+  button {
+    width: 100%;
+    padding: 0.85rem 1.2rem;
+    background: transparent;
+    border: 1.5px solid rgba(180,190,255,0.3);
+    border-radius: 12px;
+    color: #b0baee;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  button:hover {
+    border-color: rgba(180,190,255,0.6);
+    background: rgba(180,190,255,0.07);
+    color: #d0d8ff;
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  .msg {
+    margin-top: 1.4rem;
+    font-size: 1rem;
+    min-height: 1.4rem;
+    transition: opacity 0.3s;
+    letter-spacing: 0.2px;
+  }
+
+  .msg.error {
+    color: #e06c6c;
+  }
+
+  .msg.success {
+    color: #7de8b8;
+    font-weight: 500;
+  }
+
+  .fade-out {
+    animation: fadeOut 0.5s ease forwards;
+  }
+
+  @keyframes fadeOut {
+    to { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="card">
+  <h1>Eli's Proxies</h1>
+  <p class="subtitle">Enter your access code to continue</p>
+
+  <div class="input-wrap">
+    <input type="text" id="code" placeholder="Access code" autocomplete="off" spellcheck="false" />
+  </div>
+  <button onclick="checkCode()">Enter</button>
+  <div class="msg" id="msg"></div>
+</div>
+
+<script>
+const KEYS = {
+  "Eli":     "Jd7sYhNf4cUe8oAg",
+  "Isaiah":  "Rw5bTpLm1xKj9sQv",
+};
+
+function checkCode() {
+  const val = document.getElementById('code').value.trim();
+  const msg = document.getElementById('msg');
+
+  const match = Object.entries(KEYS).find(([name, key]) => key === val);
+
+  if (match) {
+    const [name] = match;
+    msg.textContent = `Welcome, ${name}!`;
+    msg.className = 'msg success';
+    document.getElementById('code').disabled = true;
+    document.querySelector('button').disabled = true;
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1800);
+  } else {
+    msg.textContent = 'Invalid access code.';
+    msg.className = 'msg error';
+    document.getElementById('code').style.borderColor = 'rgba(220,100,100,0.4)';
+    setTimeout(() => {
+      document.getElementById('code').style.borderColor = '';
+      msg.textContent = '';
+    }, 2000);
+  }
+}
+
+document.getElementById('code').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkCode();
+});
+
+(function() {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W, H, dots;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function makeDots() {
+    dots = Array.from({length: 55}, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.8 + 0.5,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      alpha: Math.random() * 0.4 + 0.1
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    dots.forEach(d => {
+      d.x += d.vx;
+      d.y += d.vy;
+      if (d.x < 0) d.x = W;
+      if (d.x > W) d.x = 0;
+      if (d.y < 0) d.y = H;
+      if (d.y > H) d.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(160,175,230,${d.alpha})`;
+      ctx.fill();
+    });
+
+    for (let i = 0; i < dots.length; i++) {
+      for (let j = i + 1; j < dots.length; j++) {
+        const dx = dots[i].x - dots[j].x;
+        const dy = dots[i].y - dots[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 110) {
+          ctx.beginPath();
+          ctx.moveTo(dots[i].x, dots[i].y);
+          ctx.lineTo(dots[j].x, dots[j].y);
+          ctx.strokeStyle = `rgba(140,160,220,${0.07 * (1 - dist/110)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  makeDots();
+  draw();
+  window.addEventListener('resize', () => { resize(); makeDots(); });
+})();
+</script>
+</body>
+</html>
