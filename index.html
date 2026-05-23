@@ -112,8 +112,9 @@
 
 <script>
   const KEYS = {
-    "Eli":     "Jd7sYhNf4cUe8oAg",
-    "Isaiah":  "Rw5bTpLm1xKj9sQv",
+    "Eli!":     "Jd7sYhNf4cUe8oAg",
+    "Isaiah!":  "Rw5bTpLm1xKj9sQv",
+   "To Public Access":  "A2c43sk6fa8f8D4K",
   };
 
   const SESSION_KEY = 'ep_auth';
@@ -125,7 +126,7 @@
     if (match) {
       const [name] = match;
       sessionStorage.setItem(SESSION_KEY, 'granted');
-      msg.textContent = `Welcome, ${name}!`;
+      msg.textContent = `Welcome, ${name}`;
       msg.className = 'msg success';
       document.getElementById('code').disabled = true;
       document.querySelector('button').disabled = true;
