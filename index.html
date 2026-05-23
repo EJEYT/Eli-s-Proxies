@@ -126,7 +126,7 @@
     if (match) {
       const [name] = match;
       sessionStorage.setItem(SESSION_KEY, 'granted');
-      msg.textContent = `Welcome ${name}`;
+      msg.textContent = `Welcome${name}`;
       msg.className = 'msg success';
       document.getElementById('code').disabled = true;
       document.querySelector('button').disabled = true;
